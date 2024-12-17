@@ -5,4 +5,5 @@ module.exports = {
   rules: {
     "prettier/prettier": "error",
   },
+  ignorePatterns: ["node_modules/", "android/", "ios/", "/dist/*"],
 };

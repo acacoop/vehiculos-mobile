@@ -1,0 +1,37 @@
+[
+    {
+        "id": "1",
+        "licenseplate": "AB123CD",
+        "brand": "Toyota",
+        "model": "Corolla",
+        "year": 2018
+    },
+    {
+        "id": "2",
+        "licenseplate": "ABC123",
+        "brand": "Ford",
+        "model": "Focus",
+        "year": 2019
+    },
+    {
+        "id": "3",
+        "licenseplate": "AB456EF",
+        "brand": "Chevrolet",
+        "model": "Cruze",
+        "year": 2020
+    },
+    {
+        "id": "4",
+        "licenseplate": "DEF456",
+        "brand": "Honda",
+        "model": "Civic",
+        "year": 2021
+    },
+    {
+        "id": "5",
+        "licenseplate": "GHI789",
+        "brand": "Volkswagen",
+        "model": "Golf",
+        "year": 2022
+    }
+]
