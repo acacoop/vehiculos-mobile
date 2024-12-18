@@ -4,5 +4,5 @@ export interface Vehicle {
   brand: string;
   model: string;
   year: number;
-  img_url: string;
+  imgUrl: string;
 }

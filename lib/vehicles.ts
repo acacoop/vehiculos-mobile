@@ -2,7 +2,14 @@ import { Vehicle } from "../interfaces/vehicle";
 const VEHICLE_SERVER = "http://localhost:3000/vehicles";
 
 function dataToVehicle(data: any): Vehicle {
-  const { id, licenseplate: licensePlate, brand, model, year, img_url } = data;
+  const {
+    id,
+    licenseplate: licensePlate,
+    brand,
+    model,
+    year,
+    imgurl: imgUrl,
+  } = data;
 
   return {
     id,
@@ -10,7 +17,7 @@ function dataToVehicle(data: any): Vehicle {
     brand,
     model,
     year,
-    img_url,
+    imgUrl,
   };
 }
 

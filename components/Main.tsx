@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { FlatList, Text, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
 import { getAllVehicles } from "../lib/vehicles";
@@ -12,11 +12,19 @@ export function Main() {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={{ color: "#fff", fontSize: 50 }}> Vehicles</Text>
-      {vehicles.map((vehicle) => (
-        <VehicleCard key={vehicle.id} {...vehicle} />
-      ))}
+      <FlatList
+        data={vehicles}
+        renderItem={({ item }) => <VehicleCard vehicle={item} />}
+        keyExtractor={(item) => item.id.toString()}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
