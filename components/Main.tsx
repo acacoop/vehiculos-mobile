@@ -13,7 +13,7 @@ export function Main() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: "#fff", fontSize: 50 }}> Vehicles</Text>
+      <Text style={styles.titulo}> Vehiculos disponibles</Text>
       <FlatList
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
@@ -26,5 +26,13 @@ export function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center'
   },
+  titulo:{
+    color:'#000',
+    fontSize: 20,
+    textAlign: 'center',
+    margin:20
+  },
+
 });
