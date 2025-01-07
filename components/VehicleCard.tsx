@@ -20,7 +20,19 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     flexDirection: 'row',
     alignItems: "center",
-    gap: 10
+    gap: 10,
+    width: 250,
+    backgroundColor: "#f9f9f9", 
+    padding: 10, 
+    borderRadius: 8, 
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, 
+    borderWidth: 0.2,
+    borderColor: "BBBBBB",
+    margin: 20
   },
   image: {
     width: 100,
