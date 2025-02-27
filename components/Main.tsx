@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
 import { getAllVehicles } from "../lib/vehicles";
 import { VehicleCard } from "./VehicleCard";
+import { Link } from "expo-router";
+import Navbar from "./Navbar";
 
 export function Main() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -14,6 +16,9 @@ export function Main() {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}> Vehiculos disponibles</Text>
+      <View>
+        <Navbar />
+      </View>
       <FlatList
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
@@ -26,7 +31,8 @@ export function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titulo:{
     color:'#000',
