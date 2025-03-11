@@ -5,7 +5,7 @@ import Navbar from './Navbar'
 const InicioLayout = () => {
   return (
     <View style={styles.container}>
-      <Text>Hola @user</Text >
+      <Text style={styles.user}>Hola @user</Text>
       <View style={styles.ContainerImage}>
         <Image source={require('../assets/Logo.svg')}  style={styles.image} />
       </View>
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         position: 'absolute',
-        bottom: 100,
-    }
+        bottom: 50,
+    },
+    user: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold',
+        paddingTop: 20,
+    },
 })

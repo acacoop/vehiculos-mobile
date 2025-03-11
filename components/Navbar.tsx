@@ -46,12 +46,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', 
     alignItems: 'center',
-    gap: 30,
+    gap: 70,
     backgroundColor: '#282D86',
     width: '100%',
     justifyContent: 'center',
+    height: 100,
   },
   button: {
-    padding: 10,
+    padding: 20,
   },
 });
