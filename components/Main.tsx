@@ -16,14 +16,11 @@ export function Main() {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}> Vehiculos disponibles</Text>
-      <View>
-        <Navbar />
-      </View>
       <FlatList
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
-        keyExtractor={(item) => item.id.toString()}
-      />
+        keyExtractor={(item) => item.id.toString()}/>
+       <View style={styles.Navbar}><Navbar/></View>
     </View>
   );
 }
@@ -40,5 +37,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin:20
   },
-
+  Navbar: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+    },
 });

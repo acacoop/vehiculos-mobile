@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React from 'react'
 import Navbar from './Navbar'
+import Constants from 'expo-constants'
 
 const InicioLayout = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.user}>Hola @user</Text>
+      <View style={styles.userContainer}>
+        <Text style={styles.user}>Hola @user</Text>
+      </View>
       <View style={styles.ContainerImage}>
         <Image source={require('../assets/Logo.svg')}  style={styles.image} />
       </View>
@@ -18,36 +21,45 @@ export default InicioLayout
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: 50,
-        height: '100%',
+        justifyContent: 'center',
         backgroundColor: '#ffffff',
+        paddingTop: Constants.statusBarHeight,
     },
     ContainerImage: {
-        marginTop: 50,
-        alignItems: 'center',
+        flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'black',
+        alignItems: 'center',
+        
     },
     image: {
-        alignItems: 'center',
-        justifyContent: 'center',
         width: 300,
         height: 100,
+        backgroundColor: 'black',
     },
     Navbar: {
-        marginTop: 50,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         position: 'absolute',
-        bottom: 50,
+        bottom: 0,
+    },
+    userContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        backgroundColor: '#282D86',
+        borderBottomEndRadius: 100,
+        borderBottomStartRadius: 100,
+        padding: 30,
     },
     user: {
         fontSize: 20,
-        color: 'black',
+        color: '#ffffff',
         fontWeight: 'bold',
         paddingTop: 20,
     },
