@@ -6,7 +6,9 @@ const InicioLayout = () => {
   return (
     <View style={styles.container}>
       <Text>Hola @user</Text >
-      <Image source={require('../assets/Logo.svg')}  style={styles.image} />
+      <View style={styles.ContainerImage}>
+        <Image source={require('../assets/Logo.svg')}  style={styles.image} />
+      </View>
       <View style={styles.Navbar}><Navbar/></View>
     </View>
   )
@@ -18,12 +20,20 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 50,
+        height: '100%',
+        backgroundColor: '#ffffff',
+    },
+    ContainerImage: {
+        marginTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'black',
     },
     image: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 200,
+        width: 300,
         height: 100,
     },
     Navbar: {
@@ -32,5 +42,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
+        position: 'absolute',
+        bottom: 100,
     }
 })

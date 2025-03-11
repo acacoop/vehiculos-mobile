@@ -48,6 +48,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 30,
     backgroundColor: '#282D86',
+    width: '100%',
+    justifyContent: 'center',
   },
   button: {
     padding: 10,
