@@ -5,6 +5,8 @@ import { getAllVehicles } from "../lib/vehicles";
 import { VehicleCard } from "./VehicleCard";
 import { Link } from "expo-router";
 import Navbar from "./Navbar";
+import Constants from 'expo-constants'
+import Header from "./Header";
 
 export function Main() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -15,11 +17,14 @@ export function Main() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}> Vehiculos disponibles</Text>
+      <View style={styles.headerContainer}>
+        <Header/>
+      </View>
       <FlatList
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
-        keyExtractor={(item) => item.id.toString()}/>
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ paddingBottom: 80 }}/>
        <View style={styles.Navbar}><Navbar/></View>
     </View>
   );
@@ -30,19 +35,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingTop: Constants.statusBarHeight,
+  },
+  headerContainer: {
+    width: '100%',
+
   },
   titulo:{
-    color:'#000',
     fontSize: 20,
-    textAlign: 'center',
-    margin:20
+    color: '#ffffff',
+    fontWeight: 'bold',
+    paddingTop: 20,
   },
   Navbar: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-    },
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+        
+  },
 });

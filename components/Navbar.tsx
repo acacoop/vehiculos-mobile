@@ -6,7 +6,7 @@ import { IconCar, IconSetting, IconCalendar } from './Icons';
 const Navbar = () => {
   return (
     <View style={styles.container}>
-      <Link href="/vehicles">
+      <Link asChild href="/vehicles">
         <Pressable style={styles.button}>
           {({ pressed }) => (
             <IconCar 
@@ -16,7 +16,7 @@ const Navbar = () => {
           )}
         </Pressable>
       </Link>
-      <Link href="/">
+      <Link asChild href="/">
         <Pressable style={styles.button}>
           {({ pressed }) => (
             <IconCalendar 
@@ -26,7 +26,7 @@ const Navbar = () => {
           )}
         </Pressable>
       </Link>
-      <Link href="/">
+      <Link asChild href="/config">
         <Pressable style={styles.button}>
           {({ pressed }) => (
             <IconSetting 

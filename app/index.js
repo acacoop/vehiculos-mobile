@@ -1,4 +1,3 @@
-import { Main } from "../components/Main";
 import InicioLayout from "../components/InicioLayout";
 
 

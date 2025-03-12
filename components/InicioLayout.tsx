@@ -2,17 +2,20 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React from 'react'
 import Navbar from './Navbar'
 import Constants from 'expo-constants'
+import Header from './Header'
 
 const InicioLayout = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
-        <Text style={styles.user}>Hola @user</Text>
+      <View style={styles.headerContainer}>
+        <Header/>
       </View>
       <View style={styles.ContainerImage}>
         <Image source={require('../assets/Logo.svg')}  style={styles.image} />
       </View>
-      <View style={styles.Navbar}><Navbar/></View>
+      <View style={styles.Navbar}>
+        <Navbar/>
+      </View>
     </View>
   )
 }
@@ -47,20 +50,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
     },
-    userContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+    headerContainer: {
         width: '100%',
-        backgroundColor: '#282D86',
-        borderBottomEndRadius: 100,
-        borderBottomStartRadius: 100,
-        padding: 30,
-    },
-    user: {
-        fontSize: 20,
-        color: '#ffffff',
-        fontWeight: 'bold',
-        paddingTop: 20,
     },
 })
