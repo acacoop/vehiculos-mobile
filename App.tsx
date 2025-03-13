@@ -5,12 +5,10 @@ import { Main } from "./components/Main";
 
 export default function App() {
   return (
-    
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="auto" />
-        <Main />
-      </SafeAreaView>
-    
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
+      <Main />
+    </SafeAreaView>
   );
 }
 

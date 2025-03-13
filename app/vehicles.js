@@ -21,9 +21,7 @@ export default function Vehicles() {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ paddingBottom: 80 }}
       />
-      <View style={styles.Navbar}>
-        <Navbar />
-      </View>
+      <Navbar />
     </View>
   );
 }
@@ -31,6 +29,7 @@ export default function Vehicles() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
@@ -43,13 +42,5 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "bold",
     paddingTop: 20,
-  },
-  Navbar: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
   },
 });
