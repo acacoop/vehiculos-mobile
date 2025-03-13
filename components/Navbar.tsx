@@ -1,7 +1,7 @@
-import { StyleSheet, View, Pressable } from 'react-native';
-import { Link } from 'expo-router';
-import React from 'react';
-import { IconCar, IconSetting, IconCalendar } from './Icons';
+import { StyleSheet, View, Pressable } from "react-native";
+import { Link } from "expo-router";
+import React from "react";
+import { IconCar, IconSetting, IconCalendar } from "./Icons";
 
 const Navbar = () => {
   return (
@@ -9,9 +9,9 @@ const Navbar = () => {
       <Link asChild href="/vehicles">
         <Pressable style={styles.button}>
           {({ pressed }) => (
-            <IconCar 
-              pressed={pressed} 
-              style={{ color: pressed ? '#FE9000' : 'white' }}  
+            <IconCar
+              pressed={pressed}
+              style={{ color: pressed ? "#FE9000" : "white" }}
             />
           )}
         </Pressable>
@@ -19,19 +19,19 @@ const Navbar = () => {
       <Link asChild href="/">
         <Pressable style={styles.button}>
           {({ pressed }) => (
-            <IconCalendar 
-              pressed={pressed} 
-              style={{ color: pressed ? '#FE9000' : 'white' }}  
+            <IconCalendar
+              pressed={pressed}
+              style={{ color: pressed ? "#FE9000" : "white" }}
             />
           )}
         </Pressable>
       </Link>
-      <Link asChild href="/config">
+      <Link asChild href="/configuracionlayout">
         <Pressable style={styles.button}>
           {({ pressed }) => (
-            <IconSetting 
-              pressed={pressed} 
-              style={{ color: pressed ? '#FE9000' : 'white' }}  
+            <IconSetting
+              pressed={pressed}
+              style={{ color: pressed ? "#FE9000" : "white" }}
             />
           )}
         </Pressable>
@@ -44,13 +44,15 @@ export default Navbar;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', 
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 70,
-    backgroundColor: '#282D86',
-    width: '100%',
-    justifyContent: 'center',
+    backgroundColor: "#282D86",
+    width: "100%",
+    justifyContent: "center",
     height: 100,
+    position: "absolute",
+    bottom: 0,
   },
   button: {
     padding: 20,

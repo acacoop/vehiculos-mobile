@@ -5,7 +5,7 @@ import { getAllVehicles } from "../lib/vehicles";
 import { VehicleCard } from "./VehicleCard";
 import { Link } from "expo-router";
 import Navbar from "./Navbar";
-import Constants from 'expo-constants'
+import Constants from "expo-constants";
 import Header from "./Header";
 
 export function Main() {
@@ -18,14 +18,17 @@ export function Main() {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Header/>
+        <Header />
       </View>
       <FlatList
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 80 }}/>
-       <View style={styles.Navbar}><Navbar/></View>
+        contentContainerStyle={{ paddingBottom: 80 }}
+      />
+      <View style={styles.Navbar}>
+        <Navbar />
+      </View>
     </View>
   );
 }
@@ -33,28 +36,25 @@ export function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    paddingTop: Constants.statusBarHeight,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
   headerContainer: {
-    width: '100%',
-
+    width: "100%",
   },
-  titulo:{
+  titulo: {
     fontSize: 20,
-    color: '#ffffff',
-    fontWeight: 'bold',
+    color: "#ffffff",
+    fontWeight: "bold",
     paddingTop: 20,
   },
   Navbar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    position: 'absolute',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    position: "absolute",
     bottom: 0,
-        
   },
 });
