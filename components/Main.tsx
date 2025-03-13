@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
 import { getAllVehicles } from "../lib/vehicles";
 import { VehicleCard } from "./VehicleCard";
-import { Link } from "expo-router";
 import Navbar from "./Navbar";
-import Constants from "expo-constants";
 import Header from "./Header";
 
 export function Main() {

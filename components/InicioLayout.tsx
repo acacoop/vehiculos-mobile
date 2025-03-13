@@ -11,7 +11,10 @@ const InicioLayout = () => {
         <Header />
       </View>
       <View style={styles.ContainerImage}>
-        <Image source={require("../assets/Logo.svg")} style={styles.image} />
+        <Image
+          source={require("../assets/Logo ACA.png")}
+          style={styles.image}
+        />
       </View>
       <Navbar />
     </View>
@@ -35,8 +38,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height: 100,
-    backgroundColor: "black",
+    height: 300,
   },
   headerContainer: {
     width: "100%",

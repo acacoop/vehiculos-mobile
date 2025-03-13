@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     paddingTop:
-      Platform.OS === "ios"
-        ? Constants.statusBarHeight + 20
-        : Constants.statusBarHeight, // Ajuste para iOS
+      Constants.statusBarHeight +
+      (Platform.OS === "ios" ? 20 : Platform.OS === "android" ? 25 : 20),
   },
   user: {
     fontSize: 20,
