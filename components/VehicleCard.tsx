@@ -43,17 +43,17 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   text1: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#282D86",
     marginBottom: 5,
   },
   text2: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#FE9000",
   },
   text3: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#FE9000",
   },
 });
