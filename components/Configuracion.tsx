@@ -9,21 +9,73 @@ const Configuracion = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.containerconfig}>
-        <Pressable style={styles.button}>
-          <IconUser />
-          <Text style={styles.text}>Usuario</Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? "#282D86" : "white" },
+          ]}
+        >
+          {({ pressed }) => (
+            <>
+              <IconUser pressed={pressed} />
+              <Text
+                style={[styles.text, { color: pressed ? "white" : "black" }]}
+              >
+                Usuario
+              </Text>
+            </>
+          )}
         </Pressable>
-        <Pressable style={styles.button}>
-          <IconWallet />
-          <Text style={styles.text}>Credenciales</Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? "#282D86" : "white" },
+          ]}
+        >
+          {({ pressed }) => (
+            <>
+              <IconWallet pressed={pressed} />
+              <Text
+                style={[styles.text, { color: pressed ? "white" : "black" }]}
+              >
+                Credenciales
+              </Text>
+            </>
+          )}
         </Pressable>
-        <Pressable style={styles.button}>
-          <IconLock />
-          <Text style={styles.text}>Seguridad</Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? "#282D86" : "white" },
+          ]}
+        >
+          {({ pressed }) => (
+            <>
+              <IconLock pressed={pressed} />
+              <Text
+                style={[styles.text, { color: pressed ? "white" : "black" }]}
+              >
+                Seguridad
+              </Text>
+            </>
+          )}
         </Pressable>
-        <Pressable style={styles.button}>
-          <IconLogout />
-          <Text style={styles.text}>Cerrar sesión</Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? "#282D86" : "white" },
+          ]}
+        >
+          {({ pressed }) => (
+            <>
+              <IconLogout pressed={pressed} />
+              <Text
+                style={[styles.text, { color: pressed ? "white" : "black" }]}
+              >
+                Cerrar sesión
+              </Text>
+            </>
+          )}
         </Pressable>
       </View>
       <Navbar />
@@ -41,7 +93,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: "#000",
   },
   containerconfig: {
     flex: 1,
@@ -63,9 +114,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 5,
-    /* margin: 20, */
     width: 250,
-    backgroundColor: "#ffffff",
   },
 });
 

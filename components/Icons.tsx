@@ -34,17 +34,45 @@ export const IconSetting = (props: { pressed?: boolean; style?: any }) => {
 };
 
 export const IconUser = (props: { pressed?: boolean; style?: any }) => {
-  return <AntDesign name="user" size={20} color="black" />;
+  return (
+    <AntDesign
+      name="user"
+      size={20}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
 };
 
 export const IconWallet = (props: { pressed?: boolean; style?: any }) => {
-  return <AntDesign name="wallet" size={20} color="black" />;
+  return (
+    <AntDesign
+      name="wallet"
+      size={20}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
 };
 
 export const IconLock = (props: { pressed?: boolean; style?: any }) => {
-  return <AntDesign name="lock" size={20} color="black" />;
+  return (
+    <AntDesign
+      name="lock"
+      size={20}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
 };
 
 export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
-  return <AntDesign name="logout" size={20} color="black" />;
+  return (
+    <AntDesign
+      name="logout"
+      size={20}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
 };
