@@ -1,26 +1,37 @@
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { getVehicle } from "../../lib/vehicles";
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
-import Header from "./Header";
-import Navbar from "./Navbar";
-import { Vehicle } from "../interfaces/vehicle";
+import Header from "../../components/Header";
+import Navbar from "../../components/Navbar";
 
-type VehicleCardProps = { vehicle: Vehicle };
-const InfoCar = ({ vehicle }: VehicleCardProps) => {
+export default function VehicleDetail() {
+  const { licensePlate } = useLocalSearchParams();
+  const [vehicleDetail, setVehicles] = useState(null);
+
+  useEffect(() => {
+    getVehicle(licensePlate).then(setVehicles);
+  }, []);
+
   return (
     <View style={style.container}>
       <Header />
       <View style={style.containerInfocar}>
-        <View style={style.infoCar}>
-          <Text>License Plate: {vehicle.licensePlate}</Text>
-          <Text>Brand: {vehicle.brand}</Text>
-          <Text>Model: {vehicle.model}</Text>
-          <Text>Year: {vehicle.year}</Text>
-        </View>
+        {vehicleDetail === null ? (
+          <Text>Loading...</Text>
+        ) : (
+          <View style={style.infoCar}>
+            <Text>License Plate: {vehicleDetail.licensePlate}</Text>
+            <Text>Brand: {vehicleDetail.brand}</Text>
+            <Text>Model: {vehicleDetail.model}</Text>
+            <Text>Year: {vehicleDetail.year}</Text>
+          </View>
+        )}
       </View>
       <Navbar />
     </View>
   );
-};
+}
 
 const style = StyleSheet.create({
   container: {
@@ -55,5 +66,3 @@ const style = StyleSheet.create({
     color: "#000",
   },
 });
-
-export default InfoCar;

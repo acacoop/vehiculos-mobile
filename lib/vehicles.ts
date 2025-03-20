@@ -34,3 +34,16 @@ export async function getAllVehicles(): Promise<Vehicle[]> {
     return [];
   }
 }
+
+export async function getVehicle(licensePlate: string): Promise<Vehicle | null> {
+  const GET_VEHICLE = `${VEHICLE_SERVER}/licensePlate/${licensePlate}`;
+
+  try {
+    const response = await fetch(GET_VEHICLE);
+    const vehicle = await response.json();
+    return dataToVehicle(vehicle);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

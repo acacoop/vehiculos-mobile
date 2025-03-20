@@ -16,7 +16,7 @@ const Navbar = () => {
           )}
         </Pressable>
       </Link>
-      <Link asChild href="/infoVehicles">
+      <Link asChild href="/">
         <Pressable style={styles.button}>
           {({ pressed }) => (
             <IconCalendar

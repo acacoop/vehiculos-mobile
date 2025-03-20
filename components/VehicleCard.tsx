@@ -1,17 +1,22 @@
+import { Link } from "expo-router";
 import { Vehicle } from "../interfaces/vehicle";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 
 type VehicleCardProps = { vehicle: Vehicle };
 export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: vehicle.imgUrl }} style={styles.image} />
-      <View style={styles.textContainer}>
-        <Text style={styles.text1}>{vehicle.licensePlate}</Text>
-        <Text style={styles.text2}>{vehicle.brand}</Text>
-        <Text style={styles.text3}>{vehicle.model}</Text>
-      </View>
-    </View>
+    <Link href={`/vehicles/${vehicle.licensePlate}`} asChild>
+      <Pressable>
+        <View style={styles.card}>
+          <Image source={{ uri: vehicle.imgUrl }} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text style={styles.text1}>{vehicle.licensePlate}</Text>
+            <Text style={styles.text2}>{vehicle.brand}</Text>
+            <Text style={styles.text3}>{vehicle.model}</Text>
+          </View>
+        </View>
+      </Pressable>
+    </Link>
   );
 }
 
