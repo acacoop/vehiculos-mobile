@@ -77,4 +77,13 @@ export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
   );
 };
 
-
+export const IconArrowLeft = (props: { pressed?: boolean; style?: any }) => {
+  return (
+    <AntDesign
+      name="arrowleft"
+      size={50}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
+};

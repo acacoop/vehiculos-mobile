@@ -1,7 +1,17 @@
 import { useLocalSearchParams } from "expo-router";
+import { Link } from "expo-router";
+import { IconArrowLeft } from "../../components/Icons";
 import { useEffect, useState } from "react";
 import { getVehicle } from "../../lib/vehicles";
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import Header from "../../components/Header";
 import Navbar from "../../components/Navbar";
 
@@ -16,9 +26,23 @@ export default function VehicleDetail() {
   return (
     <View style={style.container}>
       <Header />
+      <View style={style.containerArrow}>
+        <Link asChild href="/vehicles">
+          <Pressable style={style.button}>
+            {({ pressed }) => (
+              <IconArrowLeft
+                pressed={pressed}
+                style={{ color: pressed ? "#FE9000" : "#282D86" }}
+              />
+            )}
+          </Pressable>
+        </Link>
+      </View>
       <View style={style.containerInfocar}>
         {vehicleDetail === null ? (
-          <Text>Loading...</Text>
+          <View style={style.loadingContainer}>
+            <ActivityIndicator size="large" color="#282D86" />
+          </View>
         ) : (
           <View style={style.infoCar}>
             <View style={style.containerImage}>
@@ -58,21 +82,18 @@ const style = StyleSheet.create({
     backgroundColor: "#ffffff",
     paddingBottom: 100,
   },
-
+  containerArrow: {
+    position: "absolute",
+    top: 140,
+    left: 20,
+    zIndex: 1,
+  },
   containerInfocar: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    shadowColor: "#000",
-    width: 350,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5,
-    margin: 40,
-    padding: 30,
+    margin: 60,
+    padding: 2,
   },
   infoCar: {
     flexDirection: "column",
@@ -111,5 +132,12 @@ const style = StyleSheet.create({
     fontSize: 20,
     color: "#282D86",
     fontWeight: 400,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#ffffff",
   },
 });

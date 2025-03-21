@@ -1,4 +1,10 @@
-import { FlatList, Text, View, StyleSheet } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
 import { getAllVehicles } from "../lib/vehicles";
@@ -8,9 +14,15 @@ import Header from "./Header";
 
 export function Main() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true); // Estado para el loading
 
   useEffect(() => {
-    getAllVehicles().then((data) => setVehicles(data));
+    getAllVehicles()
+      .then((data) => {
+        setVehicles(data);
+        setLoading(false); // Al terminar de cargar los datos, desactivar el loading
+      })
+      .catch(() => setLoading(false)); // En caso de error, también desactivar el loading
   }, []);
 
   return (
@@ -18,12 +30,20 @@ export function Main() {
       <View style={styles.headerContainer}>
         <Header />
       </View>
-      <FlatList
-        data={vehicles}
-        renderItem={({ item }) => <VehicleCard vehicle={item} />}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 10, paddingTop: 40 }}
-      />
+
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#282D86" />
+        </View>
+      ) : (
+        <FlatList
+          data={vehicles}
+          renderItem={({ item }) => <VehicleCard vehicle={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 100, paddingTop: 40 }}
+        />
+      )}
+
       <View style={styles.Navbar}>
         <Navbar />
       </View>
@@ -54,5 +74,12 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
 });
