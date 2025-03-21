@@ -14,15 +14,15 @@ import Header from "./Header";
 
 export function Main() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [loading, setLoading] = useState(true); // Estado para el loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getAllVehicles()
       .then((data) => {
         setVehicles(data);
-        setLoading(false); // Al terminar de cargar los datos, desactivar el loading
+        setLoading(false);
       })
-      .catch(() => setLoading(false)); // En caso de error, también desactivar el loading
+      .catch(() => setLoading(false));
   }, []);
 
   return (
