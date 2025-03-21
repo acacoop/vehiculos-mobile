@@ -1,5 +1,5 @@
 import { Vehicle } from "../interfaces/vehicle";
-const VEHICLE_SERVER = "https://sk9nsqkc-3000.brs.devtunnels.ms/vehicles";
+const VEHICLE_SERVER = "https://qgdx9x1b-3000.brs.devtunnels.ms/vehicles";
 
 function dataToVehicle(data: any): Vehicle {
   const {

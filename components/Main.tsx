@@ -22,7 +22,7 @@ export function Main() {
         data={vehicles}
         renderItem={({ item }) => <VehicleCard vehicle={item} />}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={{ paddingBottom: 10, paddingTop: 40 }}
       />
       <View style={styles.Navbar}>
         <Navbar />
