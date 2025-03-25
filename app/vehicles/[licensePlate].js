@@ -2,7 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 import { IconArrowLeft } from "../../components/Icons";
 import { useEffect, useState } from "react";
-import { getVehicle } from "../../lib/vehicles";
+import { getVehicle } from "../../services/vehicles";
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ export default function VehicleDetail() {
 
   useEffect(() => {
     getVehicle(licensePlate).then(setVehicles);
-  }, []);
+  }, [licensePlate]);
 
   return (
     <View style={style.container}>

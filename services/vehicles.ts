@@ -1,5 +1,6 @@
 import { Vehicle } from "../interfaces/vehicle";
-const VEHICLE_SERVER = "https://qgdx9x1b-3000.brs.devtunnels.ms/vehicles";
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 function dataToVehicle(data: any): Vehicle {
   const {
@@ -22,7 +23,7 @@ function dataToVehicle(data: any): Vehicle {
 }
 
 export async function getAllVehicles(): Promise<Vehicle[]> {
-  const GET_VEHICLES = `${VEHICLE_SERVER}/`;
+  const GET_VEHICLES = `${API_URL}/vehicles`;
 
   try {
     const response = await fetch(GET_VEHICLES);
@@ -35,8 +36,10 @@ export async function getAllVehicles(): Promise<Vehicle[]> {
   }
 }
 
-export async function getVehicle(licensePlate: string): Promise<Vehicle | null> {
-  const GET_VEHICLE = `${VEHICLE_SERVER}/licensePlate/${licensePlate}`;
+export async function getVehicle(
+  licensePlate: string,
+): Promise<Vehicle | null> {
+  const GET_VEHICLE = `${API_URL}/vehicles/licensePlate/${licensePlate}`;
 
   try {
     const response = await fetch(GET_VEHICLE);

@@ -1,13 +1,7 @@
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
+import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
-import { getAllVehicles } from "../lib/vehicles";
+import { getAllVehicles } from "../services/vehicles";
 import { VehicleCard } from "./VehicleCard";
 import Navbar from "./Navbar";
 import Header from "./Header";
