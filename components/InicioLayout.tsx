@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React from "react";
 import Navbar from "./Navbar";
-import Constants from "expo-constants";
 import Header from "./Header";
 
 const InicioLayout = () => {

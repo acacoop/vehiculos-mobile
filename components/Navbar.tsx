@@ -26,7 +26,7 @@ const Navbar = () => {
           )}
         </Pressable>
       </Link>
-      <Link asChild href="/configuracionlayout">
+      <Link asChild href="/configuracionLayout">
         <Pressable style={styles.button}>
           {({ pressed }) => (
             <IconSetting

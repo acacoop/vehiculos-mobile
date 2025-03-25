@@ -1,7 +1,5 @@
 import { Slot } from "expo-router";
 
 export default function Layout() {
-  return (
-    <Slot name="layout" />
-  );
+  return <Slot name="layout" />;
 }

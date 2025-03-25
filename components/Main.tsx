@@ -1,16 +1,22 @@
-import { FlatList, Text, View, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import { Vehicle } from "../interfaces/vehicle";
-import { getAllVehicles } from "../lib/vehicles";
+import { getAllVehicles } from "../services/vehicles";
 import { VehicleCard } from "./VehicleCard";
 import Navbar from "./Navbar";
 import Header from "./Header";
 
 export function Main() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAllVehicles().then((data) => setVehicles(data));
+    getAllVehicles()
+      .then((data) => {
+        setVehicles(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   return (
@@ -18,12 +24,20 @@ export function Main() {
       <View style={styles.headerContainer}>
         <Header />
       </View>
-      <FlatList
-        data={vehicles}
-        renderItem={({ item }) => <VehicleCard vehicle={item} />}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 80 }}
-      />
+
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#282D86" />
+        </View>
+      ) : (
+        <FlatList
+          data={vehicles}
+          renderItem={({ item }) => <VehicleCard vehicle={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 100, paddingTop: 40 }}
+        />
+      )}
+
       <View style={styles.Navbar}>
         <Navbar />
       </View>
@@ -54,5 +68,12 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
 });
