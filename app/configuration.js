@@ -1,0 +1,56 @@
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import {
+  IconLock,
+  IconLogout,
+  IconUser,
+  IconWallet,
+} from "../components/Icons";
+import { PressableButton } from "../components/Buttons";
+
+export default function Configuration() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerconfig}>
+        <PressableButton
+          text="Usuario"
+          icon={({ pressed }) => <IconUser pressed={pressed} />}
+        />
+        <PressableButton
+          text="Credenciales"
+          icon={({ pressed }) => <IconWallet pressed={pressed} />}
+        />
+
+        <PressableButton
+          text="Seguridad"
+          icon={({ pressed }) => <IconLock pressed={pressed} />}
+        />
+
+        <PressableButton
+          text="Cerrar sesión"
+          icon={({ pressed }) => <IconLogout pressed={pressed} />}
+        />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    paddingBottom: 100,
+    flexDirection: "column",
+  },
+  text: {
+    fontSize: 20,
+  },
+  containerconfig: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    gap: 50,
+  },
+});

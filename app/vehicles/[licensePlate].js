@@ -5,17 +5,27 @@ import { useEffect, useState } from "react";
 import { getVehicle } from "../../services/vehicles";
 import {
   View,
-  Text,
   StyleSheet,
   Image,
-  FlatList,
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import Header from "../../components/Header";
-import Navbar from "../../components/Navbar";
+import { Table } from "../../components/Table";
+import { useApp } from "../../context/AppContext";
 
 export default function VehicleDetail() {
+  const { setHeaderConfig } = useApp();
+
+  useEffect(() => {
+    setHeaderConfig({
+      title: "Detalle del vehículo",
+      showBackButton: true,
+    });
+
+    return () =>
+      setHeaderConfig({ title: "Hola @user", showBackButton: false });
+  }, []);
+
   const { licensePlate } = useLocalSearchParams();
   const [vehicleDetail, setVehicles] = useState(null);
 
@@ -25,19 +35,7 @@ export default function VehicleDetail() {
 
   return (
     <View style={style.container}>
-      <Header />
-      <View style={style.containerArrow}>
-        <Link asChild href="/vehicles">
-          <Pressable style={style.button}>
-            {({ pressed }) => (
-              <IconArrowLeft
-                pressed={pressed}
-                style={{ color: pressed ? "#FE9000" : "#282D86" }}
-              />
-            )}
-          </Pressable>
-        </Link>
-      </View>
+      <View style={style.containerArrow}></View>
       <View style={style.containerInfocar}>
         {vehicleDetail === null ? (
           <View style={style.loadingContainer}>
@@ -51,25 +49,17 @@ export default function VehicleDetail() {
                 style={style.image}
               />
             </View>
-            <FlatList
-              style={style.cardVehicle}
-              data={[
-                { key: "Dominio", value: vehicleDetail.licensePlate },
-                { key: "Fabricante", value: vehicleDetail.brand },
-                { key: "Modelo", value: vehicleDetail.model },
-                { key: "Año", value: vehicleDetail.year },
-              ]}
-              keyExtractor={(item) => item.key}
-              renderItem={({ item }) => (
-                <Text style={style.Text}>
-                  {item.key}: {item.value}
-                </Text>
-              )}
+            <Table
+              data={{
+                Dominio: vehicleDetail.licensePlate,
+                Marca: vehicleDetail.brand,
+                Modelo: vehicleDetail.model,
+                Año: vehicleDetail.year,
+              }}
             />
           </View>
         )}
       </View>
-      <Navbar />
     </View>
   );
 }
@@ -84,7 +74,7 @@ const style = StyleSheet.create({
   },
   containerArrow: {
     position: "absolute",
-    top: 140,
+    top: 0,
     left: 20,
     zIndex: 1,
   },
@@ -92,7 +82,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    margin: 60,
+    marginTop: 30,
     padding: 2,
   },
   infoCar: {
@@ -121,12 +111,6 @@ const style = StyleSheet.create({
     elevation: 5,
     borderRadius: 8,
     padding: 5,
-  },
-  cardVehicle: {
-    flexDirection: "column",
-    width: 250,
-    margin: 20,
-    gap: 10,
   },
   Text: {
     fontSize: 20,
