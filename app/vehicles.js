@@ -1,6 +1,6 @@
 import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import { getAllVehicles } from "../lib/vehicles";
+import { getAllVehicles } from "../services/vehicles";
 import { VehicleCard } from "../components/VehicleCard";
 
 export default function Vehicles() {
