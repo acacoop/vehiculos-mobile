@@ -1,8 +1,36 @@
-import InicioLayout from "../components/InicioLayout";
-
+import { StyleSheet, View, Image } from "react-native";
+import React from "react";
 
 export default function Index() {
   return (
-    <InicioLayout />
+    <View style={styles.container}>
+      <View style={styles.ContainerImage}>
+        <Image
+          source={require("../assets/Logo ACA.png")}
+          style={styles.image}
+        />
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+    paddingBottom: 100,
+  },
+  ContainerImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 300,
+    height: 300,
+  },
+  headerContainer: {},
+});
