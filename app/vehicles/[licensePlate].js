@@ -1,6 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { Link } from "expo-router";
-import { IconArrowLeft } from "../../components/Icons";
+
 import { useEffect, useState } from "react";
 import { getVehicle } from "../../services/vehicles";
 import {
@@ -11,22 +10,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Table } from "../../components/Table";
-import { useApp } from "../../context/AppContext";
 import { Stack } from "expo-router";
 
 export default function VehicleDetail() {
-  const { setHeaderConfig } = useApp();
-
-  useEffect(() => {
-    setHeaderConfig({
-      title: "Detalle del vehículo",
-      showBackButton: true,
-    });
-
-    return () =>
-      setHeaderConfig({ title: "Hola @user", showBackButton: false });
-  }, []);
-
   const { licensePlate } = useLocalSearchParams();
   const [vehicleDetail, setVehicles] = useState(null);
 

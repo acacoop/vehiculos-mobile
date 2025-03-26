@@ -12,7 +12,7 @@ export default function Index() {
       />
       <View style={styles.ContainerImage}>
         <Image
-          source={require("../assets/Logo ACA.png")}
+          source={require("../../assets/Logo ACA.png")}
           style={styles.image}
         />
       </View>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#ffffff",
-    paddingBottom: 100,
   },
   ContainerImage: {
     flex: 1,
@@ -38,5 +37,4 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
   },
-  headerContainer: {},
 });

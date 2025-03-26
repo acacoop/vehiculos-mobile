@@ -7,6 +7,7 @@ import {
   Platform,
   Pressable,
 } from "react-native";
+import Constants from "expo-constants";
 
 const Header = () => {
   return (
@@ -22,7 +23,6 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    width: "100%",
     backgroundColor: "#282D86",
   },
 });
