@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { useApp } from "../../context/AppContext";
+import { Stack } from "expo-router";
 
 export default function VehicleDetail() {
   const { setHeaderConfig } = useApp();
@@ -35,7 +36,11 @@ export default function VehicleDetail() {
 
   return (
     <View style={style.container}>
-      <View style={style.containerArrow}></View>
+      <Stack.Screen
+        options={{
+          headerTitle: "Vehiculos disponibles",
+        }}
+      />
       <View style={style.containerInfocar}>
         {vehicleDetail === null ? (
           <View style={style.loadingContainer}>
@@ -72,17 +77,11 @@ const style = StyleSheet.create({
     backgroundColor: "#ffffff",
     paddingBottom: 100,
   },
-  containerArrow: {
-    position: "absolute",
-    top: 0,
-    left: 20,
-    zIndex: 1,
-  },
   containerInfocar: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 10,
     padding: 2,
   },
   infoCar: {

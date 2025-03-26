@@ -7,10 +7,16 @@ import {
   IconWallet,
 } from "../components/Icons";
 import { PressableButton } from "../components/Buttons";
+import { Stack } from "expo-router";
 
 export default function Configuration() {
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Configuración",
+        }}
+      />
       <View style={styles.containerconfig}>
         <PressableButton
           text="Usuario"
