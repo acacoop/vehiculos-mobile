@@ -27,28 +27,28 @@ FrontEnd Mobile para aplicación de gestión interna de la flota.
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/acacoop/vehiculos-mobile.git
-    cd vehiculos-mobile
-    ```
+   ```bash
+   git clone https://github.com/acacoop/vehiculos-mobile.git
+   cd vehiculos-mobile
+   ```
 
 2. Install the dependencies:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. Set up the environment variables:
 
-    Create a `.env` file in the root directory of the project with the following content:
+   Create a `.env` file in the root directory of the project with the following content:
 
-    ```env
-    EXPO_PUBLIC_API_URL=http://url-to-the-backend-api
-    EXPO_PUBLIC_PORT=8081
-    ```
+   ```env
+   EXPO_PUBLIC_API_URL=http://url-to-the-backend-api
+   EXPO_PUBLIC_PORT=8081
+   ```
 
-    Replace the `http://url-to-the-backend-api` with the URL of the backend application.
-    The .env files are loaded automatically by `expo` according to the [Standard .env file resolution](https://github.com/bkeepers/dotenv/blob/c6e583a/README.md#what-other-env-files-can-i-use).
+   Replace the `http://url-to-the-backend-api` with the URL of the backend application.
+   The .env files are loaded automatically by `expo` according to the [Standard .env file resolution](https://github.com/bkeepers/dotenv/blob/c6e583a/README.md#what-other-env-files-can-i-use).
 
 ## Development
 
@@ -106,6 +106,4 @@ vehiculos-mobile/
 ├── package.json           # NPM package file
 ├── tsconfig.json          # TypeScript configuration file
 ├── README.md              # Project README file
-├── App.tsx                # Main application component
-└── index.tsx              # Application entry point
 ```
