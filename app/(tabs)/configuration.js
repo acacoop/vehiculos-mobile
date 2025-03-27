@@ -1,16 +1,22 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import {
-  IconLock,
-  IconLogout,
   IconUser,
   IconWallet,
-} from "../components/Icons";
-import { PressableButton } from "../components/Buttons";
+  IconLock,
+  IconLogout,
+} from "../../components/Icons";
+import { PressableButton } from "../../components/Buttons";
+import { Stack } from "expo-router";
 
 export default function Configuration() {
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Configuración",
+        }}
+      />
       <View style={styles.containerconfig}>
         <PressableButton
           text="Usuario"
@@ -40,7 +46,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#ffffff",
-    paddingBottom: 100,
     flexDirection: "column",
   },
   text: {

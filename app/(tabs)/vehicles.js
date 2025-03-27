@@ -1,7 +1,8 @@
 import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import { getAllVehicles } from "../services/vehicles";
-import { VehicleCard } from "../components/VehicleCard";
+import { getAllVehicles } from "../../services/vehicles";
+import { VehicleCard } from "../../components/VehicleCard";
+import { Stack } from "expo-router";
 
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
@@ -18,16 +19,22 @@ export default function Vehicles() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Vehículos",
+        }}
+      />
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#282D86" />
         </View>
       ) : (
         <FlatList
+          style={{ paddingTop: 20 }}
           data={vehicles}
           renderItem={({ item }) => <VehicleCard vehicle={item} />}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 10 }}
         />
       )}
     </View>
