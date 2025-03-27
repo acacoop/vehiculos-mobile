@@ -1,7 +1,7 @@
 import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import { getAllVehicles } from "../../services/vehicles";
-import { VehicleCard } from "../../components/VehicleCard";
+import { getAllVehicles } from "../../../services/vehicles";
+import { VehicleCard } from "../../../components/VehicleCard";
 import { Stack } from "expo-router";
 
 export default function Vehicles() {
@@ -30,11 +30,16 @@ export default function Vehicles() {
         </View>
       ) : (
         <FlatList
-          style={{ paddingTop: 20 }}
+          style={{ width: "100%", flex: 1 }}
           data={vehicles}
           renderItem={({ item }) => <VehicleCard vehicle={item} />}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ paddingBottom: 10 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: 20,
+          }}
         />
       )}
     </View>

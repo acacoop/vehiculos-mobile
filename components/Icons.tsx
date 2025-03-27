@@ -1,15 +1,19 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export const IconCar = () => {
-  return <AntDesign name="car" size={24} color="white" />;
+export const IconCar = ({ color }: { color: string }) => {
+  return <AntDesign name="car" size={24} color={color} />;
 };
 
-export const IconCalendar = () => {
-  return <AntDesign name="calendar" size={24} color="white" />;
+export const IconCalendar = ({ color }: { color: string }) => {
+  return <AntDesign name="calendar" size={24} color={color} />;
 };
 
-export const IconSetting = () => {
-  return <AntDesign name="setting" size={24} color="white" />;
+export const IconSetting = ({ color }: { color: string }) => {
+  return <AntDesign name="setting" size={24} color={color} />;
+};
+
+export const IconHome = ({ color }: { color: string }) => {
+  return <AntDesign name="home" size={24} color={color} />;
 };
 
 export const IconUser = (props: { pressed?: boolean; style?: any }) => {
