@@ -1,28 +1,31 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { Maintenance } from "../interfaces/maintenance";
 
 type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
   return (
-    <View style={styles.containerCard}>
-      <View style={styles.containerImage}>
-        <Image
-          source={require("../assets/aceite.jpg")}
-          style={{ width: 75, height: 75, borderRadius: 8 }}
-        />
-      </View>
-      <View style={styles.containerText}>
-        <Text style={styles.text}>{maintenance.maintenanceName}</Text>
-      </View>
+    <View style={styles.container}>
+      <Pressable style={styles.containerCard}>
+        <View style={styles.containerImage}>
+          <Image
+            source={require("../assets/aceite.jpg")}
+            style={{ width: 75, height: 75, borderRadius: 8 }}
+          />
+        </View>
+        <View style={styles.containerText}>
+          <Text style={styles.text}>{maintenance.maintenanceName}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    margin: 10,
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
     backgroundColor: "#fff",
   },
   containerTitle: {
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   text: {
-    fontSize: 25,
+    fontSize: 20,
     color: "#282D86",
   },
   containerCard: {
