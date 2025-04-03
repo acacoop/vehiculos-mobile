@@ -1,22 +1,19 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
+import { Maintenance } from "../interfaces/maintenance";
 
-export function MaintenanceCard() {
+type MaintenanceCardProps = { maintenance: Maintenance };
+export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
   return (
-    <View style={styles.container}>
-      <View style={styles.containerTitle}>
-        <Text style={styles.tittle}>Mecanico</Text>
+    <View style={styles.containerCard}>
+      <View style={styles.containerImage}>
+        <Image
+          source={require("../assets/aceite.jpg")}
+          style={{ width: 75, height: 75, borderRadius: 8 }}
+        />
       </View>
-      <View style={styles.containerCard}>
-        <View style={styles.containerImage}>
-          <Image
-            source={require("../assets/aceite.jpg")}
-            style={{ width: 75, height: 75, borderRadius: 8 }}
-          />
-        </View>
-        <View style={styles.containerText}>
-          <Text style={styles.text}>Aceite</Text>
-        </View>
+      <View style={styles.containerText}>
+        <Text style={styles.text}>{maintenance.maintenanceName}</Text>
       </View>
     </View>
   );

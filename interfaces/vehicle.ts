@@ -1,8 +1,9 @@
 export interface Vehicle {
-  id: number;
+  id: string;
   licensePlate: string;
   brand: string;
   model: string;
   year: number;
   imgUrl: string;
 }
+

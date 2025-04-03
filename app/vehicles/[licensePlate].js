@@ -41,7 +41,7 @@ export default function VehicleDetail() {
             <View style={styles.infoCar}>
               <VehicleImage uri={item.imgUrl} />
               <VehicleTable data={item} />
-              <VehicleButtons licensePlate={item.licensePlate} />
+              <VehicleButtons vehicleId={item.id} />
               <ReserveButton />
             </View>
           </View>
@@ -69,16 +69,14 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ licensePlate }) => {
+const VehicleButtons = ({ vehicleId }) => {
   const router = useRouter();
 
   return (
     <View style={styles.containerButton}>
       <Pressable
         style={styles.Pressable}
-        onPress={() =>
-          router.push(`/vehicles/maintenance?licensePlate=${licensePlate}`)
-        }
+        onPress={() => router.push(`/vehicles/maintenance/${vehicleId}`)}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
       </Pressable>
