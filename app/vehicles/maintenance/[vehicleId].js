@@ -4,8 +4,9 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
+  Pressable,
 } from "react-native";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
 import React, { useEffect, useState } from "react";
 import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance";
@@ -13,6 +14,7 @@ import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance"
 export default function Maintenance() {
   const { vehicleId } = useLocalSearchParams();
   const [groupedMaintenances, setGroupedMaintenances] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     getMaintenanceByVehicle(vehicleId).then((data) => {
@@ -40,10 +42,24 @@ export default function Maintenance() {
       <Stack.Screen options={{ headerTitle: "Mantenimiento del vehículo" }} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
-          <View key={category} style={{ width: "100%" }}>
+          <View
+            key={category}
+            style={{ width: "100%", gap: 10, marginBottom: 10 }}
+          >
             <Text style={styles.categoryTitle}>{category}</Text>
             {maintenances.map((maintenance) => (
-              <MaintenanceCard key={maintenance.id} maintenance={maintenance} />
+              <Pressable
+                onPress={() =>
+                  router.push(
+                    `/vehicles/maintenance/typemaintenance/${maintenance.id}`
+                  )
+                }
+              >
+                <MaintenanceCard
+                  key={maintenance.id}
+                  maintenance={maintenance}
+                />
+              </Pressable>
             ))}
           </View>
         ))}
@@ -61,11 +77,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
   },
+
   categoryTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 10,
+    margin: 20,
     color: "#282D86",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#ffffff",
   },
 });

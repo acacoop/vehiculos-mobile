@@ -6,7 +6,7 @@ type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
   return (
     <View style={styles.container}>
-      <Pressable style={styles.containerCard}>
+      <View style={styles.containerCard}>
         <View style={styles.containerImage}>
           <Image
             source={require("../assets/aceite.jpg")}
@@ -16,56 +16,62 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
         <View style={styles.containerText}>
           <Text style={styles.text}>{maintenance.maintenanceName}</Text>
         </View>
-      </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    margin: 10,
   },
   containerTitle: {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     margin: 10,
   },
-  tittle: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#282D86",
-    marginBottom: 15,
-    marginTop: 10,
-  },
+
   text: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#282D86",
+    marginRight: 5,
+    fontWeight: "400",
   },
   containerCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    gap: 40,
+    gap: 20,
     width: 300,
     height: 100,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
   },
   containerText: {
     flex: 1,
     color: "#000",
+    marginRight: 10,
   },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
