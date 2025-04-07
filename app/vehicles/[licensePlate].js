@@ -77,7 +77,6 @@ const VehicleButtons = ({ vehicleId }) => {
       <Pressable
         style={styles.Pressable}
         onPress={() => {
-          console.log("Vehicle ID que estoy mandando:", vehicleId);
           router.push(`/vehicles/maintenance/${vehicleId}`);
         }}
       >
