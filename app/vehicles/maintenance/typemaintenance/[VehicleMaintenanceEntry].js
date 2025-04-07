@@ -8,7 +8,7 @@ export default function VehicleMaintenanceEntry() {
   useEffect(() => {
     async function fetchMaintenance() {
       try {
-        const data = await getMaintenanceById(VehicleMaintenanceEntry); // sin `as string`
+        const data = await getMaintenanceById(VehicleMaintenanceEntry);
         setMaintenance(data);
       } catch (err) {
         console.error(err);
