@@ -50,9 +50,13 @@ export default function Maintenance() {
             {maintenances.map((maintenance) => (
               <Pressable
                 onPress={() =>
-                  router.push(
-                    `/vehicles/maintenance/typemaintenance/${maintenance.id}`
-                  )
+                  router.push({
+                    pathname:
+                      "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+                    params: {
+                      VehicleMaintenanceEntry: JSON.stringify(maintenance),
+                    },
+                  })
                 }
               >
                 <MaintenanceCard

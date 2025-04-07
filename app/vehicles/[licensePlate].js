@@ -76,7 +76,10 @@ const VehicleButtons = ({ vehicleId }) => {
     <View style={styles.containerButton}>
       <Pressable
         style={styles.Pressable}
-        onPress={() => router.push(`/vehicles/maintenance/${vehicleId}`)}
+        onPress={() => {
+          console.log("Vehicle ID que estoy mandando:", vehicleId);
+          router.push(`/vehicles/maintenance/${vehicleId}`);
+        }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
       </Pressable>
