@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import React, { useEffect } from "react";
 import { useLocalSearchParams, Stack, useNavigation } from "expo-router";
+import MaintenanceButton from "../../../../components/MaintenanceButton";
 
 export default function VehicleMaintenanceEntry() {
   const { VehicleMaintenanceEntry } = useLocalSearchParams();
@@ -20,26 +21,35 @@ export default function VehicleMaintenanceEntry() {
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Detalle del Mantenimiento" }} />
       <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
-      <View style={styles.containerInfocar}>
-        <View style={styles.rowEven}>
-          <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
-          <Text style={styles.textInfo}>
-            {maintenance.maintenanceCategoryName}
-          </Text>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.containerInfocar}>
+          <View style={styles.rowEven}>
+            <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
+            <Text style={styles.textInfo}>
+              {maintenance.maintenanceCategoryName}
+            </Text>
+          </View>
+          <View style={styles.rowOdd}>
+            <Text style={styles.textTitle}>Kilómetros actuales:</Text>
+            <Text style={styles.textInfo}>
+              {maintenance.kilometersFrequency}
+            </Text>
+          </View>
+          <View style={styles.rowEven}>
+            <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
+            <Text style={styles.textInfo}>
+              {maintenance.maintenanceCategoryName}
+            </Text>
+          </View>
+          <View style={styles.rowOdd}>
+            <Text style={styles.textTitle}>Kilómetros actuales:</Text>
+            <Text style={styles.textInfo}>
+              {maintenance.kilometersFrequency}
+            </Text>
+          </View>
         </View>
-        <View style={styles.rowOdd}>
-          <Text style={styles.textTitle}>Kilómetros:</Text>
-          <Text style={styles.textInfo}>{maintenance.kilometersFrequency}</Text>
-        </View>
-      </View>
-      <View style={styles.containerButtons}>
-        <Pressable
-          style={styles.Pressable}
-          onPress={() => alert("Actualización de mantenimiento")}
-        >
-          <Text style={styles.buttonText}>Actualización de mantenimiento</Text>
-        </Pressable>
-      </View>
+      </ScrollView>
+      <MaintenanceButton />
     </View>
   );
 }
@@ -85,28 +95,5 @@ const styles = StyleSheet.create({
   textInfo: {
     fontSize: 18,
     color: "#282D86",
-  },
-  containerButtons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  Pressable: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5,
-    margin: 10,
-    width: 250,
-  },
-  buttonText: {
-    color: "#282D86",
-    fontSize: 20,
-    padding: 10,
-    textAlign: "center",
-    fontWeight: "bold",
   },
 });
