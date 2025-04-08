@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, Stack, useNavigation } from "expo-router";
 import MaintenanceButton from "../../../../components/MaintenanceButton";
 
@@ -9,6 +9,8 @@ export default function VehicleMaintenanceEntry() {
 
   const navigation = useNavigation();
 
+  const [maintenanceHistory, setMaintenanceHistory] = useState([]);
+
   useEffect(() => {
     if (maintenance?.maintenanceName) {
       navigation.setOptions({
@@ -16,6 +18,10 @@ export default function VehicleMaintenanceEntry() {
       });
     }
   }, [maintenance, navigation]);
+
+  const handleAddMaintenance = (entry) => {
+    setMaintenanceHistory((prevHistory) => [...prevHistory, entry]);
+  };
 
   return (
     <View style={styles.container}>
@@ -35,21 +41,25 @@ export default function VehicleMaintenanceEntry() {
               {maintenance.kilometersFrequency}
             </Text>
           </View>
-          <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.maintenanceCategoryName}
-            </Text>
-          </View>
-          <View style={styles.rowOdd}>
-            <Text style={styles.textTitle}>Kilómetros actuales:</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.kilometersFrequency}
-            </Text>
-          </View>
         </View>
+
+        {/* Historial de mantenimientos */}
+        {maintenanceHistory.length > 0 && (
+          <View style={styles.historyContainer}>
+            <Text style={styles.historyTitle}>Historial de Mantenimientos</Text>
+            {maintenanceHistory.map((entry, index) => (
+              <View key={index} style={styles.historyEntry}>
+                <Text style={styles.historyText}>Fecha: {entry.date}</Text>
+                <Text style={styles.historyText}>
+                  Descripción: {entry.description}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
-      <MaintenanceButton />
+
+      <MaintenanceButton onAddMaintenance={handleAddMaintenance} />
     </View>
   );
 }
@@ -61,39 +71,46 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   categoryTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 16,
-    color: "#282D86",
   },
   containerInfocar: {
-    borderRadius: 8,
-    overflow: "hidden",
-    elevation: 2,
-    backgroundColor: "#ffffff",
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    padding: 16,
+    marginBottom: 20,
   },
   rowEven: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: "#ffffff",
-    padding: 12,
-    borderRadius: 8,
+    padding: 10,
   },
   rowOdd: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: "#f0f0f0",
-    padding: 12,
-    borderRadius: 8,
+    padding: 10,
   },
   textTitle: {
     fontWeight: "bold",
-    fontSize: 20,
   },
   textInfo: {
-    fontSize: 18,
-    color: "#282D86",
+    color: "#333",
+  },
+  historyContainer: {
+    marginTop: 20,
+  },
+  historyTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  historyEntry: {
+    backgroundColor: "#e0e0e0",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  historyText: {
+    color: "#333",
   },
 });

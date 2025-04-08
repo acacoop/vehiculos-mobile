@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { View, StyleSheet } from "react-native";
-import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
 export default function Layout() {
