@@ -41,17 +41,17 @@ export function Table({ data }: { data: any }) {
 const style = StyleSheet.create({
   container: {
     flexDirection: "column",
-    width: 250,
+    width: 300,
     margin: 20,
     gap: 10,
   },
   keyText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#333",
   },
   valueText: {
-    fontSize: 16,
+    fontSize: 20,
     color: "#000",
   },
   itemContainer: {

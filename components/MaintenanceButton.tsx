@@ -71,8 +71,16 @@ export default function MaintenanceButton({
               style={styles.input}
             />
 
-            <Button title="Guardar" onPress={handleSave} />
-            <Button title="Cancelar" onPress={() => setModalVisible(false)} />
+            <Pressable onPress={handleSave} style={styles.saveButton}>
+              <Text style={styles.saveButtonText}>Guardar</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={styles.cancelButton}
+            >
+              <Text style={styles.cancelButtonText}>Cancelar</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>
@@ -82,21 +90,24 @@ export default function MaintenanceButton({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007bff",
-    padding: 12,
+    backgroundColor: "#282D86",
+    padding: 20,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 20,
   },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.21)",
   },
   modalView: {
     width: 300,
@@ -104,15 +115,59 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 20,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 12,
+    fontWeight: "bold",
+    color: "#282D86",
   },
   input: {
     width: "100%",
-    borderBottomWidth: 1,
     marginBottom: 12,
-    padding: 8,
+    padding: 20,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  saveButton: {
+    backgroundColor: "#282D86",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+
+  saveButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
+  cancelButton: {
+    backgroundColor: "#E53935",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+
+  cancelButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
   },
 });

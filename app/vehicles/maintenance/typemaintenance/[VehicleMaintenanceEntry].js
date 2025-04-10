@@ -77,40 +77,46 @@ const styles = StyleSheet.create({
   },
   containerInfocar: {
     marginBottom: 20,
+    gap: 10,
   },
   rowEven: {
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "#ffffff",
-    padding: 10,
+    padding: 20,
+    borderRadius: 8,
   },
   rowOdd: {
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "#f0f0f0",
-    padding: 10,
+    padding: 20,
+    borderRadius: 8,
   },
   textTitle: {
     fontWeight: "bold",
+    fontSize: 16,
   },
   textInfo: {
     color: "#333",
+    fontSize: 16,
   },
   historyContainer: {
     marginTop: 20,
   },
   historyTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
   },
   historyEntry: {
     backgroundColor: "#e0e0e0",
-    padding: 10,
+    padding: 20,
     borderRadius: 8,
     marginBottom: 10,
   },
   historyText: {
+    fontSize: 16,
     color: "#333",
   },
 });

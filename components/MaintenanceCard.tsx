@@ -10,7 +10,7 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
         <View style={styles.containerImage}>
           <Image
             source={require("../assets/aceite.jpg")}
-            style={{ width: 75, height: 75, borderRadius: 8 }}
+            style={{ width: 75, height: 75, borderRadius: 12 }}
           />
         </View>
         <View style={styles.containerText}>
@@ -37,23 +37,23 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 18,
-    color: "#282D86",
+    fontSize: 16,
+    color: "#1A237E",
     marginRight: 5,
-    fontWeight: "400",
+    fontWeight: "600",
   },
   containerCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    gap: 20,
+    gap: 30,
     width: 300,
     height: 100,
+    borderRadius: 10,
     backgroundColor: "#f9f9f9",
-    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
   },

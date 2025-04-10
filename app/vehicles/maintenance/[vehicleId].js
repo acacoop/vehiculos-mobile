@@ -79,13 +79,14 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     alignItems: "center",
-    gap: 30,
   },
 
   categoryTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
-    margin: 20,
+    marginBottom: 10,
+    marginLeft: 20,
+    marginTop: 20,
     color: "#282D86",
   },
   loadingContainer: {
