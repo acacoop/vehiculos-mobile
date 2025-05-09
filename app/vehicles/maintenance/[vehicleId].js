@@ -67,6 +67,18 @@ export default function Maintenance() {
             ))}
           </View>
         ))}
+
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname: "/vehicles/maintenance/create/[vehicleId]",
+              params: { vehicleId },
+            })
+          }
+        >
+          <Text style={{ color: "#ffffff", fontSize: 18 }}>Cargar</Text>
+        </Pressable>
       </ScrollView>
     </View>
   );
@@ -96,5 +108,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#ffffff",
+  },
+  button: {
+    backgroundColor: "#282D86",
+    width: "90%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginBottom: 20,
   },
 });
