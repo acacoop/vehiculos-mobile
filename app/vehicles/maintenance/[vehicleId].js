@@ -9,6 +9,7 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
 import React, { useEffect, useState } from "react";
+import { MaintenanceButton } from "../../../components/MaintenanceButton";
 import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance";
 
 export default function Maintenance() {
@@ -77,7 +78,9 @@ export default function Maintenance() {
             })
           }
         >
-          <Text style={{ color: "#ffffff", fontSize: 18 }}>Cargar</Text>
+          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
+            Mantenimiento correctivo
+          </Text>
         </Pressable>
       </ScrollView>
     </View>
