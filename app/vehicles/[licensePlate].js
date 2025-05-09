@@ -69,7 +69,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId }) => {
+const VehicleButtons = ({ vehicleId, technicalSheet }) => {
   const router = useRouter();
 
   return (
@@ -84,7 +84,9 @@ const VehicleButtons = ({ vehicleId }) => {
       </Pressable>
       <Pressable
         style={styles.Pressable}
-        onPress={() => alert("Ficha técnica")}
+        onPress={() => {
+          router.push(`/vehicles/technical/${technicalSheet}`);
+        }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
       </Pressable>
