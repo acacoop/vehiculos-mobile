@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
+import { ReserveButton } from "../../components/ReserveButton";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -42,8 +43,8 @@ export default function VehicleDetail() {
               <VehicleImage uri={item.imgUrl} />
               <VehicleTable data={item} />
               <VehicleButtons vehicleId={item.id} />
-              <ReserveButton />
             </View>
+            <ReserveButton />
           </View>
         )}
         contentContainerStyle={styles.flatListContainer}
@@ -99,15 +100,6 @@ const VehicleButtons = ({ vehicleId, technicalSheet }) => {
     </View>
   );
 };
-
-const ReserveButton = () => (
-  <Pressable
-    style={styles.PressableReservar}
-    onPress={() => alert("Reservado")}
-  >
-    <Text style={styles.textReserva}>Reservar</Text>
-  </Pressable>
-);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#ffffff" },
