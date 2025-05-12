@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { ReserveButton } from "../../components/ReserveButton";
 
 // Componente para crear un calendario simple
 const Calendar = () => {
@@ -26,40 +27,44 @@ const Calendar = () => {
 
   // Renderizar el calendario
   return (
-    <View style={styles.container}>
-      {/* Título del mes */}
-      <Text style={styles.monthTitle}>
-        {currentDate.toLocaleString("default", { month: "long" })} {currentYear}
-      </Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.container}>
+        {/* Título del mes */}
+        <Text style={styles.monthTitle}>
+          {currentDate.toLocaleString("default", { month: "long" })}{" "}
+          {currentYear}
+        </Text>
 
-      {/* Días de la semana */}
-      <View style={styles.weekRow}>
-        {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeek}>
-            {day}
-          </Text>
-        ))}
+        {/* Días de la semana */}
+        <View style={styles.weekRow}>
+          {daysOfWeek.map((day, index) => (
+            <Text key={index} style={styles.dayOfWeek}>
+              {day}
+            </Text>
+          ))}
+        </View>
+
+        {/* Días del mes */}
+        <FlatList
+          data={daysInMonth}
+          renderItem={({ item, index }) => (
+            <View
+              style={[
+                styles.dayCell,
+                {
+                  marginLeft: index % 7 === 0 ? 0 : 10, // Nueva fila al llegar a cada inicio de semana
+                },
+              ]}
+            >
+              <Text style={styles.dayText}>{item}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.toString()}
+          numColumns={7} // 7 días en una semana
+          contentContainerStyle={styles.daysContainer}
+        />
       </View>
-
-      {/* Días del mes */}
-      <FlatList
-        data={daysInMonth}
-        renderItem={({ item, index }) => (
-          <View
-            style={[
-              styles.dayCell,
-              {
-                marginLeft: index % 7 === 0 ? 0 : 10, // Nueva fila al llegar a cada inicio de semana
-              },
-            ]}
-          >
-            <Text style={styles.dayText}>{item}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.toString()}
-        numColumns={7} // 7 días en una semana
-        contentContainerStyle={styles.daysContainer}
-      />
+      <ReserveButton />
     </View>
   );
 };
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
     margin: 20,
     paddingBottom: 20,
     justifyContent: "center",
+    width: "90%",
   },
   monthTitle: {
     fontSize: 24,
