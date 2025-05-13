@@ -13,9 +13,9 @@ export default function Index() {
           style={styles.background}
           resizeMode="contain"
         >
-          <View style={styles.overlay}>
+          {/* <View style={styles.overlay}>
             <WarningCard />
-          </View>
+          </View> */}
         </ImageBackground>
       </View>
     </View>

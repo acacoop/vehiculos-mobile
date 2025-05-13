@@ -13,6 +13,7 @@ import {
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
 import { ReserveButton } from "../../components/ReserveButton";
+import { IconTool, IconClip, IconIdCard } from "../../components/Icons";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -82,6 +83,7 @@ const VehicleButtons = ({ vehicleId, technicalSheet }) => {
         }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
+        <IconTool />
       </Pressable>
       <Pressable
         style={styles.Pressable}
@@ -90,12 +92,14 @@ const VehicleButtons = ({ vehicleId, technicalSheet }) => {
         }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
+        <IconClip />
       </Pressable>
       <Pressable
         style={styles.Pressable}
         onPress={() => alert("Documentación")}
       >
         <Text style={styles.buttonText}>Documentación</Text>
+        <IconIdCard />
       </Pressable>
     </View>
   );
@@ -148,6 +152,9 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   Pressable: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     shadowColor: "#000",
