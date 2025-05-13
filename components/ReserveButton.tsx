@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "bold",
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 5,
   },
   input: {
