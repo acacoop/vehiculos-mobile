@@ -6,6 +6,13 @@ import { CarVisualizer } from "../../components/CarVisualizer";
 
 const Calendar = () => {
   const [reservations, setReservations] = useState([]);
+  const exampleVehicle = {
+    id: "1",
+    licensePlate: "ABC123",
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2020,
+  };
 
   const handleConfirmReservationFromCalendar = (from, to) => {
     setReservations((prev) => [...prev, { from, to }]);
@@ -17,7 +24,9 @@ const Calendar = () => {
 
   return (
     <View style={styles.container}>
-      <CarVisualizer />
+      <View style={styles.carVisualizer}>
+        <CarVisualizer vehicle={exampleVehicle} />
+      </View>
       <Calendario reservations={reservations} />
       <ReserveButton onReserve={handleConfirmReservationFromButton} />
     </View>
@@ -29,9 +38,15 @@ export default Calendar;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 20,
     backgroundColor: "#f9f9f9",
     justifyContent: "center",
     alignItems: "center",
+  },
+  carVisualizer: {
+    flex: 1,
+    justifyContent: "start",
+    alignItems: "start",
+    width: "85%",
   },
 });
