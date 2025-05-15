@@ -11,10 +11,10 @@ const Calendar = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View contentContainerStyle={styles.container}>
       <Calendario reservations={reservations} />
       <ReserveButton onReserve={handleConfirmReservation} />
-    </ScrollView>
+    </View>
   );
 };
 
@@ -22,10 +22,9 @@ export default Calendar;
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
-    paddingVertical: 20,
+    justifyContent: "center",
     backgroundColor: "#f9f9f9",
   },
 });

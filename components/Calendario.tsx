@@ -23,12 +23,31 @@ export const Calendario = ({
 
   const daysInMonth = generateDaysInMonth(currentMonth, currentYear);
 
+  const formatDate = (date: Date) => {
+    return date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  };
+
   const isReserved = (date: Date) => {
-    return reservations.some(
-      ({ from, to }) =>
-        date >= new Date(from.setHours(0, 0, 0, 0)) &&
-        date <= new Date(to.setHours(23, 59, 59, 999))
-    );
+    const current = formatDate(date);
+    return reservations.some(({ from, to }) => {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+
+      const rangeStart = new Date(
+        fromDate.getFullYear(),
+        fromDate.getMonth(),
+        fromDate.getDate()
+      );
+      const rangeEnd = new Date(
+        toDate.getFullYear(),
+        toDate.getMonth(),
+        toDate.getDate()
+      );
+
+      const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+      return day >= rangeStart && day <= rangeEnd;
+    });
   };
 
   return (
@@ -47,16 +66,24 @@ export const Calendario = ({
 
       <FlatList
         data={daysInMonth}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.dayCell,
-              isReserved(item) ? styles.reservedDay : null,
-            ]}
-          >
-            <Text style={styles.dayText}>{item.getDate()}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => {
+          const normalizedDate = new Date(
+            item.getFullYear(),
+            item.getMonth(),
+            item.getDate()
+          );
+
+          return (
+            <View
+              style={[
+                styles.dayCell,
+                isReserved(normalizedDate) ? styles.reservedDay : null,
+              ]}
+            >
+              <Text style={styles.dayText}>{item.getDate()}</Text>
+            </View>
+          );
+        }}
         keyExtractor={(item) => item.toISOString()}
         numColumns={7}
         contentContainerStyle={styles.daysContainer}
