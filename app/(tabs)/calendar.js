@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     backgroundColor: "#f9f9f9",
-    justifyContent: "center",
+    justifyContent: "start",
     alignItems: "center",
   },
   carVisualizer: {
-    flex: 1,
     justifyContent: "start",
     alignItems: "start",
     width: "85%",
+    height: "10%",
   },
 });
