@@ -1,14 +1,29 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
-const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const daysOfWeek = ["D", "L", "M", "Mi", "J", "V", "S"];
+const CELL_WIDTH = 42;
 
 const generateDaysInMonth = (month: number, year: number) => {
-  const daysInMonth = new Date(year, month, 0).getDate();
-  let days = [];
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push(new Date(year, month - 1, i));
+  const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
+  const totalDays = new Date(year, month, 0).getDate();
+
+  const days: (Date | null)[] = [];
+
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    days.push(null);
   }
+
+  for (let day = 1; day <= totalDays; day++) {
+    days.push(new Date(year, month - 1, day));
+  }
+
   return days;
 };
 
@@ -17,44 +32,57 @@ export const Calendario = ({
 }: {
   reservations: { from: Date; to: Date }[];
 }) => {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentYear = currentDate.getFullYear();
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
   const daysInMonth = generateDaysInMonth(currentMonth, currentYear);
 
-  const formatDate = (date: Date) => {
-    return date.toISOString().slice(0, 10); // "YYYY-MM-DD"
-  };
+  const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
   const isReserved = (date: Date) => {
     const current = formatDate(date);
-    return reservations.some(({ from, to }) => {
-      const fromDate = new Date(from);
-      const toDate = new Date(to);
-
-      const rangeStart = new Date(
-        fromDate.getFullYear(),
-        fromDate.getMonth(),
-        fromDate.getDate()
-      );
-      const rangeEnd = new Date(
-        toDate.getFullYear(),
-        toDate.getMonth(),
-        toDate.getDate()
-      );
-
-      const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-      return day >= rangeStart && day <= rangeEnd;
+    return reservations.some((reservation) => {
+      const from = formatDate(new Date(reservation.from));
+      const to = formatDate(new Date(reservation.to));
+      return current >= from && current <= to;
     });
+  };
+
+  const goToPreviousMonth = () => {
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
+      setCurrentYear((prev) => prev - 1);
+    } else {
+      setCurrentMonth((prev) => prev - 1);
+    }
+  };
+
+  const goToNextMonth = () => {
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
+      setCurrentYear((prev) => prev + 1);
+    } else {
+      setCurrentMonth((prev) => prev + 1);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.monthTitle}>
-        {currentDate.toLocaleString("default", { month: "long" })} {currentYear}
-      </Text>
+      <View style={styles.headerRow}>
+        <TouchableOpacity onPress={goToPreviousMonth}>
+          <Text style={styles.navButton}>{"<"}</Text>
+        </TouchableOpacity>
+        <Text style={styles.monthTitle}>
+          {new Date(currentYear, currentMonth - 1).toLocaleString("es-ES", {
+            month: "long",
+          })}{" "}
+          {currentYear}
+        </Text>
+        <TouchableOpacity onPress={goToNextMonth}>
+          <Text style={styles.navButton}>{">"}</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.weekRow}>
         {daysOfWeek.map((day, index) => (
@@ -63,31 +91,39 @@ export const Calendario = ({
           </Text>
         ))}
       </View>
+      <View
+        style={{ justifyContent: "center", alignItems: "center", height: 200 }}
+      >
+        <FlatList
+          data={daysInMonth}
+          numColumns={7}
+          renderItem={({ item, index }) => {
+            if (!item) {
+              return (
+                <View
+                  key={`empty-${index}`}
+                  style={[styles.dayCell, { backgroundColor: "transparent" }]}
+                />
+              );
+            }
 
-      <FlatList
-        data={daysInMonth}
-        renderItem={({ item }) => {
-          const normalizedDate = new Date(
-            item.getFullYear(),
-            item.getMonth(),
-            item.getDate()
-          );
-
-          return (
-            <View
-              style={[
-                styles.dayCell,
-                isReserved(normalizedDate) ? styles.reservedDay : null,
-              ]}
-            >
-              <Text style={styles.dayText}>{item.getDate()}</Text>
-            </View>
-          );
-        }}
-        keyExtractor={(item) => item.toISOString()}
-        numColumns={7}
-        contentContainerStyle={styles.daysContainer}
-      />
+            return (
+              <View
+                style={[
+                  styles.dayCell,
+                  isReserved(item) ? styles.reservedDay : null,
+                ]}
+              >
+                <Text style={styles.dayText}>{item.getDate()}</Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) =>
+            item ? item.toISOString() : `empty-${index}`
+          }
+          contentContainerStyle={styles.daysContainer}
+        />
+      </View>
     </View>
   );
 };
@@ -101,37 +137,51 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     width: "90%",
   },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  navButton: {
+    fontSize: 24,
+    color: "white",
+    paddingHorizontal: 10,
+  },
   monthTitle: {
     fontSize: 24,
     color: "white",
     textAlign: "center",
-    marginBottom: 10,
   },
   weekRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   dayOfWeek: {
     fontSize: 16,
     color: "white",
     textAlign: "center",
-    width: 30,
-  },
-  daysContainer: {
+    width: CELL_WIDTH,
+    justifyContent: "center",
     alignItems: "center",
   },
+  daysContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
   dayCell: {
-    width: 30,
+    width: CELL_WIDTH,
     height: 30,
     justifyContent: "center",
     alignItems: "center",
-    margin: 2,
+    margin: 1,
     backgroundColor: "#ffffff33",
     borderRadius: 6,
   },
   reservedDay: {
-    backgroundColor: "#FF6347", // rojo para días reservados
+    backgroundColor: "#FF6347",
   },
   dayText: {
     color: "white",

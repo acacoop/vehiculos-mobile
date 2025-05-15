@@ -49,7 +49,7 @@ export default function MaintenanceButton({
       </Pressable>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}

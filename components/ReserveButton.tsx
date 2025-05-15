@@ -7,95 +7,89 @@ import {
   Modal,
   Platform,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+
+type PickerMode = "fromDate" | "fromTime" | "toDate" | "toTime" | null;
 
 export const ReserveButton = ({
   onReserve,
 }: {
-  onReserve(from: Date, to: Date): void;
+  onReserve: (reservation: { from: string; to: string }) => void;
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [fromDate, setFromDate] = useState(new Date());
-  const [fromTime, setFromTime] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
-  const [toTime, setToTime] = useState(new Date());
+  const [pickerMode, setPickerMode] = useState<PickerMode>(null);
+  const [showPicker, setShowPicker] = useState(false);
 
-  const [showPicker, setShowPicker] = useState<null | {
-    mode: "date" | "time";
-    type: "fromDate" | "fromTime" | "toDate" | "toTime";
-  }>(null);
+  const openPicker = (mode: PickerMode) => {
+    setPickerMode(mode);
+    setShowPicker(true);
+  };
 
-  const handleChange = (_: any, selectedDate?: Date) => {
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (!selectedDate) {
-      setShowPicker(null);
+      setShowPicker(false);
       return;
     }
 
-    switch (showPicker?.type) {
-      case "fromDate":
-        setFromDate(selectedDate);
-        break;
-      case "fromTime":
-        setFromTime(selectedDate);
-        break;
-      case "toDate":
-        setToDate(selectedDate);
-        break;
-      case "toTime":
-        setToTime(selectedDate);
-        break;
-    }
+    setShowPicker(Platform.OS === "ios");
 
-    setShowPicker(null);
+    switch (pickerMode) {
+      case "fromDate": {
+        const updated = new Date(fromDate);
+        updated.setFullYear(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate()
+        );
+        setFromDate(updated);
+        break;
+      }
+      case "fromTime": {
+        const updated = new Date(fromDate);
+        updated.setHours(selectedDate.getHours(), selectedDate.getMinutes());
+        setFromDate(updated);
+        break;
+      }
+      case "toDate": {
+        const updated = new Date(toDate);
+        updated.setFullYear(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate()
+        );
+        setToDate(updated);
+        break;
+      }
+      case "toTime": {
+        const updated = new Date(toDate);
+        updated.setHours(selectedDate.getHours(), selectedDate.getMinutes());
+        setToDate(updated);
+        break;
+      }
+    }
   };
 
-  const renderPickerButton = (
-    label: string,
-    value: Date,
-    mode: "date" | "time",
-    type: "fromDate" | "fromTime" | "toDate" | "toTime"
-  ) => (
-    <TouchableOpacity
-      style={styles.pickerContainer}
-      onPress={() => {
-        if (Platform.OS === "android") {
-          setShowPicker({ mode, type });
-        }
-      }}
-      disabled={Platform.OS === "ios"}
-    >
-      {Platform.OS === "android" && (
-        <Text>
-          {mode === "date"
-            ? value.toLocaleDateString()
-            : value.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-        </Text>
-      )}
-      {Platform.OS === "ios" && (
-        <DateTimePicker
-          value={value}
-          mode={mode}
-          display="default"
-          onChange={(_, date) => date && handleChange(_, date)}
-          style={styles.picker}
-          themeVariant="light"
-        />
-      )}
-    </TouchableOpacity>
-  );
+  const normalizeDate = (date: Date) => {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d.toISOString().slice(0, 10);
+  };
 
   const handleConfirm = () => {
-    onReserve(mergeDateTime(fromDate, fromTime), mergeDateTime(toDate, toTime));
-    setModalVisible(false);
-  };
+    if (toDate < fromDate) {
+      alert("La fecha y hora final debe ser posterior a la inicial.");
+      return;
+    }
 
-  const mergeDateTime = (date: Date, time: Date) => {
-    const merged = new Date(date);
-    merged.setHours(time.getHours(), time.getMinutes(), 0, 0);
-    return merged;
+    onReserve({
+      from: normalizeDate(fromDate),
+      to: normalizeDate(toDate),
+    });
+    setModalVisible(false);
   };
 
   return (
@@ -107,39 +101,72 @@ export const ReserveButton = ({
         <Text style={styles.reserveText}>Reservar vehículo</Text>
       </TouchableOpacity>
 
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>Seleccioná fecha y hora</Text>
+
             <View style={styles.row}>
-              <Text style={styles.label}>Fecha desde</Text>
-              <Text style={styles.label}>Hora desde</Text>
-            </View>
-            <View style={styles.row}>
-              {renderPickerButton("Fecha desde", fromDate, "date", "fromDate")}
-              {renderPickerButton("Hora desde", fromTime, "time", "fromTime")}
+              <TouchableOpacity
+                style={styles.pickerButton}
+                onPress={() => openPicker("fromDate")}
+              >
+                <Text>Desde Fecha: {fromDate.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.pickerButton}
+                onPress={() => openPicker("fromTime")}
+              >
+                <Text>
+                  Desde Hora:{" "}
+                  {fromDate.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.row}>
-              <Text style={styles.label}>Fecha hasta</Text>
-              <Text style={styles.label}>Hora hasta</Text>
-            </View>
-            <View style={styles.row}>
-              {renderPickerButton("Fecha hasta", toDate, "date", "toDate")}
-              {renderPickerButton("Hora hasta", toTime, "time", "toTime")}
+              <TouchableOpacity
+                style={styles.pickerButton}
+                onPress={() => openPicker("toDate")}
+              >
+                <Text>Hasta Fecha: {toDate.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.pickerButton}
+                onPress={() => openPicker("toTime")}
+              >
+                <Text>
+                  Hasta Hora:{" "}
+                  {toDate.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </TouchableOpacity>
             </View>
 
-            <View style={styles.buttonContainer}>
+            {showPicker && pickerMode && (
+              <DateTimePicker
+                value={pickerMode.includes("from") ? fromDate : toDate}
+                mode={pickerMode.includes("Date") ? "date" : "time"}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+
+            <View style={styles.buttonsRow}>
               <TouchableOpacity
                 style={styles.confirmButton}
                 onPress={handleConfirm}
               >
-                <Text style={styles.buttonText}>Confirmar reserva</Text>
+                <Text style={styles.buttonText}>Confirmar</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={() => setModalVisible(false)}
@@ -150,32 +177,12 @@ export const ReserveButton = ({
           </View>
         </View>
       </Modal>
-
-      {/* Android DateTimePicker*/}
-      {Platform.OS === "android" && showPicker && (
-        <DateTimePicker
-          value={
-            showPicker.type === "fromDate"
-              ? fromDate
-              : showPicker.type === "fromTime"
-                ? fromTime
-                : showPicker.type === "toDate"
-                  ? toDate
-                  : toTime
-          }
-          mode={showPicker.mode}
-          display="default"
-          onChange={handleChange}
-        />
-      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
+  container: { padding: 20 },
   reserveButton: {
     backgroundColor: "#282D86",
     padding: 15,
@@ -201,50 +208,53 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 5,
   },
+  sectionTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: "center",
+  },
   row: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 10,
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  pickerButton: {
+    backgroundColor: "#eee",
+    padding: 12,
+    borderRadius: 8,
+    width: "48%",
     alignItems: "center",
-    marginTop: 10,
   },
-  label: {
-    fontWeight: "bold",
-    fontSize: 16,
-    width: "50%",
-  },
-  buttonContainer: {
-    marginTop: 20,
+  buttonsRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 25,
+    gap: 10,
+    width: "100%",
+    alignItems: "center",
   },
   confirmButton: {
     backgroundColor: "#282D86",
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 8,
+    width: "50%",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
   },
   cancelButton: {
     backgroundColor: "#E53935",
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 8,
+    width: "50%",
+    justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18,
-  },
-  picker: {
-    width: "100%",
-    backgroundColor: "transparent",
-    borderRadius: 6,
-  },
-  pickerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f2f2f2",
-    borderRadius: 6,
-    width: "50%",
-    padding: 10,
+    fontSize: 16,
   },
 });
