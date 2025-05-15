@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export const ReserveButton = () => {
+export const ReserveButton = ({
+  onReserve,
+}: {
+  onReserve(from: Date, to: Date): void;
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [fromDate, setFromDate] = useState(new Date());
   const [fromTime, setFromTime] = useState(new Date());
@@ -84,10 +88,14 @@ export const ReserveButton = () => {
   );
 
   const handleConfirm = () => {
-    alert(
-      `Reservado desde: ${fromDate.toLocaleDateString()} ${fromTime.toLocaleTimeString()} hasta ${toDate.toLocaleDateString()} ${toTime.toLocaleTimeString()}`
-    );
+    onReserve(mergeDateTime(fromDate, fromTime), mergeDateTime(toDate, toTime));
     setModalVisible(false);
+  };
+
+  const mergeDateTime = (date: Date, time: Date) => {
+    const merged = new Date(date);
+    merged.setHours(time.getHours(), time.getMinutes(), 0, 0);
+    return merged;
   };
 
   return (
@@ -143,7 +151,7 @@ export const ReserveButton = () => {
         </View>
       </Modal>
 
-      {/* Android DateTimePicker controlado */}
+      {/* Android DateTimePicker*/}
       {Platform.OS === "android" && showPicker && (
         <DateTimePicker
           value={

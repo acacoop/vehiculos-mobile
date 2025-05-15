@@ -73,8 +73,9 @@ export default function Maintenance() {
           style={styles.button}
           onPress={() =>
             router.push({
-              pathname: "/vehicles/maintenance/create/[vehicleId]",
-              params: { vehicleId },
+              pathname:
+                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+              VehicleMaintenanceEntry: JSON.stringify(maintenance),
             })
           }
         >
