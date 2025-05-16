@@ -111,15 +111,17 @@ export const ReserveButton = ({
                 style={styles.pickerButton}
                 onPress={() => openPicker("fromDate")}
               >
-                <Text>Desde Fecha: {fromDate.toLocaleDateString()}</Text>
+                <Text style={{ fontWeight: "bold" }}>Desde Fecha:</Text>
+                <Text>{fromDate.toLocaleDateString()}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.pickerButton}
                 onPress={() => openPicker("fromTime")}
               >
+                <Text style={{ fontWeight: "bold" }}>Desde Hora:</Text>
                 <Text>
-                  Desde Hora:{" "}
+                  {" "}
                   {fromDate.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -133,15 +135,17 @@ export const ReserveButton = ({
                 style={styles.pickerButton}
                 onPress={() => openPicker("toDate")}
               >
-                <Text>Hasta Fecha: {toDate.toLocaleDateString()}</Text>
+                <Text style={{ fontWeight: "bold" }}>Hasta Fecha:</Text>
+                <Text>{toDate.toLocaleDateString()}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.pickerButton}
                 onPress={() => openPicker("toTime")}
               >
+                <Text style={{ fontWeight: "bold" }}>Hasta Hora:</Text>
                 <Text>
-                  Hasta Hora:{" "}
+                  {" "}
                   {toDate.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -149,14 +153,50 @@ export const ReserveButton = ({
                 </Text>
               </TouchableOpacity>
             </View>
-
-            {showPicker && pickerMode && (
-              <DateTimePicker
-                value={pickerMode.includes("from") ? fromDate : toDate}
-                mode={pickerMode.includes("Date") ? "date" : "time"}
-                display="default"
-                onChange={onChange}
-              />
+            {Platform.OS === "ios" && showPicker && pickerMode && (
+              <Modal transparent animationType="slide">
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "flex-end",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "#282D86",
+                      padding: 20,
+                      borderTopLeftRadius: 20,
+                      borderTopRightRadius: 20,
+                    }}
+                  >
+                    <DateTimePicker
+                      value={pickerMode.includes("from") ? fromDate : toDate}
+                      mode={pickerMode.includes("Date") ? "date" : "time"}
+                      display="spinner"
+                      onChange={(event, date) => {
+                        onChange(event, date);
+                        if (Platform.OS === "ios") setShowPicker(false);
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setShowPicker(false)}
+                      style={{ alignSelf: "center", marginTop: 10 }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          marginBottom: 20,
+                          fontSize: 20,
+                        }}
+                      >
+                        Cerrar
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
             )}
 
             <View style={styles.buttonsRow}>
@@ -225,6 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: "48%",
     alignItems: "center",
+    justifyContent: "center",
   },
   buttonsRow: {
     flexDirection: "row",

@@ -41,7 +41,22 @@ export default function Maintenance() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Mantenimiento del vehículo" }} />
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname:
+                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+              VehicleMaintenanceEntry: JSON.stringify(maintenance),
+            })
+          }
+        >
+          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
+            Mantenimiento correctivo
+          </Text>
+        </Pressable>
         {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
           <View
             key={category}
@@ -68,21 +83,6 @@ export default function Maintenance() {
             ))}
           </View>
         ))}
-
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            router.push({
-              pathname:
-                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
-              VehicleMaintenanceEntry: JSON.stringify(maintenance),
-            })
-          }
-        >
-          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
-            Mantenimiento correctivo
-          </Text>
-        </Pressable>
       </ScrollView>
     </View>
   );
@@ -98,11 +98,9 @@ const styles = StyleSheet.create({
   },
 
   categoryTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
     marginLeft: 20,
-    marginTop: 20,
     color: "#282D86",
   },
   loadingContainer: {
@@ -115,11 +113,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#282D86",
-    width: "90%",
+    width: 320,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 30,
   },
 });

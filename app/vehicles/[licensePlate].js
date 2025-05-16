@@ -45,7 +45,14 @@ export default function VehicleDetail() {
               <VehicleTable data={item} />
               <VehicleButtons vehicleId={item.id} />
             </View>
-            <ReserveButton />
+            <Pressable
+              style={styles.PressableReservar}
+              onPress={() => {
+                router.push(`/calendar`);
+              }}
+            >
+              <Text style={styles.textReserva}>Reservar</Text>
+            </Pressable>
           </View>
         )}
         contentContainerStyle={styles.flatListContainer}
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: "center",
     fontWeight: "bold",
+    color: "#282D86",
   },
   PressableReservar: {
     backgroundColor: "#282D86",

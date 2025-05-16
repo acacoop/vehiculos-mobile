@@ -6,10 +6,19 @@ export function CarVisualizer({ vehicle }: VisualizerProps) {
   return (
     <View style={styles.textContainer}>
       <Text style={styles.text1}>Autos Disponibles</Text>
-      <View style={{ flexDirection: "row", gap: 10 }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          gap: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <View
           style={{
             width: 20,
+            height: 20,
             backgroundColor: "#FE9000",
             borderRadius: 3,
             borderWidth: 1,
@@ -28,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     color: "#000",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "flex-start",
   },
   text1: {
@@ -36,10 +45,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#282D86",
     marginBottom: 5,
+    textAlign: "center",
   },
   text3: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "bold",
     color: "000",
+    textAlign: "center",
   },
 });
