@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
-import { ReserveButton } from "../../components/ReserveButton";
 import { IconTool, IconClip, IconIdCard } from "../../components/Icons";
 
 export default function VehicleDetail() {
@@ -78,7 +77,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId, technicalSheet }) => {
+const VehicleButtons = ({ vehicleId, technicalSheet, documentation }) => {
   const router = useRouter();
 
   return (
@@ -103,7 +102,9 @@ const VehicleButtons = ({ vehicleId, technicalSheet }) => {
       </Pressable>
       <Pressable
         style={styles.Pressable}
-        onPress={() => alert("Documentación")}
+        onPress={() => {
+          router.push(`/vehicles/documentation/${documentation}`);
+        }}
       >
         <Text style={styles.buttonText}>Documentación</Text>
         <IconIdCard />

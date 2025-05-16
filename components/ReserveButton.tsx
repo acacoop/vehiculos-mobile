@@ -159,6 +159,7 @@ export const ReserveButton = ({
                   style={{
                     flex: 1,
                     justifyContent: "flex-end",
+                    alignItems: "center",
                     backgroundColor: "rgba(0,0,0,0.5)",
                   }}
                 >
@@ -168,6 +169,8 @@ export const ReserveButton = ({
                       padding: 20,
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
+                      width: "100%",
+                      alignItems: "center",
                     }}
                   >
                     <DateTimePicker
