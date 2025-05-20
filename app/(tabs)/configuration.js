@@ -28,11 +28,6 @@ export default function Configuration() {
         />
 
         <PressableButton
-          text="Seguridad"
-          icon={({ pressed }) => <IconLock pressed={pressed} />}
-        />
-
-        <PressableButton
           text="Cerrar sesión"
           icon={({ pressed }) => <IconLogout pressed={pressed} />}
         />

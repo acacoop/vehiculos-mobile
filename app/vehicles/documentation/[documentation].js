@@ -1,63 +1,137 @@
-import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
+import React, { useEffect, useState } from "react";
+import { getVehicle } from "../../../services/vehicles";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { IconDownload } from "../../../components/Icons";
 
 export default function Documentation() {
   const { documentation } = useLocalSearchParams();
   const router = useRouter();
-
-  const docs = documentation || [
-    { tipo: "Cédula verde", vencimiento: "2025-03-10" },
-    { tipo: "Seguro", vencimiento: "2024-12-01" },
-    { tipo: "VTV", vencimiento: "2024-09-15" },
-  ];
+  const [vehicleDetail, setVehicles] = useState(null);
+  useEffect(() => {
+    getVehicle(documentation).then(setVehicles);
+  }, [documentation]);
+  if (vehicleDetail === null) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#282D86" />
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Documentación del Vehículo</Text>
-      {docs.map((doc, idx) => (
-        <View key={idx} style={styles.card}>
-          <Text style={styles.label}>{doc.tipo}</Text>
-          <Text style={styles.value}>Vencimiento: {doc.vencimiento}</Text>
+    <View style={styles.container}>
+      <Stack.Screen options={{ headerTitle: "Documentación" }} />
+      <ScrollView
+        styles={styles.scrollViewContainer}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
+      >
+        <View
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.Tittle}>Autorización de manejo </Text>
+          <Pressable style={styles.Pressable}>
+            <Text style={styles.text}>Ver documento</Text>
+            <IconDownload />
+          </Pressable>
         </View>
-      ))}
-    </ScrollView>
+        <View
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.Tittle}>Seguro </Text>
+          <Pressable style={styles.Pressable}>
+            <Text style={styles.text}>Ver documento</Text>
+            <IconDownload />
+          </Pressable>
+        </View>
+        <View
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.Tittle}>Otros </Text>
+          <Pressable style={styles.Pressable}>
+            <Text style={styles.text}>Ver documento</Text>
+            <IconDownload />
+          </Pressable>
+          <Pressable style={styles.Pressable}>
+            <Text style={styles.text}>Ver documento</Text>
+            <IconDownload />
+          </Pressable>
+          <Pressable style={styles.Pressable}>
+            <Text style={styles.text}>Ver documento</Text>
+            <IconDownload />
+          </Pressable>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
+styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
-  title: {
-    fontSize: 22,
+  scrollViewContainer: {
+    width: "100%",
+  },
+  Tittle: {
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 18,
-    color: "#333",
+    color: "#282D86",
+    marginTop: 30,
   },
-  card: {
-    backgroundColor: "#f5f5f5",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
+  Pressable: {
+    flexDirection: "row",
+    backgroundColor: "#f2f2f2",
+    padding: 20,
+    borderRadius: 5,
+    marginTop: 20,
     elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2.5,
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+    gap: 20,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#222",
+  text: {
+    fontSize: 20,
+    color: "#282D86",
+    fontWeight: "bold",
   },
-  value: {
-    fontSize: 15,
-    color: "#555",
-    marginTop: 4,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 });

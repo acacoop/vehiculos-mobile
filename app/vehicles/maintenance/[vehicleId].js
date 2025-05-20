@@ -9,7 +9,6 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
 import React, { useEffect, useState } from "react";
-import { MaintenanceButton } from "../../../components/MaintenanceButton";
 import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance";
 
 export default function Maintenance() {

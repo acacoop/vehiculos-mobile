@@ -202,6 +202,18 @@ export const ReserveButton = ({
               </Modal>
             )}
 
+            {showPicker && pickerMode && (
+              <DateTimePicker
+                value={pickerMode.includes("from") ? fromDate : toDate}
+                mode={pickerMode.includes("Date") ? "date" : "time"}
+                display="default"
+                onChange={(event, date) => {
+                  onChange(event, date);
+                  if (Platform.OS === "android") setShowPicker(false); // Cierra automáticamente en Android
+                }}
+              />
+            )}
+
             <View style={styles.buttonsRow}>
               <TouchableOpacity
                 style={styles.confirmButton}

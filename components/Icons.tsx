@@ -119,3 +119,18 @@ export const IconIdCard = (props: {
     />
   );
 };
+
+export const IconDownload = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="download"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "#282D86"}
+      style={props.style}
+    />
+  );
+};
