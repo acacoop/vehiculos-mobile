@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { getVehicle } from "../../../services/vehicles";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { IconDownload } from "../../../components/Icons";
+import DownloadButton from "../../../components/DownloadButton";
 
 export default function Documentation() {
   const { documentation } = useLocalSearchParams();
@@ -43,10 +44,7 @@ export default function Documentation() {
           }}
         >
           <Text style={styles.Tittle}>Autorización de manejo </Text>
-          <Pressable style={styles.Pressable}>
-            <Text style={styles.text}>Ver documento</Text>
-            <IconDownload />
-          </Pressable>
+          <DownloadButton />
         </View>
         <View
           style={{
@@ -56,31 +54,20 @@ export default function Documentation() {
           }}
         >
           <Text style={styles.Tittle}>Seguro </Text>
-          <Pressable style={styles.Pressable}>
-            <Text style={styles.text}>Ver documento</Text>
-            <IconDownload />
-          </Pressable>
+          <DownloadButton />
         </View>
         <View
           style={{
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
+            marginBottom: 40,
           }}
         >
           <Text style={styles.Tittle}>Otros </Text>
-          <Pressable style={styles.Pressable}>
-            <Text style={styles.text}>Ver documento</Text>
-            <IconDownload />
-          </Pressable>
-          <Pressable style={styles.Pressable}>
-            <Text style={styles.text}>Ver documento</Text>
-            <IconDownload />
-          </Pressable>
-          <Pressable style={styles.Pressable}>
-            <Text style={styles.text}>Ver documento</Text>
-            <IconDownload />
-          </Pressable>
+          <DownloadButton />
+          <DownloadButton />
+          <DownloadButton />
         </View>
       </ScrollView>
     </View>
