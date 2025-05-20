@@ -36,34 +36,15 @@ export default function Documentation() {
         showsHorizontalScrollIndicator={false}
         bounces={false}
       >
-        <View
-          style={{
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.view}>
           <Text style={styles.Tittle}>Autorización de manejo </Text>
           <DownloadButton />
         </View>
-        <View
-          style={{
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.view}>
           <Text style={styles.Tittle}>Seguro </Text>
           <DownloadButton />
         </View>
-        <View
-          style={{
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 40,
-          }}
-        >
+        <View style={styles.view}>
           <Text style={styles.Tittle}>Otros </Text>
           <DownloadButton />
           <DownloadButton />
@@ -84,6 +65,7 @@ styles = StyleSheet.create({
   },
   scrollViewContainer: {
     width: "100%",
+    marginBottom: 20,
   },
   Tittle: {
     fontSize: 24,
@@ -91,24 +73,10 @@ styles = StyleSheet.create({
     color: "#282D86",
     marginTop: 30,
   },
-  Pressable: {
-    flexDirection: "row",
-    backgroundColor: "#f2f2f2",
-    padding: 20,
-    borderRadius: 5,
-    marginTop: 20,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2.5,
+  view: {
+    width: "100%",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-between",
-    width: "90%",
-    gap: 20,
   },
   text: {
     fontSize: 20,

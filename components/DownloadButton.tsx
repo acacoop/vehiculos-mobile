@@ -11,7 +11,7 @@ export default function DownloadButton() {
   );
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   Pressable: {
     flexDirection: "row",
     backgroundColor: "#f2f2f2",

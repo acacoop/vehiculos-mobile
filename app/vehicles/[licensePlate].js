@@ -34,6 +34,9 @@ export default function VehicleDetail() {
   return (
     <View style={styles.container}>
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
         data={[vehicleDetail]}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (

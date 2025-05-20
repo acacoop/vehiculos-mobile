@@ -30,6 +30,9 @@ export default function Vehicles() {
         </View>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
           style={{ width: "100%", flex: 1 }}
           data={vehicles}
           renderItem={({ item }) => <VehicleCard vehicle={item} />}
