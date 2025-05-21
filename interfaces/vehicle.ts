@@ -5,5 +5,6 @@ export interface Vehicle {
   model: string;
   year: number;
   imgUrl: string;
+  color?: string;
 }
 

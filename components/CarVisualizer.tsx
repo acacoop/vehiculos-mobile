@@ -1,56 +1,93 @@
-import { Vehicle } from "../interfaces/vehicle";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { Vehicle } from "../interfaces/vehicle";
+import { CustomButton } from "./CustomButton";
 
-type VisualizerProps = { vehicle: Vehicle };
-export function CarVisualizer({ vehicle }: VisualizerProps) {
+type CarVisualizerProps = {
+  vehicles: Vehicle[];
+  onVehicleChange?: (vehicle: Vehicle) => void;
+};
+
+export function CarVisualizer({
+  vehicles,
+  onVehicleChange,
+}: CarVisualizerProps) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (onVehicleChange) {
+      onVehicleChange(vehicles[index]);
+    }
+  }, [index]);
+
+  const currentVehicle = vehicles[index];
+
+  const goPrevious = () => {
+    const newIndex = index === 0 ? vehicles.length - 1 : index - 1;
+    setIndex(newIndex);
+  };
+
+  const goNext = () => {
+    const newIndex = (index + 1) % vehicles.length;
+    setIndex(newIndex);
+  };
+
   return (
-    <View style={styles.textContainer}>
-      <Text style={styles.text1}>Autos Disponibles</Text>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          gap: 10,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    <View style={styles.container}>
+      <Text style={styles.title}>Autos Disponibles</Text>
+
+      <View style={styles.vehicleInfo}>
         <View
-          style={{
-            width: 20,
-            height: 20,
-            backgroundColor: "#FE9000",
-            borderRadius: 3,
-            borderWidth: 1,
-          }}
+          style={[
+            styles.dot,
+            { backgroundColor: currentVehicle.color || "#FE9000" },
+          ]}
         ></View>
-        <Text style={styles.text3}>{vehicle.licensePlate}</Text>
-        <Text style={styles.text3}> | </Text>
-        <Text style={styles.text3}>{vehicle.model}</Text>
+        <Text style={styles.text}>{currentVehicle.licensePlate}</Text>
+        <Text style={styles.text}> | </Text>
+        <Text style={styles.text}>{currentVehicle.model}</Text>
+      </View>
+
+      <View style={styles.buttonRow}>
+        <CustomButton title="Anterior" onPress={goPrevious} />
+        <CustomButton title="Siguiente" onPress={goNext} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  textContainer: {
-    flex: 1,
+  container: {
     flexDirection: "column",
-    color: "#000",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
+    gap: 10,
   },
-  text1: {
-    fontSize: 20,
+  title: {
+    fontSize: 25,
     fontWeight: "bold",
     color: "#282D86",
     marginBottom: 5,
-    textAlign: "center",
   },
-  text3: {
-    fontSize: 16,
+  vehicleInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  text: {
+    fontSize: 20,
     fontWeight: "bold",
-    color: "000",
-    textAlign: "center",
+    color: "#000",
+  },
+  dot: {
+    width: 30,
+    height: 30,
+    backgroundColor: "#FE9000",
+    borderRadius: 3,
+    borderWidth: 1,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 10,
   },
 });

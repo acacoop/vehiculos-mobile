@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { Vehicle } from "../interfaces/vehicle";
 
 const daysOfWeek = ["D", "L", "M", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
@@ -29,8 +30,10 @@ const generateDaysInMonth = (month: number, year: number) => {
 
 export const Calendario = ({
   reservations,
+  selectedVehicle,
 }: {
-  reservations: { from: Date; to: Date }[];
+  reservations: { from: Date; to: Date; vehicleId: string }[];
+  selectedVehicle: Vehicle;
 }) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
@@ -43,6 +46,7 @@ export const Calendario = ({
   const isReserved = (date: Date) => {
     const current = formatDate(date);
     return reservations.some((reservation) => {
+      if (reservation.vehicleId !== selectedVehicle.id) return false;
       const from = formatDate(new Date(reservation.from));
       const to = formatDate(new Date(reservation.to));
       return current >= from && current <= to;
@@ -111,8 +115,11 @@ export const Calendario = ({
               <View
                 style={[
                   styles.dayCell,
-                  isReserved(item) ? styles.reservedDay : null,
+                  isReserved(item)
+                    ? { backgroundColor: selectedVehicle.color }
+                    : null,
                 ]}
+                key={item.toISOString()}
               >
                 <Text style={styles.dayText}>{item.getDate()}</Text>
               </View>
@@ -144,9 +151,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   navButton: {
+    backgroundColor: "#ffff",
     fontSize: 24,
-    color: "white",
-    paddingHorizontal: 10,
+    color: "#282D86",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 100,
   },
   monthTitle: {
     fontSize: 24,

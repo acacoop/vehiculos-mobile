@@ -9,7 +9,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { getVehicle } from "../../../services/vehicles";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { IconDownload } from "../../../components/Icons";
 import DownloadButton from "../../../components/DownloadButton";
 
 export default function Documentation() {

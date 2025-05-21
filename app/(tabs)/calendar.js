@@ -1,52 +1,84 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { ReserveButton } from "../../components/ReserveButton";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
 
-const Calendar = () => {
-  const [reservations, setReservations] = useState([]);
-  const exampleVehicle = {
+const availableVehicles = [
+  {
     id: "1",
-    licensePlate: "ABC123",
+    licensePlate: "ABC 123",
     brand: "Toyota",
     model: "Corolla",
     year: 2020,
-  };
+    color: "#FE9000",
+  },
+  {
+    id: "2",
+    licensePlate: "XYZ 789",
+    brand: "Honda",
+    model: "Civic",
+    year: 2021,
+    color: "#3498db",
+  },
+];
+
+const Calendar = () => {
+  const [reservations, setReservations] = useState([]);
+  const [currentVehicleIndex, setCurrentVehicleIndex] = useState(0);
+  const [selectedVehicle, setSelectedVehicle] = useState(availableVehicles[0]);
 
   const handleConfirmReservationFromCalendar = (from, to) => {
-    setReservations((prev) => [...prev, { from, to }]);
+    setReservations((prev) => [
+      ...prev,
+      { from, to, vehicleId: selectedVehicle.id },
+    ]);
   };
 
   const handleConfirmReservationFromButton = (reservation) => {
-    setReservations((prev) => [...prev, reservation]);
+    setReservations((prev) => [
+      ...prev,
+      { ...reservation, vehicleId: selectedVehicle.id },
+    ]);
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.carVisualizer}>
-        <CarVisualizer vehicle={exampleVehicle} />
+        <CarVisualizer
+          vehicles={availableVehicles}
+          onVehicleChange={(vehicle) => {
+            setSelectedVehicle(vehicle);
+            const index = availableVehicles.findIndex(
+              (v) => v.id === vehicle.id
+            );
+            if (index !== -1) setCurrentVehicleIndex(index);
+          }}
+        />
       </View>
-      <Calendario reservations={reservations} />
+
+      <Calendario
+        reservations={reservations}
+        selectedVehicle={selectedVehicle}
+      />
+
       <ReserveButton onReserve={handleConfirmReservationFromButton} />
-    </View>
+    </ScrollView>
   );
 };
 
 export default Calendar;
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
     paddingTop: 20,
+    paddingBottom: 40,
     backgroundColor: "#f9f9f9",
-    justifyContent: "start",
     alignItems: "center",
   },
   carVisualizer: {
-    justifyContent: "start",
-    alignItems: "start",
     width: "85%",
-    height: "10%",
+    marginBottom: 20,
   },
 });
