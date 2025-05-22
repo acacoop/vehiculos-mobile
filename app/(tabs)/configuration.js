@@ -8,8 +8,14 @@ import {
 } from "../../components/Icons";
 import { PressableButton } from "../../components/Buttons";
 import { Stack } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function Configuration() {
+  const router = useRouter();
+  const configButtons = ({ user }) => {
+    router.push(`/configuration/${user}`);
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -17,9 +23,11 @@ export default function Configuration() {
           headerTitle: "Configuración",
         }}
       />
+
       <View style={styles.containerconfig}>
         <PressableButton
           text="Usuario"
+          onPress={() => configButtons({ user: "user" })}
           icon={({ pressed }) => <IconUser pressed={pressed} />}
         />
         <PressableButton

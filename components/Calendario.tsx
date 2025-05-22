@@ -1,31 +1,33 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
+import { IconArrowLeft, IconArrowRigth, IconCalendar } from "./Icons";
 
-const daysOfWeek = ["D", "L", "M", "Mi", "J", "V", "S"];
+const daysOfWeek = ["D", "L", "Ma", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
 
-const generateDaysInMonth = (month: number, year: number) => {
-  const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
+const generateWeeksInMonth = (month: number, year: number) => {
   const totalDays = new Date(year, month, 0).getDate();
-
-  const days: (Date | null)[] = [];
-
-  for (let i = 0; i < firstDayOfWeek; i++) {
-    days.push(null);
-  }
+  const weeks: Date[][] = [];
+  let week: Date[] = [];
 
   for (let day = 1; day <= totalDays; day++) {
-    days.push(new Date(year, month - 1, day));
+    const date = new Date(year, month - 1, day);
+    week.push(date);
+
+    if (date.getDay() === 6) {
+      // Si es sábado, cerramos la semana
+      weeks.push(week);
+      week = [];
+    }
   }
 
-  return days;
+  // Si quedó una semana incompleta al final, también la agregamos
+  if (week.length > 0) {
+    weeks.push(week);
+  }
+
+  return weeks;
 };
 
 export const Calendario = ({
@@ -39,11 +41,13 @@ export const Calendario = ({
   const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
-  const daysInMonth = generateDaysInMonth(currentMonth, currentYear);
+  const weeks = generateWeeksInMonth(currentMonth, currentYear);
+  const DEFAULT_RESERVATION_COLOR = "#FF6347";
 
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
   const isReserved = (date: Date) => {
+    if (!selectedVehicle) return false;
     const current = formatDate(date);
     return reservations.some((reservation) => {
       if (reservation.vehicleId !== selectedVehicle.id) return false;
@@ -51,6 +55,15 @@ export const Calendario = ({
       const to = formatDate(new Date(reservation.to));
       return current >= from && current <= to;
     });
+  };
+
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
   };
 
   const goToPreviousMonth = () => {
@@ -71,65 +84,123 @@ export const Calendario = ({
     }
   };
 
+  const handleMoveToToday = () => {
+    setCurrentMonth(today.getMonth() + 1);
+    setCurrentYear(today.getFullYear());
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <TouchableOpacity onPress={goToPreviousMonth}>
-          <Text style={styles.navButton}>{"<"}</Text>
-        </TouchableOpacity>
-        <Text style={styles.monthTitle}>
-          {new Date(currentYear, currentMonth - 1).toLocaleString("es-ES", {
-            month: "long",
-          })}{" "}
-          {currentYear}
-        </Text>
-        <TouchableOpacity onPress={goToNextMonth}>
-          <Text style={styles.navButton}>{">"}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.weekRow}>
-        {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeek}>
-            {day}
-          </Text>
-        ))}
-      </View>
-      <View
-        style={{ justifyContent: "center", alignItems: "center", height: 200 }}
-      >
-        <FlatList
-          data={daysInMonth}
-          numColumns={7}
-          renderItem={({ item, index }) => {
-            if (!item) {
-              return (
-                <View
-                  key={`empty-${index}`}
-                  style={[styles.dayCell, { backgroundColor: "transparent" }]}
-                />
-              );
-            }
-
-            return (
-              <View
-                style={[
-                  styles.dayCell,
-                  isReserved(item)
-                    ? { backgroundColor: selectedVehicle.color }
-                    : null,
-                ]}
-                key={item.toISOString()}
-              >
-                <Text style={styles.dayText}>{item.getDate()}</Text>
-              </View>
-            );
+        <TouchableOpacity
+          onPress={handleMoveToToday}
+          style={{
+            borderWidth: 1,
+            borderColor: "#fff",
+            borderRadius: 20,
+            paddingVertical: 6,
+            paddingHorizontal: 18,
+            backgroundColor: "transparent",
           }}
-          keyExtractor={(item, index) =>
-            item ? item.toISOString() : `empty-${index}`
-          }
-          contentContainerStyle={styles.daysContainer}
+        >
+          <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>
+            Hoy
+          </Text>
+        </TouchableOpacity>
+        <IconArrowLeft
+          onPress={goToPreviousMonth}
+          size={30}
+          style={{ color: "#ffff" }}
         />
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            flex: 1,
+          }}
+        >
+          <Text style={styles.monthTitle}>
+            {new Date(currentYear, currentMonth - 1)
+              .toLocaleString("es-ES", { month: "long" })
+              .replace(/^./, (c) => c.toUpperCase())}{" "}
+            {currentYear.toString().slice(-2)}
+          </Text>
+        </View>
+
+        <IconArrowRigth
+          onPress={goToNextMonth}
+          size={30}
+          style={{ color: "#ffff" }}
+        />
+      </View>
+
+      <View
+        style={{
+          flex: 1,
+          gap: 2,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={styles.weekRow}>
+          {daysOfWeek.map((day) => (
+            <View key={day} style={styles.dayOfWeek}>
+              <Text style={styles.dayText}>{day}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            gap: 2,
+            justifyContent: "center",
+          }}
+        >
+          {weeks.map((week, index) => (
+            <View
+              key={index}
+              style={[
+                styles.weekRow,
+                index === 0
+                  ? { justifyContent: "flex-end" }
+                  : index === weeks.length - 1
+                    ? { justifyContent: "flex-start" }
+                    : { justifyContent: "center" },
+              ]}
+            >
+              {week.map((day) => (
+                <View
+                  key={day.toISOString()}
+                  style={[
+                    styles.dayCell,
+                    isReserved(day)
+                      ? {
+                          backgroundColor:
+                            selectedVehicle?.color || DEFAULT_RESERVATION_COLOR,
+                        }
+                      : null,
+                    isToday(day) ? { backgroundColor: "#ffff" } : null,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.dayText,
+                      isToday(day)
+                        ? {
+                            color: DEFAULT_RESERVATION_COLOR,
+                            fontWeight: "bold",
+                          }
+                        : { color: "white" },
+                    ]}
+                  >
+                    {day.getDate()}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -137,49 +208,49 @@ export const Calendario = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 20,
+
     backgroundColor: "#282D86",
     borderRadius: 10,
-    margin: 20,
-    paddingBottom: 20,
-    width: "90%",
+    gap: 2,
+    justifyContent: "space-between",
+    height: CELL_WIDTH * 7 + 10,
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "center",
     alignItems: "center",
-    marginBottom: 10,
+    gap: 10,
   },
   navButton: {
     backgroundColor: "#ffff",
     fontSize: 24,
     color: "#282D86",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
     borderRadius: 100,
   },
   monthTitle: {
-    fontSize: 24,
+    fontSize: 20,
     color: "white",
     textAlign: "center",
+    fontWeight: "bold",
+    lineHeight: 36,
   },
   weekRow: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
+    gap: 1,
+    justifyContent: "center",
   },
   dayOfWeek: {
+    width: CELL_WIDTH,
+    height: 30,
     fontSize: 16,
     color: "white",
     textAlign: "center",
-    width: CELL_WIDTH,
     justifyContent: "center",
     alignItems: "center",
-  },
-  daysContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
+    margin: 1,
   },
   dayCell: {
     width: CELL_WIDTH,
@@ -189,9 +260,6 @@ const styles = StyleSheet.create({
     margin: 1,
     backgroundColor: "#ffffff33",
     borderRadius: 6,
-  },
-  reservedDay: {
-    backgroundColor: "#FF6347",
   },
   dayText: {
     color: "white",

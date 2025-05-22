@@ -1,32 +1,41 @@
-import React, { useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { ReserveButton } from "../../components/ReserveButton";
+import { useEffect, useState } from "react";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Pressable,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
-
-const availableVehicles = [
-  {
-    id: "1",
-    licensePlate: "ABC 123",
-    brand: "Toyota",
-    model: "Corolla",
-    year: 2020,
-    color: "#FE9000",
-  },
-  {
-    id: "2",
-    licensePlate: "XYZ 789",
-    brand: "Honda",
-    model: "Civic",
-    year: 2021,
-    color: "#3498db",
-  },
-];
+import { Stack, useRouter } from "expo-router";
+import { getAllVehicles } from "../../services/vehicles";
+import { ReserveModal } from "../../components/ReserveModal";
+import { Ionicons } from "@expo/vector-icons";
 
 const Calendar = () => {
   const [reservations, setReservations] = useState([]);
-  const [currentVehicleIndex, setCurrentVehicleIndex] = useState(0);
-  const [selectedVehicle, setSelectedVehicle] = useState(availableVehicles[0]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const router = useRouter();
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showReserveModal, setShowReserveModal] = useState(false);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+
+  const resevations = ({ reserve }) => {
+    router.push(`/reservations/${reserve}`);
+  };
+
+  useEffect(() => {
+    getAllVehicles()
+      .then((data) => {
+        setVehicles(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const handleConfirmReservationFromCalendar = (from, to) => {
     setReservations((prev) => [
@@ -40,29 +49,77 @@ const Calendar = () => {
       ...prev,
       { ...reservation, vehicleId: selectedVehicle.id },
     ]);
+    setShowReserveModal(false);
+  };
+
+  const handleModalConfirm = () => {
+    handleConfirmReservationFromButton({
+      from: fromDate,
+      to: toDate,
+    });
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.carVisualizer}>
-        <CarVisualizer
-          vehicles={availableVehicles}
-          onVehicleChange={(vehicle) => {
-            setSelectedVehicle(vehicle);
-            const index = availableVehicles.findIndex(
-              (v) => v.id === vehicle.id
-            );
-            if (index !== -1) setCurrentVehicleIndex(index);
-          }}
-        />
-      </View>
-
-      <Calendario
-        reservations={reservations}
-        selectedVehicle={selectedVehicle}
+      <Stack.Screen
+        options={{
+          headerTitle: "Calendario",
+        }}
       />
 
-      <ReserveButton onReserve={handleConfirmReservationFromButton} />
+      <CarVisualizer
+        vehicles={vehicles}
+        onVehicleChange={(vehicle) => {
+          setSelectedVehicle(vehicle);
+        }}
+      />
+
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#282D86"
+          style={{ marginTop: 40 }}
+        />
+      ) : (
+        selectedVehicle && (
+          <Calendario
+            key={selectedVehicle.id}
+            reservations={reservations}
+            selectedVehicle={selectedVehicle}
+          />
+        )
+      )}
+      <View
+        style={{
+          gap: 20,
+        }}
+      >
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            resevations({ reserve: "reservations" });
+          }}
+        >
+          <Text style={styles.buttonText}>Ver reservas</Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.button}
+          onPress={() => setShowReserveModal(true)}
+        >
+          <Text style={styles.buttonText}>Reservar vehículo</Text>
+        </Pressable>
+      </View>
+
+      <ReserveModal
+        visible={showReserveModal}
+        onClose={() => setShowReserveModal(false)}
+        onConfirm={handleModalConfirm}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
+      />
     </ScrollView>
   );
 };
@@ -72,13 +129,33 @@ export default Calendar;
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    paddingTop: 20,
-    paddingBottom: 40,
+    paddingVertical: 20,
+    gap: 20,
+    justifyContent: "space-between",
     backgroundColor: "#f9f9f9",
     alignItems: "center",
   },
-  carVisualizer: {
-    width: "85%",
-    marginBottom: 20,
+  button: {
+    backgroundColor: "#282D86",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    width: 300,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  arrowRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+    gap: 30,
+  },
+  arrowButton: {
+    padding: 10,
   },
 });

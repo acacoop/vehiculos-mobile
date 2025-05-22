@@ -4,8 +4,26 @@ export const IconCar = ({ color }: { color: string }) => {
   return <AntDesign name="car" size={24} color={color} />;
 };
 
-export const IconCalendar = ({ color }: { color: string }) => {
-  return <AntDesign name="calendar" size={24} color={color} />;
+export const IconCalendar = ({
+  color,
+  onPress,
+  size,
+  style,
+}: {
+  color?: string;
+  onPress?: () => void;
+  size?: number;
+  style?: any;
+}) => {
+  return (
+    <AntDesign
+      name="calendar"
+      size={size || 24}
+      color={color || "black"}
+      onPress={onPress}
+      style={style}
+    />
+  );
 };
 
 export const IconSetting = ({ color }: { color: string }) => {
@@ -61,6 +79,7 @@ export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
 };
 
 export const IconArrowLeft = (props: {
+  onPress?: () => void;
   pressed?: boolean;
   style?: any;
   size?: number;
@@ -68,6 +87,24 @@ export const IconArrowLeft = (props: {
   return (
     <AntDesign
       name="arrowleft"
+      onPress={props.onPress}
+      size={props.size || 50}
+      color={props.pressed ? "white" : "black"}
+      style={props.style}
+    />
+  );
+};
+
+export const IconArrowRigth = (props: {
+  onPress?: () => void;
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="arrowright"
+      onPress={props.onPress}
       size={props.size || 50}
       color={props.pressed ? "white" : "black"}
       style={props.style}
