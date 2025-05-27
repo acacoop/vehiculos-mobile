@@ -39,28 +39,14 @@ export const ReserveModal = ({
           />
         </View>
         <View style={styles.row}>
-          <DatePicker
-            label="Hasta Fecha"
-            value={toDate}
-            onChange={setToDate}
-          />
-          <TimePicker
-            label="Hasta Hora"
-            value={toDate}
-            onChange={setToDate}
-          />
+          <DatePicker label="Hasta Fecha" value={toDate} onChange={setToDate} />
+          <TimePicker label="Hasta Hora" value={toDate} onChange={setToDate} />
         </View>
         <View style={styles.buttonsRow}>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={onClose}
-          >
+          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={onConfirm}
-          >
+          <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
             <Text style={styles.buttonText}>Confirmar</Text>
           </TouchableOpacity>
         </View>

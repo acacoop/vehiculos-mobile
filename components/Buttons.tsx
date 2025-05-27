@@ -30,6 +30,7 @@ export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
+    fontWeight: "500",
   },
   button: {
     flexDirection: "row",

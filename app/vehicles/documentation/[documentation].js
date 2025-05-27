@@ -35,19 +35,25 @@ export default function Documentation() {
         showsHorizontalScrollIndicator={false}
         bounces={false}
       >
-        <View style={styles.view}>
+        <View style={styles.tittleContainer}>
           <Text style={styles.Tittle}>Autorización de manejo </Text>
-          <DownloadButton />
+          <View style={styles.view}>
+            <DownloadButton />
+          </View>
         </View>
-        <View style={styles.view}>
+        <View style={styles.tittleContainer}>
           <Text style={styles.Tittle}>Seguro </Text>
-          <DownloadButton />
+          <View style={styles.view}>
+            <DownloadButton />
+          </View>
         </View>
-        <View style={styles.view}>
+        <View style={styles.tittleContainer}>
           <Text style={styles.Tittle}>Otros </Text>
-          <DownloadButton />
-          <DownloadButton />
-          <DownloadButton />
+          <View style={styles.view}>
+            <DownloadButton />
+            <DownloadButton />
+            <DownloadButton />
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -63,7 +69,6 @@ styles = StyleSheet.create({
     width: "100%",
   },
   scrollViewContainer: {
-    width: "100%",
     marginBottom: 20,
   },
   Tittle: {
@@ -71,6 +76,8 @@ styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#282D86",
     marginTop: 30,
+    textAlign: "start",
+    marginLeft: 20,
   },
   view: {
     width: "100%",
@@ -87,5 +94,11 @@ styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+  },
+  tittleContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "start",
+    marginTop: 20,
   },
 });

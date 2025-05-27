@@ -43,7 +43,6 @@ export default function VehicleMaintenanceEntry() {
           </View>
         </View>
 
-        {/* Historial de mantenimientos */}
         {maintenanceHistory.length > 0 && (
           <View style={styles.historyContainer}>
             <Text style={styles.historyTitle}>Historial de Mantenimientos</Text>

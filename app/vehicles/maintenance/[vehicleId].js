@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   categoryTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 20,
+    marginLeft: 30,
     color: "#282D86",
   },
   loadingContainer: {

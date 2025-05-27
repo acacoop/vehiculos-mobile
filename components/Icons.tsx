@@ -166,7 +166,7 @@ export const IconDownload = (props: {
     <AntDesign
       name="download"
       size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
+      color={props.pressed ? "#282D86" : "white"}
       style={props.style}
     />
   );

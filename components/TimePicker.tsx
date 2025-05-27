@@ -44,7 +44,7 @@ export const TimePicker = ({ value, onChange, label }: TimePickerProps) => {
             backgroundColor: "transparent",
             outline: "none",
             boxShadow: "none",
-            WebkitAppearance: "none", // <- Esto quita el fondo nativo en Chrome/Safari
+            WebkitAppearance: "none",
           }}
         />
       </View>

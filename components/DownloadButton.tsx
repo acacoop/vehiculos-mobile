@@ -14,7 +14,7 @@ export default function DownloadButton() {
 const styles = StyleSheet.create({
   Pressable: {
     flexDirection: "row",
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#282D86",
     padding: 20,
     borderRadius: 5,
     marginTop: 20,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: "#282D86",
+    color: "#fff",
     fontWeight: "bold",
   },
 });

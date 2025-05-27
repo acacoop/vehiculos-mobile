@@ -25,7 +25,12 @@ const Calendar = () => {
   const [toDate, setToDate] = useState(new Date());
 
   const resevations = ({ reserve }) => {
-    router.push(`/reservations/${reserve}`);
+    router.push({
+      pathname: "/reservations",
+      params: {
+        reservations: JSON.stringify(reservations),
+      },
+    });
   };
 
   useEffect(() => {
@@ -47,7 +52,7 @@ const Calendar = () => {
   const handleConfirmReservationFromButton = (reservation) => {
     setReservations((prev) => [
       ...prev,
-      { ...reservation, vehicleId: selectedVehicle.id },
+      { ...reservation, licensePlate: selectedVehicle.licensePlate }, // Cambia vehicleId por licensePlate
     ]);
     setShowReserveModal(false);
   };
