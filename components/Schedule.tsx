@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 interface ScheduleProps {
   from: Date;
   to: Date;
-  licensePlate: string; // Cambiado de vehicleId a licensePlate
+  licensePlate: string;
 }
 
 export function Schedule({ from, to, licensePlate }: ScheduleProps) {
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     marginLeft: 10,
-    marginBottom: 5,
     fontWeight: "500",
   },
 });

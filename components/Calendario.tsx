@@ -34,7 +34,12 @@ export const Calendario = ({
   reservations,
   selectedVehicle,
 }: {
-  reservations: { from: Date; to: Date; vehicleId: string }[];
+  reservations: {
+    from: Date;
+    to: Date;
+    vehicleId: string;
+    licensePlate: string;
+  }[];
   selectedVehicle: Vehicle;
 }) => {
   const today = new Date();
@@ -50,7 +55,8 @@ export const Calendario = ({
     if (!selectedVehicle) return false;
     const current = formatDate(date);
     return reservations.some((reservation) => {
-      if (reservation.vehicleId !== selectedVehicle.id) return false;
+      if (reservation.licensePlate !== selectedVehicle.licensePlate)
+        return false;
       const from = formatDate(new Date(reservation.from));
       const to = formatDate(new Date(reservation.to));
       return current >= from && current <= to;

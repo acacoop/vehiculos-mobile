@@ -39,7 +39,7 @@ export const IconUser = (props: { pressed?: boolean; style?: any }) => {
     <AntDesign
       name="user"
       size={20}
-      color={props.pressed ? "white" : "black"}
+      color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
   );
