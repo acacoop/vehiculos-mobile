@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     backgroundColor: "#282D86",
-    height: 100,
+    padding: 20,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -46,18 +46,18 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 10,
+    gap: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "500",
     color: "#FE9000",
-    margin: 10,
+    textAlign: "left",
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,
     color: "white",
-    marginLeft: 10,
     fontWeight: "500",
   },
 });

@@ -11,7 +11,7 @@ export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: pressed ? "#282D86" : "white" },
+        { backgroundColor: pressed ? "#282D86" : "#f9f9f9" },
       ]}
       onPress={onPress}
     >
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: 250,
-    backgroundColor: "#f9f9f9",
   },
   content: {
     flexDirection: "row",
