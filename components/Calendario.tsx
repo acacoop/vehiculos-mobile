@@ -16,13 +16,11 @@ const generateWeeksInMonth = (month: number, year: number) => {
     week.push(date);
 
     if (date.getDay() === 6) {
-      // Si es sábado, cerramos la semana
       weeks.push(week);
       week = [];
     }
   }
 
-  // Si quedó una semana incompleta al final, también la agregamos
   if (week.length > 0) {
     weeks.push(week);
   }
@@ -215,12 +213,19 @@ export const Calendario = ({
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-
     backgroundColor: "#282D86",
     borderRadius: 10,
     gap: 2,
     justifyContent: "space-between",
     height: CELL_WIDTH * 7 + 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   headerRow: {
     flexDirection: "row",

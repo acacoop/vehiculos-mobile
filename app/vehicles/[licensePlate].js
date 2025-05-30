@@ -44,7 +44,9 @@ export default function VehicleDetail() {
             <Stack.Screen options={{ headerTitle: "Vehículos disponibles" }} />
             <View style={styles.infoCar}>
               <VehicleImage uri={item.imgUrl} />
+
               <VehicleTable data={item} />
+
               <VehicleButtons vehicleId={item.id} />
             </View>
             <Pressable
@@ -167,11 +169,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     elevation: 5,
     margin: 10,
     width: 300,

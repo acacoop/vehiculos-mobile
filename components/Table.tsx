@@ -16,7 +16,7 @@ export function Table({ data }: { data: any }) {
           style={[
             style.itemContainer,
             {
-              backgroundColor: index % 2 === 0 ? "#E0E0E0" : "#FFFFFF",
+              backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#FFFFFF",
             },
           ]}
         >

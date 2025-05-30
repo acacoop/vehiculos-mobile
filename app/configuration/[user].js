@@ -24,7 +24,7 @@ export default function UserConfig() {
       <View style={styles.pressable}>
         <View
           style={{
-            backgroundColor: "#FE9000",
+            backgroundColor: "#f9f9f9",
             borderRadius: 50,
             padding: 10,
             shadowColor: "#000",
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     padding: 20,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#f9f9f9",
     borderRadius: 10,
     marginTop: 20,
     width: "80%",

@@ -46,12 +46,12 @@ export function CarVisualizer({
 
       <View style={styles.vehicleInfo}>
         <Pressable onPress={goPrevious} style={{ padding: 8 }}>
-          <Ionicons name="arrow-back" size={28} color="#282D86" />
+          <Ionicons name="arrow-back" size={28} color="white" />
         </Pressable>
 
         <View
           style={{
-            height: 30,
+            alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
             gap: 30,
@@ -88,7 +88,7 @@ export function CarVisualizer({
           </View>
         </View>
         <Pressable onPress={goNext} style={{ padding: 8 }}>
-          <Ionicons name="arrow-forward" size={28} color="#282D86" />
+          <Ionicons name="arrow-forward" size={28} color="white" />
         </Pressable>
       </View>
     </View>
@@ -98,15 +98,25 @@ export function CarVisualizer({
 const styles = StyleSheet.create({
   container: {
     width: 350,
+    height: 150,
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
+    backgroundColor: "#282D86",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 10,
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#282D86",
-    marginBottom: 5,
+    color: "white",
   },
   vehicleInfo: {
     width: "100%",
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color: "white",
   },
   dot: {
     width: 30,
