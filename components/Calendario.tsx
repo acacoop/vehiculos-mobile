@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
 import { IconArrowLeft, IconArrowRigth, IconCalendar } from "./Icons";
 
@@ -31,6 +37,7 @@ const generateWeeksInMonth = (month: number, year: number) => {
 export const Calendario = ({
   reservations,
   selectedVehicle,
+  onDayPress, // <-- add this prop
 }: {
   reservations: {
     from: Date;
@@ -39,6 +46,7 @@ export const Calendario = ({
     licensePlate: string;
   }[];
   selectedVehicle: Vehicle;
+  onDayPress?: (date: Date) => void; // <-- add this prop type
 }) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
@@ -174,8 +182,9 @@ export const Calendario = ({
               ]}
             >
               {week.map((day) => (
-                <View
+                <Pressable
                   key={day.toISOString()}
+                  onPress={() => onDayPress && onDayPress(day)}
                   style={[
                     styles.dayCell,
                     isReserved(day)
@@ -200,7 +209,7 @@ export const Calendario = ({
                   >
                     {day.getDate()}
                   </Text>
-                </View>
+                </Pressable>
               ))}
             </View>
           ))}

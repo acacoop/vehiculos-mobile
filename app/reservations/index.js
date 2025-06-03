@@ -5,30 +5,67 @@ import {
   View,
   StyleSheet,
   Text,
-  ScrollView,
+  SectionList,
   ActivityIndicator,
 } from "react-native";
 import { Schedule } from "../../components/Schedule";
 import { getAllVehicles } from "../../services/vehicles";
+import { DatePicker } from "../../components/DatePicker";
+import { CarVisualizer } from "../../components/CarVisualizer";
 
 const getMonthYearKey = (date) => {
   const d = new Date(date);
   return d.toLocaleString("es-ES", { month: "long", year: "numeric" });
 };
 
-const groupReservationsByMonth = (reservations) => {
-  return reservations.reduce((acc, res) => {
+const groupReservationsByMonth = (reservations, selectedVehicle) => {
+  const filtered = selectedVehicle
+    ? reservations.filter(
+        (res) => res.licensePlate === selectedVehicle.licensePlate
+      )
+    : reservations;
+
+  const grouped = filtered.reduce((acc, res) => {
     const key = getMonthYearKey(res.from);
     if (!acc[key]) acc[key] = [];
     acc[key].push(res);
     return acc;
   }, {});
+
+  return Object.entries(grouped).map(([title, data]) => ({
+    title: title.charAt(0).toUpperCase() + title.slice(1),
+    data,
+  }));
 };
 
 export default function Reservations() {
   const params = useLocalSearchParams();
   const [vehicles, setVehicles] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Set selectedVehicle from vehicleId param after vehicles are loaded
+  useEffect(() => {
+    if (params.vehicleId && vehicles.length > 0) {
+      const found = vehicles.find((v) => v.id == params.vehicleId);
+      if (found) setSelectedVehicle(found);
+    }
+  }, [params.vehicleId, vehicles]);
+
+  // Parse start and end from params, fallback to today 00:00 and 6 months after
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const initialFrom = params.start ? new Date(params.start) : today;
+  const initialTo = params.end
+    ? new Date(params.end)
+    : (() => {
+        const d = new Date(initialFrom);
+        d.setMonth(d.getMonth() + 6);
+        return d;
+      })();
+
+  const [fromDate, setFromDate] = useState(initialFrom);
+  const [toDate, setToDate] = useState(initialTo);
 
   const reservations = params.reservations
     ? JSON.parse(params.reservations).map((r) => ({
@@ -48,36 +85,64 @@ export default function Reservations() {
       });
   }, []);
 
-  const grouped = groupReservationsByMonth(reservations);
+  // Date filter logic: intersection with at least one day (compare only by date)
+  const filteredReservations = reservations.filter((res) => {
+    if (!fromDate || !toDate) return true;
+    // Compare only by date (ignore time)
+    const resFrom = new Date(res.from);
+    resFrom.setHours(0, 0, 0, 0);
+    const resTo = new Date(res.to);
+    resTo.setHours(23, 59, 59, 999);
+    const filterFrom = new Date(fromDate);
+    filterFrom.setHours(0, 0, 0, 0);
+    const filterTo = new Date(toDate);
+    filterTo.setHours(23, 59, 59, 999);
+    return resFrom <= filterTo && resTo >= filterFrom;
+  });
+
+  const sections = groupReservationsByMonth(
+    filteredReservations,
+    selectedVehicle
+  );
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Reservas" }} />
-      {reservations.length === 0 ? (
+
+      <CarVisualizer
+        vehicles={vehicles}
+        onVehicleChange={(vehicle) => {
+          setSelectedVehicle(vehicle);
+        }}
+      />
+
+      <View style={{ flexDirection: "row", gap: 10, padding: 20 }}>
+        <DatePicker value={fromDate} label="Desde" onChange={setFromDate} />
+        <DatePicker value={toDate} label="Hasta" onChange={setToDate} />
+      </View>
+
+      {filteredReservations.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No existen reservas disponibles</Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          {Object.entries(grouped).map(([month, resList]) => (
-            <View key={month} style={{ width: "100%" }}>
-              <Text style={styles.month}>
-                {month.charAt(0).toUpperCase() + month.slice(1)}
-              </Text>
-              <View style={{ width: "100%", gap: 20 }}>
-                {resList.map((res, index) => (
-                  <Schedule
-                    key={index}
-                    from={res.from}
-                    to={res.to}
-                    licensePlate={res.licensePlate}
-                    vehicles={vehicles}
-                  />
-                ))}
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+        <SectionList
+          contentContainerStyle={styles.scrollContent}
+          style={{ width: "100%" }}
+          sections={sections}
+          keyExtractor={(item, index) => item.licensePlate + index}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.month}>{title}</Text>
+          )}
+          renderItem={({ item }) => (
+            <Schedule
+              from={item.from}
+              to={item.to}
+              licensePlate={item.licensePlate}
+              vehicles={vehicles}
+            />
+          )}
+        />
       )}
     </View>
   );
@@ -85,17 +150,15 @@ export default function Reservations() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: 20,
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    gap: 20,
   },
   scrollContent: {
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
     gap: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
   },
   loader: {
     flex: 1,
@@ -105,8 +168,7 @@ const styles = StyleSheet.create({
   month: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "left",
-    marginBottom: 10,
+    textAlign: "center",
     color: "#282D86",
   },
   emptyContainer: {

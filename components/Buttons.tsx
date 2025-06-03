@@ -18,7 +18,7 @@ export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
       {({ pressed }) => (
         <View style={styles.content}>
           {icon({ pressed })}
-          <Text style={[styles.text, { color: pressed ? "white" : "black" }]}>
+          <Text style={[styles.text, { color: pressed ? "white" : "#282D86" }]}>
             {text}
           </Text>
         </View>

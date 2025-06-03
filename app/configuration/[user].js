@@ -41,7 +41,7 @@ export default function UserConfig() {
       />
       <View style={styles.pressable}>
         <View style={styles.avatar}>
-          <IconUser size={24} color="white" />
+          <IconUser size={20} />
         </View>
         <Text style={styles.text}>Nombre y Apellido</Text>
       </View>
@@ -50,11 +50,12 @@ export default function UserConfig() {
       </View>
       <Pressable style={styles.pressable} onPress={() => openModal("dni")}>
         <Text style={styles.text}>DNI</Text>
-        <IconArrowRigth size={24} color="white" />
+        <IconArrowRigth size={20} />
       </Pressable>
       <Pressable style={styles.pressable} onPress={() => openModal("carnet")}>
         <Text style={styles.text}>Carnet de conducir</Text>
-        <IconArrowRigth size={24} color="white" />
+
+        <IconArrowRigth size={20} />
       </Pressable>
 
       {/* Modal para cargar/ver imágenes */}
@@ -122,7 +123,6 @@ export default function UserConfig() {
         </View>
       </Modal>
 
-      {/* Modal para visualizar imagen */}
       <Modal
         visible={!!imageToView}
         transparent
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   closeButton: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#E53935",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,

@@ -38,10 +38,9 @@ export default function Vehicles() {
           renderItem={({ item }) => <VehicleCard vehicle={item} />}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
             alignItems: "center",
-            paddingTop: 20,
+            padding: 20,
+            gap: 20,
           }}
         />
       )}

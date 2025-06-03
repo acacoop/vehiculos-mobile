@@ -21,39 +21,60 @@ export const ReserveModal = ({
   toDate,
   setFromDate,
   setToDate,
-}: ReserveModalProps) => (
-  <Modal visible={visible} transparent animationType="fade">
-    <View style={styles.modalOverlay}>
-      <View style={styles.modalContent}>
-        <Text style={styles.sectionTitle}>Seleccioná fecha y hora</Text>
-        <View style={styles.row}>
-          <DatePicker
-            label="Desde Fecha"
-            value={fromDate}
-            onChange={setFromDate}
-          />
-          <TimePicker
-            label="Desde Hora"
-            value={fromDate}
-            onChange={setFromDate}
-          />
-        </View>
-        <View style={styles.row}>
-          <DatePicker label="Hasta Fecha" value={toDate} onChange={setToDate} />
-          <TimePicker label="Hasta Hora" value={toDate} onChange={setToDate} />
-        </View>
-        <View style={styles.buttonsRow}>
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.buttonText}>Cancelar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
-            <Text style={styles.buttonText}>Confirmar</Text>
-          </TouchableOpacity>
+}: ReserveModalProps) => {
+  // Si cambia desde y es mayor que hasta, iguala hasta a desde
+  const handleFromChange = (date: Date) => {
+    setFromDate(date);
+    if (date > toDate) setToDate(date);
+  };
+  // Si cambia hasta y es menor que desde, iguala desde a hasta
+  const handleToChange = (date: Date) => {
+    setToDate(date);
+    if (date < fromDate) setFromDate(date);
+  };
+
+  return (
+    <Modal visible={visible} transparent animationType="fade">
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
+          <Text style={styles.sectionTitle}>Seleccioná fecha y hora</Text>
+          <View style={styles.row}>
+            <DatePicker
+              label="Desde Fecha"
+              value={fromDate}
+              onChange={handleFromChange}
+            />
+            <TimePicker
+              label="Desde Hora"
+              value={fromDate}
+              onChange={handleFromChange}
+            />
+          </View>
+          <View style={styles.row}>
+            <DatePicker
+              label="Hasta Fecha"
+              value={toDate}
+              onChange={handleToChange}
+            />
+            <TimePicker
+              label="Hasta Hora"
+              value={toDate}
+              onChange={handleToChange}
+            />
+          </View>
+          <View style={styles.buttonsRow}>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
+              <Text style={styles.buttonText}>Confirmar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  </Modal>
-);
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
   modalOverlay: {

@@ -5,9 +5,9 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 
 type DatePickerProps = {
+  label: string;
   value: Date;
   onChange: (date: Date) => void;
-  label: string;
 };
 
 export const DatePicker = ({ value, onChange, label }: DatePickerProps) => {

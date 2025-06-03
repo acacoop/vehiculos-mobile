@@ -24,12 +24,16 @@ const Calendar = () => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
 
-  const resevations = ({ reserve }) => {
+  const navigateToReservations = ({ start, end } = {}) => {
+    const params = {
+      reservations: JSON.stringify(reservations),
+    };
+    if (selectedVehicle) params.vehicleId = selectedVehicle.id;
+    if (start) params.start = start;
+    if (end) params.end = end;
     router.push({
       pathname: "/reservations",
-      params: {
-        reservations: JSON.stringify(reservations),
-      },
+      params,
     });
   };
 
@@ -91,6 +95,15 @@ const Calendar = () => {
             key={selectedVehicle.id}
             reservations={reservations}
             selectedVehicle={selectedVehicle}
+            onDayPress={(date) => {
+              const day = new Date(date);
+              day.setHours(0, 0, 0, 0);
+              const start = day.toISOString();
+              const endDate = new Date(day);
+              endDate.setHours(23, 59, 59, 999);
+              const end = endDate.toISOString();
+              navigateToReservations({ start, end });
+            }}
           />
         )
       )}
@@ -102,7 +115,7 @@ const Calendar = () => {
         <Pressable
           style={styles.button}
           onPress={() => {
-            resevations({ reserve: "reservations" });
+            navigateToReservations();
           }}
         >
           <Text style={styles.buttonText}>Ver reservas</Text>
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    width: 300,
+    width: 350,
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: {

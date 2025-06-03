@@ -50,7 +50,7 @@ export const IconWallet = (props: { pressed?: boolean; style?: any }) => {
     <AntDesign
       name="wallet"
       size={20}
-      color={props.pressed ? "white" : "black"}
+      color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
   );
@@ -72,7 +72,7 @@ export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
     <AntDesign
       name="logout"
       size={20}
-      color={props.pressed ? "white" : "black"}
+      color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
   );
@@ -89,7 +89,7 @@ export const IconArrowLeft = (props: {
       name="arrowleft"
       onPress={props.onPress}
       size={props.size || 50}
-      color={props.pressed ? "white" : "black"}
+      color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
   );
@@ -106,7 +106,7 @@ export const IconArrowRigth = (props: {
       name="arrowright"
       onPress={props.onPress}
       size={props.size || 50}
-      color={props.pressed ? "white" : "black"}
+      color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
   );

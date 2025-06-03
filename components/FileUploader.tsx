@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 
 type FileUploaderProps = {
@@ -8,15 +8,17 @@ type FileUploaderProps = {
 };
 
 export const FileUploader = ({ label, onFileSelected }: FileUploaderProps) => {
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<DocumentPicker.DocumentPickerAsset | null>(
+    null
+  );
 
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const file = result.assets[0];
-        setFileName(file.name);
-        onFileSelected && onFileSelected(file);
+        const pickedFile = result.assets[0];
+        setFile(pickedFile);
+        onFileSelected && onFileSelected(pickedFile);
       }
     } catch (err) {
       console.error("Error al seleccionar archivo:", err);
@@ -39,9 +41,32 @@ export const FileUploader = ({ label, onFileSelected }: FileUploaderProps) => {
           {label}
         </Text>
       </Pressable>
-      {fileName && (
-        <Text style={{ marginTop: 10, color: "#282D86" }}>{fileName}</Text>
-      )}
+      {/* Espacio reservado para la miniatura o nombre */}
+      <View
+        style={{
+          height: 70,
+          width: 100,
+          marginTop: 10,
+          justifyContent: "center",
+          alignItems: "center",
+          borderWidth: file ? 1 : 0,
+          borderColor: "#ccc",
+          borderRadius: 8,
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        {file && file.uri && file.mimeType?.startsWith("image/") ? (
+          <Image
+            source={{ uri: file.uri }}
+            style={{ width: 100, height: 70, borderRadius: 8 }}
+            resizeMode="cover"
+          />
+        ) : file ? (
+          <Text style={{ color: "#282D86", textAlign: "center" }}>
+            {file.name}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 };

@@ -22,7 +22,6 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 30,
     flexDirection: "row",
     alignItems: "center",
     gap: 30,
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin: 10,
   },
   image: {
     width: 100,
