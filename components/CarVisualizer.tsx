@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
 import { Ionicons } from "@expo/vector-icons"; // Asegúrate de tener esta importación
+import { IconArrowLeft, IconArrowRigth } from "./Icons"; // Asegúrate de que esta ruta sea correcta
 
 type CarVisualizerProps = {
   vehicles: Vehicle[];
@@ -45,9 +46,11 @@ export function CarVisualizer({
       {/* <Text style={styles.title}>Autos Disponibles</Text> */}
 
       <View style={styles.vehicleInfo}>
-        <Pressable onPress={goPrevious}>
-          <Ionicons name="arrow-back" size={28} color="white" />
-        </Pressable>
+        <IconArrowLeft
+          onPress={goPrevious}
+          size={24}
+          style={{ color: "#ffff" }}
+        />
 
         <View
           style={{
@@ -87,9 +90,7 @@ export function CarVisualizer({
             </Text>
           </View>
         </View>
-        <Pressable onPress={goNext}>
-          <Ionicons name="arrow-forward" size={28} color="white" />
-        </Pressable>
+        <IconArrowRigth onPress={goNext} size={24} style={{ color: "#ffff" }} />
       </View>
     </View>
   );
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "#FE9000",
+    textAlign: "center",
   },
   vehicleInfo: {
     width: "100%",

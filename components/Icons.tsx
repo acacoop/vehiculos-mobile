@@ -86,7 +86,7 @@ export const IconArrowLeft = (props: {
 }) => {
   return (
     <AntDesign
-      name="arrowleft"
+      name="leftcircleo"
       onPress={props.onPress}
       size={props.size || 50}
       color={props.pressed ? "white" : "#282D86"}
@@ -103,7 +103,7 @@ export const IconArrowRigth = (props: {
 }) => {
   return (
     <AntDesign
-      name="arrowright"
+      name="rightcircleo"
       onPress={props.onPress}
       size={props.size || 50}
       color={props.pressed ? "white" : "#282D86"}
@@ -167,6 +167,36 @@ export const IconDownload = (props: {
       name="download"
       size={props.size || 25}
       color={props.pressed ? "#282D86" : "white"}
+      style={props.style}
+    />
+  );
+};
+
+export const IconEdit = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="edit"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "#282D86"}
+      style={props.style}
+    />
+  );
+};
+
+export const IconClose = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="closecircleo"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "white"}
       style={props.style}
     />
   );

@@ -121,7 +121,7 @@ export const Calendario = ({
         </TouchableOpacity>
         <IconArrowLeft
           onPress={goToPreviousMonth}
-          size={30}
+          size={24}
           style={{ color: "#ffff" }}
         />
 
@@ -142,7 +142,7 @@ export const Calendario = ({
 
         <IconArrowRigth
           onPress={goToNextMonth}
-          size={30}
+          size={24}
           style={{ color: "#ffff" }}
         />
       </View>
