@@ -20,7 +20,18 @@ export default function VehicleDetail() {
   const [vehicleDetail, setVehicles] = useState(null);
 
   useEffect(() => {
-    getVehicle(licensePlate).then(setVehicles);
+    const MOCK_VEHICLE = {
+      id: "mock-1",
+      licensePlate: licensePlate || "MOCK-PLATE",
+      brand: "DemoBrand",
+      model: "DemoModel",
+      year: 2022,
+      imgUrl: "",
+      engineNumber: "EN-MOCK-1",
+      chassisNumber: "CH-MOCK-1",
+    };
+
+    getVehicle(licensePlate).then((v) => setVehicles(v || MOCK_VEHICLE));
   }, [licensePlate]);
 
   if (vehicleDetail === null) {

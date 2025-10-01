@@ -15,8 +15,20 @@ export default function Documentation() {
   const { documentation } = useLocalSearchParams();
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
+  // Local demo fallback
+  const MOCK_VEHICLE = {
+    id: "mock-1",
+    licensePlate: documentation || "MOCK-PLATE",
+    brand: "DemoBrand",
+    model: "DemoModel",
+    year: 2022,
+    imgUrl: "",
+    engineNumber: "EN-MOCK-1",
+    chassisNumber: "CH-MOCK-1",
+  };
+
   useEffect(() => {
-    getVehicle(documentation).then(setVehicles);
+    getVehicle(documentation).then((v) => setVehicles(v || MOCK_VEHICLE));
   }, [documentation]);
   if (vehicleDetail === null) {
     return (

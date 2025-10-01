@@ -6,5 +6,7 @@ export interface Vehicle {
   year: number;
   imgUrl: string;
   color?: string;
+  engineNumber?: string;
+  chassisNumber?: string;
 }
 

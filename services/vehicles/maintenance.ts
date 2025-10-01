@@ -1,6 +1,36 @@
 import { Maintenance } from "../../interfaces/maintenance";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+// Mocked maintenances expected by the UI. Keys match the API response format
+// so dataToMaintenance can convert them to the app's Maintenance interface.
+const MOCK_MAINTENANCES = [
+  {
+    id: "m1",
+    maintenance_name: "Cambio de aceite",
+    maintenance_img_name: "aceite.jpg",
+    maintenance_category_name: "Preventivo",
+    kilometers_frequency: 10000,
+    recurrence_pattern: "Cada 10k km",
+    vehicle_id: "1",
+  },
+  {
+    id: "m2",
+    maintenance_name: "Revisión de frenos",
+    maintenance_img_name: "",
+    maintenance_category_name: "Preventivo",
+    kilometers_frequency: 20000,
+    recurrence_pattern: "Cada 20k km",
+    vehicle_id: "1",
+  },
+  {
+    id: "m3",
+    maintenance_name: "Arreglo del faro",
+    maintenance_img_name: "",
+    maintenance_category_name: "Correctivo",
+    kilometers_frequency: 0,
+    recurrence_pattern: "Una vez",
+    vehicle_id: "2",
+  },
+];
 
 function dataToMaintenance(data: any): Maintenance {
   const {
@@ -13,7 +43,7 @@ function dataToMaintenance(data: any): Maintenance {
   } = data;
 
   return {
-    id,
+    id: String(id),
     maintenanceName,
     maintenanceImgName,
     maintenanceCategoryName,
@@ -22,35 +52,33 @@ function dataToMaintenance(data: any): Maintenance {
   };
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function getMaintenanceByVehicle(
   vehicle_id: string
 ): Promise<Maintenance[]> {
-  const GET_MAINTENANCES = `${API_URL}/assignedMaintenance/${vehicle_id}`;
+  // Simulate network latency
+  await sleep(250);
 
-  try {
-    const response = await fetch(GET_MAINTENANCES);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.map((maintenance: any) => dataToMaintenance(maintenance));
-  } catch (error) {
-    console.error("Error fetching maintenances:", error);
-    throw new Error("Failed to fetch maintenances");
-  }
+  const vid = String(vehicle_id || "");
+  const filtered = MOCK_MAINTENANCES.filter(
+    (m) => String(m.vehicle_id) === vid
+  );
+  // If none found for the vehicle, return all preventives as a fallback demo
+  const result =
+    filtered.length > 0
+      ? filtered
+      : MOCK_MAINTENANCES.filter(
+          (m) => m.maintenance_category_name === "Preventivo"
+        );
+  return result.map((m) => dataToMaintenance(m));
 }
 
 export async function getMaintenanceById(id: string): Promise<Maintenance> {
-  const GET_MAINTENANCE = `${API_URL}/maintenance/${id}`;
-
-  const response = await fetch(GET_MAINTENANCE);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-  return dataToMaintenance(data);
+  await sleep(150);
+  const found = MOCK_MAINTENANCES.find((m) => String(m.id) === String(id));
+  if (!found) throw new Error("Maintenance not found (mock)");
+  return dataToMaintenance(found);
 }

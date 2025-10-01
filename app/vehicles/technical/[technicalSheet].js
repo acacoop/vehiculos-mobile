@@ -17,8 +17,20 @@ export default function TechnicalSheet() {
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
 
+  // Local fallback mock used when the service returns null or route param
+  const MOCK_VEHICLE = {
+    id: "mock-1",
+    licensePlate: technicalsheet || "MOCK-PLATE",
+    brand: "DemoBrand",
+    model: "DemoModel",
+    year: 2022,
+    imgUrl: "",
+    engineNumber: "EN-MOCK-1",
+    chassisNumber: "CH-MOCK-1",
+  };
+
   useEffect(() => {
-    getVehicle(technicalsheet).then(setVehicles);
+    getVehicle(technicalsheet).then((v) => setVehicles(v || MOCK_VEHICLE));
   }, [technicalsheet]);
   if (vehicleDetail === null) {
     return (
