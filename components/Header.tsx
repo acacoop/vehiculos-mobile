@@ -24,6 +24,7 @@ const Header = () => {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#282D86",
+    borderRadius: 10,
   },
 });
 
