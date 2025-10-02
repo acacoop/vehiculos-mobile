@@ -9,13 +9,13 @@ export default function Index() {
       <Stack.Screen options={{ headerTitle: "Inicio" }} />
       <View style={styles.ContainerImage}>
         <ImageBackground
-          source={require("../../assets/Logo ACA.png")}
+          source={require("../../assets/logo_azul.webp")}
           style={styles.background}
           resizeMode="contain"
         >
-          {/* <View style={styles.overlay}>
+          <View style={styles.overlay}>
             <WarningCard />
-          </View> */}
+          </View>
         </ImageBackground>
       </View>
     </View>
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
   },
   ContainerImage: {
     flex: 1,
@@ -37,18 +36,17 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   background: {
-    width: "100%",
-    height: "100%",
+    width: 300,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   overlay: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    padding: 20,
     width: "100%",
+    gap: 20,
+    paddingTop: 20,
   },
 });

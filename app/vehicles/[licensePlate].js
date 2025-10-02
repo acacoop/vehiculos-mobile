@@ -44,6 +44,19 @@ export default function VehicleDetail() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Vehículos disponibles",
+          headerStyle: {
+            backgroundColor: "#282D86",
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+            paddingBottom: 10,
+            height: 110,
+          },
+          headerTitleAlign: "center",
+        }}
+      />
       <FlatList
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -52,7 +65,6 @@ export default function VehicleDetail() {
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.containerInfocar}>
-            <Stack.Screen options={{ headerTitle: "Vehículos disponibles" }} />
             <View style={styles.infoCar}>
               <VehicleImage uri={item.imgUrl} />
 
