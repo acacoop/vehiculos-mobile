@@ -10,9 +10,10 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         <View style={styles.card}>
           <Image source={{ uri: vehicle.imgUrl }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={styles.text1}>{vehicle.licensePlate}</Text>
-            <Text style={styles.text2}>{vehicle.brand}</Text>
-            <Text style={styles.text3}>{vehicle.model}</Text>
+            <Text style={styles.text1}>
+              {vehicle.brand} {vehicle.model}
+            </Text>
+            <Text style={styles.text2}>{vehicle.licensePlate}</Text>
           </View>
         </View>
       </Pressable>
@@ -49,19 +50,15 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   text1: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#282D86",
     marginBottom: 5,
     textTransform: "uppercase",
-    letterSpacing: 1,
   },
   text2: {
-    fontSize: 18,
+    fontSize: 16,
     color: "#FE9000",
-  },
-  text3: {
-    fontSize: 18,
-    color: "#FE9000",
+    textTransform: "uppercase",
   },
 });

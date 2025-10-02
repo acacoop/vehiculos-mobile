@@ -18,26 +18,29 @@ export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const MOCK_VEHICLE = {
-      id: "mock-1",
-      licensePlate: licensePlate || "MOCK-PLATE",
-      brand: "DemoBrand",
-      model: "DemoModel",
-      year: 2022,
-      imgUrl: "",
-      engineNumber: "EN-MOCK-1",
-      chassisNumber: "CH-MOCK-1",
-    };
-
-    getVehicle(licensePlate).then((v) => setVehicles(v || MOCK_VEHICLE));
+    setLoading(true);
+    getVehicle(licensePlate)
+      .then((v) => setVehicles(v))
+      .finally(() => setLoading(false));
   }, [licensePlate]);
 
-  if (vehicleDetail === null) {
+  if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#282D86" />
+      </View>
+    );
+  }
+
+  if (!vehicleDetail) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={{ color: "#282D86", fontSize: 16 }}>
+          Vehículo no encontrado
+        </Text>
       </View>
     );
   }

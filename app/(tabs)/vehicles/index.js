@@ -28,6 +28,10 @@ export default function Vehicles() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#282D86" />
         </View>
+      ) : vehicles.length === 0 ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="#282D86" />
+        </View>
       ) : (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -53,7 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
   },
   headerContainer: {
     width: "100%",

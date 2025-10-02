@@ -14,25 +14,39 @@ import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance"
 export default function Maintenance() {
   const { vehicleId } = useLocalSearchParams();
   const [groupedMaintenances, setGroupedMaintenances] = useState({});
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    getMaintenanceByVehicle(vehicleId).then((data) => {
-      const grouped = data.reduce((acc, maintenance) => {
-        if (!acc[maintenance.maintenanceCategoryName]) {
-          acc[maintenance.maintenanceCategoryName] = [];
-        }
-        acc[maintenance.maintenanceCategoryName].push(maintenance);
-        return acc;
-      }, {});
-      setGroupedMaintenances(grouped);
-    });
+    setLoading(true);
+    getMaintenanceByVehicle(vehicleId)
+      .then((data) => {
+        const grouped = (data || []).reduce((acc, maintenance) => {
+          if (!acc[maintenance.maintenanceCategoryName]) {
+            acc[maintenance.maintenanceCategoryName] = [];
+          }
+          acc[maintenance.maintenanceCategoryName].push(maintenance);
+          return acc;
+        }, {});
+        setGroupedMaintenances(grouped);
+      })
+      .finally(() => setLoading(false));
   }, [vehicleId]);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#282D86" />
+      </View>
+    );
+  }
 
   if (!groupedMaintenances || Object.keys(groupedMaintenances).length === 0) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#282D86" />
+        <Text style={{ color: "#282D86", fontSize: 16 }}>
+          No hay mantenimientos asignados a este vehículo
+        </Text>
       </View>
     );
   }
