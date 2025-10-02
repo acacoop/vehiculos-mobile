@@ -19,11 +19,20 @@ export default function VehicleDetail() {
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     getVehicle(licensePlate)
-      .then((v) => setVehicles(v))
+      .then((v) => {
+        setVehicles(v);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Error fetching vehicle", err);
+        setError(err.message || "No se pudo cargar el vehículo");
+        setVehicles(null);
+      })
       .finally(() => setLoading(false));
   }, [licensePlate]);
 
@@ -38,8 +47,8 @@ export default function VehicleDetail() {
   if (!vehicleDetail) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={{ color: "#282D86", fontSize: 16 }}>
-          Vehículo no encontrado
+        <Text style={styles.errorText}>
+          {error || "Vehículo no encontrado"}
         </Text>
       </View>
     );
@@ -93,7 +102,15 @@ export default function VehicleDetail() {
 
 const VehicleImage = ({ uri }) => (
   <View style={styles.containerImage}>
-    <Image source={{ uri }} style={styles.image} />
+    {uri ? (
+      <Image source={{ uri }} style={styles.image} />
+    ) : (
+      <Image
+        source={require("../../assets/logo_azul.webp")}
+        style={styles.image}
+        resizeMode="contain"
+      />
+    )}
   </View>
 );
 
@@ -181,6 +198,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#ffffff",
+  },
+  errorText: {
+    color: "#282D86",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 32,
   },
   containerButton: {
     justifyContent: "center",

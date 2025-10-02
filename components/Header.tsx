@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  Platform,
-  Pressable,
-} from "react-native";
-import Constants from "expo-constants";
+import { View, StyleSheet, StatusBar } from "react-native";
 
 const Header = () => {
   return (

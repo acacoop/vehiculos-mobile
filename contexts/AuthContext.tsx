@@ -9,6 +9,7 @@ import React, {
 import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import * as AuthSession from "expo-auth-session";
+import { configureApiClient } from "../services/apiClient";
 
 const TOKEN_STORAGE_KEY = "vehiculos-auth-token";
 
@@ -290,6 +291,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     if (!response) return;
+    console.log("[auth] response", response);
     if (response.type === "success" && response.params?.code) {
       handleTokenExchange(response.params.code as string);
     } else if (response.type === "error") {
@@ -311,6 +313,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return refreshed?.accessToken ?? null;
   }, [tokenState, refreshAccessToken]);
 
+  useEffect(() => {
+    configureApiClient(getAccessToken);
+  }, [getAccessToken]);
+
   const signIn = useCallback(async () => {
     if (!configReady) {
       setError(
@@ -321,9 +327,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
       setError(null);
-      await promptAsync({
+      const result = await promptAsync({
         showInRecents: true,
       });
+      console.log("[auth] promptAsync result", result);
     } catch (err) {
       if (
         err instanceof Error &&

@@ -1,4 +1,10 @@
-import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { getAllVehicles } from "../../../services/vehicles";
 import { VehicleCard } from "../../../components/VehicleCard";
@@ -7,14 +13,21 @@ import { Stack } from "expo-router";
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getAllVehicles()
       .then((data) => {
         setVehicles(data);
+        setError(null);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Error fetching vehicles", err);
+        setError(err.message || "No se pudo cargar la lista de vehículos");
+        setVehicles([]);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -28,9 +41,15 @@ export default function Vehicles() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#282D86" />
         </View>
+      ) : error ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
       ) : vehicles.length === 0 ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#282D86" />
+          <Text style={styles.emptyText}>
+            No hay vehículos disponibles para mostrar
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -67,5 +86,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
+  },
+  emptyText: {
+    color: "#282D86",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 32,
+  },
+  errorText: {
+    color: "#D32F2F",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 32,
   },
 });

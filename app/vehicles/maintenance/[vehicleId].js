@@ -15,6 +15,7 @@ export default function Maintenance() {
   const { vehicleId } = useLocalSearchParams();
   const [groupedMaintenances, setGroupedMaintenances] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +30,12 @@ export default function Maintenance() {
           return acc;
         }, {});
         setGroupedMaintenances(grouped);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Error fetching maintenance", err);
+        setError(err.message || "No se pudo cargar el mantenimiento");
+        setGroupedMaintenances({});
       })
       .finally(() => setLoading(false));
   }, [vehicleId]);
@@ -44,8 +51,8 @@ export default function Maintenance() {
   if (!groupedMaintenances || Object.keys(groupedMaintenances).length === 0) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={{ color: "#282D86", fontSize: 16 }}>
-          No hay mantenimientos asignados a este vehículo
+        <Text style={styles.emptyText}>
+          {error || "No hay mantenimientos asignados a este vehículo"}
         </Text>
       </View>
     );
@@ -78,6 +85,7 @@ export default function Maintenance() {
             <Text style={styles.categoryTitle}>{category}</Text>
             {maintenances.map((maintenance) => (
               <Pressable
+                key={maintenance.id}
                 onPress={() =>
                   router.push({
                     pathname:
@@ -88,10 +96,7 @@ export default function Maintenance() {
                   })
                 }
               >
-                <MaintenanceCard
-                  key={maintenance.id}
-                  maintenance={maintenance}
-                />
+                <MaintenanceCard maintenance={maintenance} />
               </Pressable>
             ))}
           </View>
@@ -133,5 +138,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     marginBottom: 30,
+  },
+  emptyText: {
+    color: "#282D86",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 32,
   },
 });
