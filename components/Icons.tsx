@@ -1,33 +1,69 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export const IconCar = ({ color }: { color: string }) => {
-  return <AntDesign name="car" size={24} color={color} />;
+type IconBaseProps = {
+  color?: string;
+  onPress?: () => void;
+  size?: number;
+  style?: any;
+  pressed?: boolean;
+};
+
+const pickColor = (
+  color: string | undefined,
+  pressed: boolean | undefined,
+  defaultColor: string,
+  pressedColor?: string
+) => {
+  if (color) {
+    return color;
+  }
+  if (pressed && pressedColor) {
+    return pressedColor;
+  }
+  return defaultColor;
+};
+
+export const IconCar = ({
+  color,
+  size = 24,
+  style,
+  pressed,
+}: IconBaseProps) => {
+  const resolvedColor = pickColor(color, pressed, "#282D86", "#FE9000");
+  return (
+    <AntDesign name="car" size={size} color={resolvedColor} style={style} />
+  );
 };
 
 export const IconCalendar = ({
   color,
   onPress,
-  size,
+  size = 24,
   style,
-}: {
-  color?: string;
-  onPress?: () => void;
-  size?: number;
-  style?: any;
-}) => {
+  pressed,
+}: IconBaseProps) => {
+  const resolvedColor = pickColor(color, pressed, "black", "#FE9000");
   return (
     <AntDesign
       name="calendar"
-      size={size || 24}
-      color={color || "black"}
+      size={size}
+      color={resolvedColor}
       onPress={onPress}
       style={style}
     />
   );
 };
 
-export const IconSetting = ({ color }: { color: string }) => {
-  return <AntDesign name="setting" size={24} color={color} />;
+export const IconSetting = ({
+  color,
+  size = 24,
+  style,
+  pressed,
+}: IconBaseProps) => {
+  const resolvedColor = pickColor(color, pressed, "#282D86", "#FE9000");
+  return (
+    <AntDesign name="setting" size={size} color={resolvedColor} style={style} />
+  );
 };
 
 export const IconHome = ({ color }: { color: string }) => {
