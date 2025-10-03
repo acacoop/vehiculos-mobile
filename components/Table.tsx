@@ -16,7 +16,7 @@ export function Table({ data }: { data: any }) {
           style={[
             style.itemContainer,
             {
-              backgroundColor: index % 2 === 0 ? "#E0E0E0" : "#FFFFFF",
+              backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#FFFFFF",
             },
           ]}
         >
@@ -41,17 +41,17 @@ export function Table({ data }: { data: any }) {
 const style = StyleSheet.create({
   container: {
     flexDirection: "column",
-    width: 250,
+    width: 300,
     margin: 20,
     gap: 10,
   },
   keyText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#333",
   },
   valueText: {
-    fontSize: 16,
+    fontSize: 20,
     color: "#000",
   },
   itemContainer: {

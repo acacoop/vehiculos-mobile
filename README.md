@@ -16,6 +16,8 @@ FrontEnd Mobile para aplicación de gestión interna de la flota.
 - **[React Native](https://reactnative.dev/)**: JavaScript framework for building native mobile applications. For the mobile version of the application.
 - **[Expo](https://expo.dev/)**: Framework and platform for universal React applications. It is used to build the mobile application.
 
+Manejo de fechas @react-native-community/datetimepicker
+
 ## Prerequisites
 
 - **[Node.js](https://nodejs.org/)**: JavaScript runtime built on Chrome's V8 JavaScript engine.
@@ -64,6 +66,10 @@ If you want to create a tunnel to access the application from a physical device,
 
 ```bash
 npx expo start --host tunnel
+```
+
+```bash
+npx expo start --port 5173
 ```
 
 ## Production

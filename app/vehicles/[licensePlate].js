@@ -12,17 +12,31 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
+import { IconTool, IconClip, IconIdCard } from "../../components/Icons";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getVehicle(licensePlate).then(setVehicles);
+    setLoading(true);
+    getVehicle(licensePlate)
+      .then((v) => {
+        setVehicles(v);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Error fetching vehicle", err);
+        setError(err.message || "No se pudo cargar el vehículo");
+        setVehicles(null);
+      })
+      .finally(() => setLoading(false));
   }, [licensePlate]);
 
-  if (vehicleDetail === null) {
+  if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#282D86" />
@@ -30,20 +44,54 @@ export default function VehicleDetail() {
     );
   }
 
+  if (!vehicleDetail) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.errorText}>
+          {error || "Vehículo no encontrado"}
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Vehículos disponibles",
+          headerStyle: {
+            backgroundColor: "#282D86",
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+            paddingBottom: 10,
+            height: 110,
+          },
+          headerTitleAlign: "center",
+        }}
+      />
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
         data={[vehicleDetail]}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.containerInfocar}>
-            <Stack.Screen options={{ headerTitle: "Vehículos disponibles" }} />
             <View style={styles.infoCar}>
               <VehicleImage uri={item.imgUrl} />
+
               <VehicleTable data={item} />
-              <VehicleButtons licensePlate={item.licensePlate} />
-              <ReserveButton />
+
+              <VehicleButtons vehicleId={item.id} />
             </View>
+            <Pressable
+              style={styles.PressableReservar}
+              onPress={() => {
+                router.push(`/calendar`);
+              }}
+            >
+              <Text style={styles.textReserva}>Reservar</Text>
+            </Pressable>
           </View>
         )}
         contentContainerStyle={styles.flatListContainer}
@@ -54,7 +102,15 @@ export default function VehicleDetail() {
 
 const VehicleImage = ({ uri }) => (
   <View style={styles.containerImage}>
-    <Image source={{ uri }} style={styles.image} />
+    {uri ? (
+      <Image source={{ uri }} style={styles.image} />
+    ) : (
+      <Image
+        source={require("../../assets/logo_azul.webp")}
+        style={styles.image}
+        resizeMode="contain"
+      />
+    )}
   </View>
 );
 
@@ -69,43 +125,41 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ licensePlate }) => {
+const VehicleButtons = ({ vehicleId, technicalSheet, documentation }) => {
   const router = useRouter();
 
   return (
     <View style={styles.containerButton}>
       <Pressable
         style={styles.Pressable}
-        onPress={() =>
-          router.push(`/vehicles/maintenance?licensePlate=${licensePlate}`)
-        }
+        onPress={() => {
+          router.push(`/vehicles/maintenance/${vehicleId}`);
+        }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
+        <IconTool />
       </Pressable>
       <Pressable
         style={styles.Pressable}
-        onPress={() => alert("Ficha técnica")}
+        onPress={() => {
+          router.push(`/vehicles/technical/${technicalSheet}`);
+        }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
+        <IconClip />
       </Pressable>
       <Pressable
         style={styles.Pressable}
-        onPress={() => alert("Documentación")}
+        onPress={() => {
+          router.push(`/vehicles/documentation/${documentation}`);
+        }}
       >
         <Text style={styles.buttonText}>Documentación</Text>
+        <IconIdCard />
       </Pressable>
     </View>
   );
 };
-
-const ReserveButton = () => (
-  <Pressable
-    style={styles.PressableReservar}
-    onPress={() => alert("Reservado")}
-  >
-    <Text style={styles.textReserva}>Reservar</Text>
-  </Pressable>
-);
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#ffffff" },
@@ -126,11 +180,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: "100%",
   },
-  image: { width: 250, height: 150, borderRadius: 8 },
+  image: { width: 300, height: 150, borderRadius: 8 },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   loadingContainer: {
     flex: 1,
@@ -139,6 +198,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#ffffff",
+  },
+  errorText: {
+    color: "#282D86",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 32,
   },
   containerButton: {
     justifyContent: "center",
@@ -149,33 +214,47 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   Pressable: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 8,
+    borderRadius: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     elevation: 5,
     margin: 10,
-    width: 250,
+    width: 300,
   },
   buttonText: {
     color: "#282D86",
     fontSize: 20,
     padding: 10,
     textAlign: "center",
+    fontWeight: "bold",
+    color: "#282D86",
   },
   PressableReservar: {
     backgroundColor: "#282D86",
     borderRadius: 8,
     margin: 30,
     width: 300,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
   textReserva: {
     color: "#FFFFFF",
     fontSize: 20,
     padding: 15,
     textAlign: "center",
+    fontWeight: "bold",
   },
   flatListContainer: {
     flexGrow: 1,

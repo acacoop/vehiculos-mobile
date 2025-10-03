@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Linking, Platform } from "react-native";
 import {
   IconUser,
   IconWallet,
@@ -8,8 +8,30 @@ import {
 } from "../../components/Icons";
 import { PressableButton } from "../../components/Buttons";
 import { Stack } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function Configuration() {
+  const router = useRouter();
+  const configButtons = ({ user }) => {
+    router.push(`/configuration/${user}`);
+  };
+
+  const openMiArgentina = async () => {
+    const appUrl = "miargentina://";
+    const playStoreUrl = "https://play.google.com/store/apps/details?id=ar.gob.mincyt.miargentina";
+    const appStoreUrl = "https://apps.apple.com/ar/app/mi-argentina/id1235195816";
+    try {
+      const supported = await Linking.canOpenURL(appUrl);
+      if (supported) {
+        await Linking.openURL(appUrl);
+      } else {
+        await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
+      }
+    } catch (e) {
+      await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -17,19 +39,17 @@ export default function Configuration() {
           headerTitle: "Configuración",
         }}
       />
+
       <View style={styles.containerconfig}>
         <PressableButton
           text="Usuario"
+          onPress={() => configButtons({ user: "user" })}
           icon={({ pressed }) => <IconUser pressed={pressed} />}
         />
         <PressableButton
           text="Credenciales"
           icon={({ pressed }) => <IconWallet pressed={pressed} />}
-        />
-
-        <PressableButton
-          text="Seguridad"
-          icon={({ pressed }) => <IconLock pressed={pressed} />}
+          onPress={openMiArgentina}
         />
 
         <PressableButton

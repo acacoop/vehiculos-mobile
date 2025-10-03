@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
     height: 100,
     position: "absolute",
     bottom: 0,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   button: {
     padding: 20,

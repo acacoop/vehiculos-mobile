@@ -10,10 +10,22 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: "#282D86", paddingTop: 10 },
+        tabBarStyle: {
+          backgroundColor: "#282D86",
+          paddingTop: 10,
+          paddingBottom: 5,
+          height: 80,
+        },
         tabBarActiveTintColor: "#FE9000",
         tabBarInactiveTintColor: "#ffffff",
-        headerStyle: { backgroundColor: "#282D86" },
+        headerStyle: {
+          paddingBottom: 10,
+          height: 110,
+          backgroundColor: "#282D86",
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30,
+        },
+        headerTitleAlign: "center",
         headerTintColor: "#ffffff",
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
       }}
@@ -21,14 +33,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarLabel: "Inicio",
+          tabBarLabel: "",
           tabBarIcon: ({ color }) => <IconHome color={color} />,
         }}
       />
       <Tabs.Screen
         name="vehicles"
         options={{
-          tabBarLabel: "Vehículos",
+          tabBarLabel: "",
           headerTitle: "Vehículos",
           tabBarIcon: ({ color }) => <IconCar color={color} />,
         }}
@@ -36,7 +48,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="calendar"
         options={{
-          tabBarLabel: "Calendario",
+          tabBarLabel: "",
           tabBarIcon: ({ color }) => <IconCalendar color={color} />,
         }}
       />
@@ -44,7 +56,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="configuration"
         options={{
-          tabBarLabel: "Configuración",
+          tabBarLabel: "",
           tabBarIcon: ({ color }) => <IconSetting color={color} />,
         }}
       />

@@ -1,111 +1,187 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Pressable,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import { Calendario } from "../../components/Calendario";
+import { CarVisualizer } from "../../components/CarVisualizer";
+import { Stack, useRouter } from "expo-router";
+import { getAllVehicles } from "../../services/vehicles";
+import { ReserveModal } from "../../components/ReserveModal";
+import { Ionicons } from "@expo/vector-icons";
 
-// Componente para crear un calendario simple
 const Calendar = () => {
-  // Días de la semana
-  const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+  const [reservations, setReservations] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const router = useRouter();
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showReserveModal, setShowReserveModal] = useState(false);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
 
-  // Generar los días del mes (28, 29, 30 o 31 días dependiendo del mes)
-  const generateDaysInMonth = (month, year) => {
-    const daysInMonth = new Date(year, month, 0).getDate(); // Devuelve la cantidad de días del mes
-    let days = [];
-    for (let i = 1; i <= daysInMonth; i++) {
-      days.push(i);
-    }
-    return days;
+  const navigateToReservations = ({ start, end } = {}) => {
+    const params = {
+      reservations: JSON.stringify(reservations),
+    };
+    if (selectedVehicle) params.vehicleId = selectedVehicle.id;
+    if (start) params.start = start;
+    if (end) params.end = end;
+    router.push({
+      pathname: "/reservations",
+      params,
+    });
   };
 
-  // Obtener la fecha actual
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
-  const currentYear = currentDate.getFullYear();
+  useEffect(() => {
+    getAllVehicles()
+      .then((data) => {
+        setVehicles(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  // Obtener los días del mes actual
-  const daysInMonth = generateDaysInMonth(currentMonth + 1, currentYear);
+  const handleConfirmReservationFromCalendar = (from, to) => {
+    setReservations((prev) => [
+      ...prev,
+      { from, to, vehicleId: selectedVehicle.id },
+    ]);
+  };
 
-  // Renderizar el calendario
+  const handleConfirmReservationFromButton = (reservation) => {
+    setReservations((prev) => [
+      ...prev,
+      { ...reservation, licensePlate: selectedVehicle.licensePlate }, // Cambia vehicleId por licensePlate
+    ]);
+    setShowReserveModal(false);
+  };
+
+  const handleModalConfirm = () => {
+    handleConfirmReservationFromButton({
+      from: fromDate,
+      to: toDate,
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Título del mes */}
-      <Text style={styles.monthTitle}>
-        {currentDate.toLocaleString("default", { month: "long" })} {currentYear}
-      </Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <Stack.Screen
+        options={{
+          headerTitle: "Calendario",
+        }}
+      />
 
-      {/* Días de la semana */}
-      <View style={styles.weekRow}>
-        {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeek}>
-            {day}
-          </Text>
-        ))}
+      <CarVisualizer
+        vehicles={vehicles}
+        onVehicleChange={(vehicle) => {
+          setSelectedVehicle(vehicle);
+        }}
+      />
+
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#282D86"
+          style={{ marginTop: 40 }}
+        />
+      ) : (
+        selectedVehicle && (
+          <Calendario
+            key={selectedVehicle.id}
+            reservations={reservations}
+            selectedVehicle={selectedVehicle}
+            onDayPress={(date) => {
+              const day = new Date(date);
+              day.setHours(0, 0, 0, 0);
+              const start = day.toISOString();
+              const endDate = new Date(day);
+              endDate.setHours(23, 59, 59, 999);
+              const end = endDate.toISOString();
+              navigateToReservations({ start, end });
+            }}
+          />
+        )
+      )}
+      <View
+        style={{
+          gap: 20,
+        }}
+      >
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            navigateToReservations();
+          }}
+        >
+          <Text style={styles.buttonText}>Ver reservas</Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.button}
+          onPress={() => setShowReserveModal(true)}
+        >
+          <Text style={styles.buttonText}>Reservar vehículo</Text>
+        </Pressable>
       </View>
 
-      {/* Días del mes */}
-      <FlatList
-        data={daysInMonth}
-        renderItem={({ item, index }) => (
-          <View
-            style={[
-              styles.dayCell,
-              {
-                marginLeft: index % 7 === 0 ? 0 : 10, // Nueva fila al llegar a cada inicio de semana
-              },
-            ]}
-          >
-            <Text style={styles.dayText}>{item}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.toString()}
-        numColumns={7} // 7 días en una semana
-        contentContainerStyle={styles.daysContainer}
+      <ReserveModal
+        visible={showReserveModal}
+        onClose={() => setShowReserveModal(false)}
+        onConfirm={handleModalConfirm}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
       />
-    </View>
+    </ScrollView>
   );
 };
 
+export default Calendar;
+
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    backgroundColor: "#282D86",
-    borderRadius: 10,
-    margin: 20,
-    paddingBottom: 20,
-    justifyContent: "center",
-  },
-  monthTitle: {
-    fontSize: 24,
-    color: "white",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  weekRow: {
-    flexDirection: "row",
+  scrollContainer: {
+    flex: 1,
+    paddingVertical: 20,
+    gap: 20,
     justifyContent: "space-between",
-    marginBottom: 5,
-  },
-  dayOfWeek: {
-    fontSize: 16,
-    color: "white",
-    textAlign: "center",
-    width: 30,
-  },
-  daysContainer: {
+    backgroundColor: "#f9f9f9",
     alignItems: "center",
   },
-  dayCell: {
-    width: 30,
-    height: 30,
+  button: {
+    backgroundColor: "#282D86",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    width: 350,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  arrowRow: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
-    backgroundColor: "#FE9000",
     marginBottom: 10,
+    gap: 30,
   },
-  dayText: {
-    color: "white",
-    fontSize: 14,
+  arrowButton: {
+    padding: 10,
   },
 });
-
-export default Calendar;

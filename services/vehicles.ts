@@ -1,52 +1,62 @@
 import { Vehicle } from "../interfaces/vehicle";
+import { apiClient } from "./apiClient";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+type VehicleApiModel = {
+  id: string;
+  licensePlate: string;
+  year: number;
+  chassisNumber?: string | null;
+  engineNumber?: string | null;
+  model?: {
+    id: string;
+    name: string;
+    brand?: { id: string; name: string };
+  };
+};
 
-function dataToVehicle(data: any): Vehicle {
-  const {
-    id,
-    licenseplate: licensePlate,
-    brand,
-    model,
-    year,
-    imgurl: imgUrl,
-  } = data;
+type VehiclesResponse = {
+  status: "success";
+  data: VehicleApiModel[];
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+};
 
+function mapVehicle(api: VehicleApiModel): Vehicle {
+  const brandName = api.model?.brand?.name ?? "";
+  const modelName = api.model?.name ?? "";
   return {
-    id,
-    licensePlate,
-    brand,
-    model,
-    year,
-    imgUrl,
+    id: api.id,
+    licensePlate: api.licensePlate,
+    brand: brandName,
+    model: modelName,
+    year: api.year,
+    imgUrl: "",
+    engineNumber: api.engineNumber ?? undefined,
+    chassisNumber: api.chassisNumber ?? undefined,
   };
 }
 
 export async function getAllVehicles(): Promise<Vehicle[]> {
-  const GET_VEHICLES = `${API_URL}/vehicles`;
+  const response = await apiClient.get<VehiclesResponse>("/vehicles", {
+    query: { limit: 100, page: 1 },
+  });
 
-  try {
-    const response = await fetch(GET_VEHICLES);
-    const vehicles: Vehicle[] = await response.json();
-    const parsedVehicles = vehicles.map(dataToVehicle);
-    return parsedVehicles;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  const list = Array.isArray(response?.data) ? response.data : [];
+  return list.map(mapVehicle);
 }
 
 export async function getVehicle(
-  licensePlate: string,
+  licensePlate: string
 ): Promise<Vehicle | null> {
-  const GET_VEHICLE = `${API_URL}/vehicles/licensePlate/${licensePlate}`;
+  if (!licensePlate) return null;
 
-  try {
-    const response = await fetch(GET_VEHICLE);
-    const vehicle = await response.json();
-    return dataToVehicle(vehicle);
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  const response = await apiClient.get<VehiclesResponse>("/vehicles", {
+    query: { licensePlate: licensePlate.toUpperCase(), limit: 1, page: 1 },
+  });
+
+  const first = Array.isArray(response?.data) ? response.data[0] : undefined;
+  return first ? mapVehicle(first) : null;
 }
