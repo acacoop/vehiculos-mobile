@@ -80,11 +80,19 @@ const REQUESTED_SCOPES = Array.from(
   new Set([...DEFAULT_SCOPES, ...ADDITIONAL_SCOPES])
 );
 
-const REDIRECT_URI = AuthSession.makeRedirectUri({
+const WEB_REDIRECT_URI =
+  process.env.EXPO_PUBLIC_WEB_REDIRECT_URI || "http://localhost:5173/redirect";
+
+const NATIVE_REDIRECT_URI = AuthSession.makeRedirectUri({
   scheme: CUSTOM_SCHEME,
   path: "redirect",
   preferLocalhost: true,
   native: `${CUSTOM_SCHEME}://redirect`,
+});
+
+const REDIRECT_URI = Platform.select({
+  web: WEB_REDIRECT_URI,
+  default: NATIVE_REDIRECT_URI,
 });
 
 type TokenState = {
