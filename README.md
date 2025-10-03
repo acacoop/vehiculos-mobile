@@ -68,6 +68,10 @@ If you want to create a tunnel to access the application from a physical device,
 npx expo start --host tunnel
 ```
 
+```bash
+npx expo start --port 5173
+```
+
 ## Production
 
 TBD

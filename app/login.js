@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
+    textAlign: "center",
     fontSize: 16,
     color: "#4A4A4A",
     lineHeight: 22,
@@ -116,7 +117,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
-    width: "100%",
+    width: 200,
+    gap: 10,
     alignItems: "center",
   },
   buttonDisabled: {
