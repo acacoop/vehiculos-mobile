@@ -9,7 +9,10 @@ import React, {
 import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 import { configureApiClient } from "../services/apiClient";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const TOKEN_STORAGE_KEY = "vehiculos-auth-token";
 
@@ -79,7 +82,9 @@ const REQUESTED_SCOPES = Array.from(
 
 const REDIRECT_URI = AuthSession.makeRedirectUri({
   scheme: CUSTOM_SCHEME,
+  path: "redirect",
   preferLocalhost: true,
+  native: `${CUSTOM_SCHEME}://redirect`,
 });
 
 type TokenState = {
@@ -154,7 +159,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       authorizationEndpoint: `${base}/authorize`,
       tokenEndpoint: `${base}/token`,
     };
-  }, [TENANT_ID]);
+  }, []);
 
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -324,6 +329,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       );
       return;
     }
+    if (!request) {
+      console.warn("[auth] Solicitud de autenticación todavía no está lista");
+      setIsLoading(false);
+      return;
+    }
     try {
       setIsLoading(true);
       setError(null);
@@ -343,7 +353,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       setIsLoading(false);
     }
-  }, [configReady, promptAsync]);
+  }, [configReady, promptAsync, request]);
 
   const signOut = useCallback(async () => {
     await updateTokenState(null);
