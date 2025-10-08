@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Pressable, Text } from "react-native";
-import { IconDownload } from "./Icons";
+import { IconArrowRigth } from "./Icons";
 
 export default function DownloadButton() {
   return (
     <Pressable style={styles.Pressable}>
-      <Text style={styles.text}>Ver documento</Text>
-      <IconDownload />
+      <Text style={styles.text}>Titulo</Text>
+      <IconArrowRigth size={20} />
     </Pressable>
   );
 }
@@ -14,9 +14,9 @@ export default function DownloadButton() {
 const styles = StyleSheet.create({
   Pressable: {
     flexDirection: "row",
-    backgroundColor: "#282D86",
+    backgroundColor: "#ffff",
     padding: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     marginTop: 20,
     elevation: 2,
     shadowColor: "#000",
@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
     shadowRadius: 2.5,
     alignItems: "center",
     justifyContent: "space-between",
-    width: "90%",
+    width: "100%",
     gap: 20,
   },
   text: {
     fontSize: 20,
-    color: "#fff",
+    color: "#282D86",
     fontWeight: "bold",
   },
 });

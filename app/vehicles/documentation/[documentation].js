@@ -15,20 +15,9 @@ export default function Documentation() {
   const { documentation } = useLocalSearchParams();
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
-  // Local demo fallback
-  const MOCK_VEHICLE = {
-    id: "mock-1",
-    licensePlate: documentation || "MOCK-PLATE",
-    brand: "DemoBrand",
-    model: "DemoModel",
-    year: 2022,
-    imgUrl: "",
-    engineNumber: "EN-MOCK-1",
-    chassisNumber: "CH-MOCK-1",
-  };
 
   useEffect(() => {
-    getVehicle(documentation).then((v) => setVehicles(v || MOCK_VEHICLE));
+    getVehicle(documentation).then((v) => setVehicles(v || null));
   }, [documentation]);
   if (vehicleDetail === null) {
     return (
@@ -54,7 +43,7 @@ export default function Documentation() {
           </View>
         </View>
         <View style={styles.tittleContainer}>
-          <Text style={styles.Tittle}>Seguro </Text>
+          <Text style={styles.Tittle}>Seguro</Text>
           <View style={styles.view}>
             <DownloadButton />
           </View>
@@ -109,7 +98,7 @@ styles = StyleSheet.create({
   },
   tittleContainer: {
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "start",
     marginTop: 20,
   },
