@@ -60,7 +60,12 @@ export default function Maintenance() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Mantenimiento del vehículo" }} />
+      <Stack.Screen
+        options={{
+          headerTitle: "Mantenimiento del vehículo",
+          headerTitleAlign: "center",
+        }}
+      />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Pressable
@@ -74,7 +79,7 @@ export default function Maintenance() {
           }
         >
           <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
-            Mantenimiento correctivo
+            + Mantenimiento correctivo
           </Text>
         </Pressable>
         {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#282D86",
-    width: 320,
+    width: "90%",
     height: 50,
     justifyContent: "center",
     alignItems: "center",

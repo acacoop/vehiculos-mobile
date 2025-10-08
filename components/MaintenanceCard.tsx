@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import { Maintenance } from "../interfaces/maintenance";
+import { IconArrowRigth } from "./Icons";
 
 type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
@@ -16,6 +17,7 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
         <View style={styles.containerText}>
           <Text style={styles.text}>{maintenance.maintenanceName}</Text>
         </View>
+        <IconArrowRigth size={20} />
       </View>
     </View>
   );
@@ -27,7 +29,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
     margin: 10,
   },
   containerTitle: {
@@ -45,17 +46,19 @@ const styles = StyleSheet.create({
   containerCard: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 20,
+    justifyContent: "space-between",
+    gap: 25,
     width: "90%",
-    height: 100,
+    padding: 15,
     borderRadius: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
+    borderColor: "#d3d3d3ff",
+    borderWidth: 1,
   },
   containerText: {
     flex: 1,

@@ -29,7 +29,9 @@ export default function Documentation() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Documentación" }} />
+      <Stack.Screen
+        options={{ headerTitle: "Documentación", headerTitleAlign: "center" }}
+      />
       <ScrollView
         styles={styles.scrollViewContainer}
         showsVerticalScrollIndicator={false}
@@ -64,13 +66,12 @@ export default function Documentation() {
 styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   scrollViewContainer: {
-    marginBottom: 20,
+    width: "100%",
   },
   Tittle: {
     fontSize: 24,
@@ -78,7 +79,6 @@ styles = StyleSheet.create({
     color: "#282D86",
     marginTop: 30,
     textAlign: "start",
-    marginLeft: 20,
   },
   view: {
     width: "100%",
@@ -99,7 +99,7 @@ styles = StyleSheet.create({
   tittleContainer: {
     width: "100%",
     justifyContent: "flex-start",
-    alignItems: "start",
+    alignItems: "flex-start",
     marginTop: 20,
   },
 });

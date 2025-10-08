@@ -147,15 +147,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    justifyContent: "flex-start",
-    alignItems: "center",
   },
+
   containerInfocar: {
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 10,
     padding: 2,
     width: "100%",
+    gap: 20,
   },
   infoCar: {
     justifyContent: "flex-start",
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     width: "100%",
+    gap: 20,
   },
 
   loadingContainer: {
