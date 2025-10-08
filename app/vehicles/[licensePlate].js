@@ -82,7 +82,10 @@ export default function VehicleDetail() {
 
               <VehicleTable data={item} />
 
-              <VehicleButtons vehicleId={item.id} />
+              <VehicleButtons
+                vehicleId={item.id}
+                licensePlate={item.licensePlate}
+              />
             </View>
             <Pressable
               style={styles.PressableReservar}
@@ -121,11 +124,12 @@ const VehicleTable = ({ data }) => (
       Marca: data.brand,
       Modelo: data.model,
       Año: data.year,
+      Tipo: data.vehicleType || "No informado",
     }}
   />
 );
 
-const VehicleButtons = ({ vehicleId, technicalSheet, documentation }) => {
+const VehicleButtons = ({ vehicleId, licensePlate, TechnicalSheet }) => {
   const router = useRouter();
 
   return (
@@ -142,7 +146,7 @@ const VehicleButtons = ({ vehicleId, technicalSheet, documentation }) => {
       <Pressable
         style={styles.Pressable}
         onPress={() => {
-          router.push(`/vehicles/technical/${technicalSheet}`);
+          router.push(`/vehicles/technical/${licensePlate}`);
         }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
@@ -151,7 +155,7 @@ const VehicleButtons = ({ vehicleId, technicalSheet, documentation }) => {
       <Pressable
         style={styles.Pressable}
         onPress={() => {
-          router.push(`/vehicles/documentation/${documentation}`);
+          router.push(`/vehicles/documentation/${licensePlate}`);
         }}
       >
         <Text style={styles.buttonText}>Documentación</Text>

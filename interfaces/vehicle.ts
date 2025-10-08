@@ -8,5 +8,7 @@ export interface Vehicle {
   color?: string;
   engineNumber?: string;
   chassisNumber?: string;
+  vehicleType?: string;
+  transmission?: string;
+  fuelType?: string;
 }
-
