@@ -237,7 +237,3 @@ export const IconClose = (props: {
     />
   );
 };
-
-export const IconFile = (props: { size?: number }) => {
-  return <AntDesign name="file-text" size />;
-};
