@@ -53,7 +53,7 @@ export const Calendario = ({
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
   const weeks = generateWeeksInMonth(currentMonth, currentYear);
-  const DEFAULT_RESERVATION_COLOR = "#FF6347";
+  const DEFAULT_RESERVATION_COLOR = "#cdd4ffdc";
 
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -108,21 +108,21 @@ export const Calendario = ({
           onPress={handleMoveToToday}
           style={{
             borderWidth: 1,
-            borderColor: "#fff",
+            borderColor: "#282D86",
             borderRadius: 20,
             paddingVertical: 6,
             paddingHorizontal: 18,
             backgroundColor: "transparent",
           }}
         >
-          <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>
+          <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>
             Hoy
           </Text>
         </TouchableOpacity>
         <IconArrowLeft
           onPress={goToPreviousMonth}
           size={24}
-          style={{ color: "#ffff" }}
+          style={{ color: "#282D86" }}
         />
 
         <View
@@ -143,7 +143,7 @@ export const Calendario = ({
         <IconArrowRigth
           onPress={goToNextMonth}
           size={24}
-          style={{ color: "#ffff" }}
+          style={{ color: "#282D86" }}
         />
       </View>
 
@@ -193,7 +193,7 @@ export const Calendario = ({
                             selectedVehicle?.color || DEFAULT_RESERVATION_COLOR,
                         }
                       : null,
-                    isToday(day) ? { backgroundColor: "#ffff" } : null,
+                    isToday(day) ? { backgroundColor: "#282D86" } : null,
                   ]}
                 >
                   <Text
@@ -204,7 +204,7 @@ export const Calendario = ({
                             color: DEFAULT_RESERVATION_COLOR,
                             fontWeight: "bold",
                           }
-                        : { color: "white" },
+                        : { color: "#282D86" },
                     ]}
                   >
                     {day.getDate()}
@@ -222,19 +222,21 @@ export const Calendario = ({
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#282D86",
+    backgroundColor: "#ffff",
     borderRadius: 10,
     gap: 2,
     justifyContent: "space-between",
     height: CELL_WIDTH * 7 + 10,
-    shadowColor: "#000",
+    shadowColor: "#00000070",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   headerRow: {
     flexDirection: "row",
@@ -244,14 +246,14 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   navButton: {
-    backgroundColor: "#ffff",
+    backgroundColor: "#282d8621",
     fontSize: 24,
     color: "#282D86",
     borderRadius: 100,
   },
   monthTitle: {
     fontSize: 20,
-    color: "white",
+    color: "#282D86",
     textAlign: "center",
     fontWeight: "bold",
     lineHeight: 36,
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
     width: CELL_WIDTH,
     height: 30,
     fontSize: 16,
-    color: "white",
+    color: "#282D86",
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -282,6 +284,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   dayText: {
-    color: "white",
+    color: "#282D86",
   },
 });

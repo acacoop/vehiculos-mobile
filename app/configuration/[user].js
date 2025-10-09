@@ -35,7 +35,12 @@ export default function UserConfig() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Configuración Usuario" }} />
+      <Stack.Screen
+        options={{
+          headerTitle: "Configuración Usuario",
+          headerTitleAlign: "center",
+        }}
+      />
       <View style={styles.pressable}>
         <View style={styles.avatar}>
           <IconUser size={20} />
@@ -134,7 +139,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#fff",
   },
   text: {
     fontSize: 20,
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     padding: 20,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     borderRadius: 10,
     marginTop: 20,
     width: "80%",

@@ -47,6 +47,12 @@ const style = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#ddd",
     borderWidth: 1,
+    backgroundColor: "#fff",
+    shadowColor: "#0000006c",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
   keyText: {
     fontSize: 20,

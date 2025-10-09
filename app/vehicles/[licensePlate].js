@@ -85,7 +85,7 @@ export default function VehicleDetail() {
                 router.push(`/calendar`);
               }}
             >
-              <Text style={styles.textReserva}>Reservar</Text>
+              <Text style={styles.textReserva}>+ Reservar</Text>
             </Pressable>
           </View>
         )}
@@ -146,7 +146,6 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
   },
 
   containerInfocar: {
@@ -196,6 +195,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     shadowColor: "#000",
+    minWidth: 400,
+    width: "100%",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#282D86",
     borderRadius: 8,
     margin: 30,
-    width: 300,
+    width: 380,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,

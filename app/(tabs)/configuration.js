@@ -18,14 +18,18 @@ export default function Configuration() {
 
   const openMiArgentina = async () => {
     const appUrl = "miargentina://";
-    const playStoreUrl = "https://play.google.com/store/apps/details?id=ar.gob.mincyt.miargentina";
-    const appStoreUrl = "https://apps.apple.com/ar/app/mi-argentina/id1235195816";
+    const playStoreUrl =
+      "https://play.google.com/store/apps/details?id=ar.gob.mincyt.miargentina";
+    const appStoreUrl =
+      "https://apps.apple.com/ar/app/mi-argentina/id1235195816";
     try {
       const supported = await Linking.canOpenURL(appUrl);
       if (supported) {
         await Linking.openURL(appUrl);
       } else {
-        await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
+        await Linking.openURL(
+          Platform.OS === "ios" ? appStoreUrl : playStoreUrl
+        );
       }
     } catch (e) {
       await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
@@ -65,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#ffffff",
+
     flexDirection: "column",
   },
   text: {

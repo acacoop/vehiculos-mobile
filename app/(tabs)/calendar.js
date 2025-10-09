@@ -12,7 +12,6 @@ import { CarVisualizer } from "../../components/CarVisualizer";
 import { Stack, useRouter } from "expo-router";
 import { getAllVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
-import { Ionicons } from "@expo/vector-icons";
 
 const Calendar = () => {
   const [reservations, setReservations] = useState([]);
@@ -122,10 +121,10 @@ const Calendar = () => {
         </Pressable>
 
         <Pressable
-          style={styles.button}
+          style={styles.buttonReserve}
           onPress={() => setShowReserveModal(true)}
         >
-          <Text style={styles.buttonText}>Reservar vehículo</Text>
+          <Text style={styles.buttonTextReserve}>Reservar vehículo</Text>
         </Pressable>
       </View>
 
@@ -154,26 +153,53 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#ffff",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     width: 350,
     alignSelf: "center",
-    shadowColor: "#000",
+    shadowColor: "#00000070",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
+  },
+  buttonReserve: {
+    backgroundColor: "#282D86",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    width: 350,
+    alignSelf: "center",
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   buttonText: {
-    color: "white",
+    color: "#282D86",
     fontWeight: "bold",
     fontSize: 20,
   },
+
+  buttonTextReserve: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
   arrowRow: {
     flexDirection: "row",
     justifyContent: "center",
