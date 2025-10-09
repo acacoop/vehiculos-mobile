@@ -14,6 +14,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               {vehicle.brand} {vehicle.model}
             </Text>
             <Text style={styles.text2}>{vehicle.licensePlate}</Text>
+            <Text style={styles.text2}>{vehicle.fuelType}</Text>
           </View>
         </View>
       </Pressable>
@@ -29,8 +30,8 @@ const styles = StyleSheet.create({
     width: 350,
     backgroundColor: "#f9f9f9",
     padding: 10,
-    borderRadius: 8,
-    shadowColor: "#000",
+    borderRadius: 15,
+    shadowColor: "#0000009d",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -51,14 +52,12 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#282D86",
     marginBottom: 5,
-    textTransform: "uppercase",
   },
   text2: {
     fontSize: 16,
     color: "#FE9000",
-    textTransform: "uppercase",
   },
 });

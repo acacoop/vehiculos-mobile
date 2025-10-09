@@ -43,13 +43,11 @@ export function CarVisualizer({
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Autos Disponibles</Text> */}
-
       <View style={styles.vehicleInfo}>
         <IconArrowLeft
           onPress={goPrevious}
           size={24}
-          style={{ color: "#ffff" }}
+          style={{ color: "#282D86" }}
         />
 
         <View
@@ -90,7 +88,11 @@ export function CarVisualizer({
             </Text>
           </View>
         </View>
-        <IconArrowRigth onPress={goNext} size={24} style={{ color: "#ffff" }} />
+        <IconArrowRigth
+          onPress={goNext}
+          size={24}
+          style={{ color: "#282D86" }}
+        />
       </View>
     </View>
   );
@@ -104,21 +106,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
-    backgroundColor: "#282D86",
-    shadowColor: "#000",
+    backgroundColor: "#ffff",
+    shadowColor: "#0000003a",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 10,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#FE9000",
+    color: "#282D86",
     textAlign: "center",
   },
   vehicleInfo: {
@@ -131,12 +135,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "white",
+    color: "#282D86",
   },
   dot: {
     width: 30,
     height: 30,
-    backgroundColor: "#FE9000",
+    backgroundColor: "#282D86",
     borderRadius: 3,
     borderWidth: 1,
   },

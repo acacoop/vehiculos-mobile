@@ -4,7 +4,6 @@ import { getVehicle } from "../../services/vehicles";
 import {
   View,
   StyleSheet,
-  Image,
   Pressable,
   ActivityIndicator,
   Text,
@@ -61,10 +60,6 @@ export default function VehicleDetail() {
           headerTitle: "Vehículos disponibles",
           headerStyle: {
             backgroundColor: "#282D86",
-            borderBottomLeftRadius: 30,
-            borderBottomRightRadius: 30,
-            paddingBottom: 10,
-            height: 110,
           },
           headerTitleAlign: "center",
         }}
@@ -78,10 +73,7 @@ export default function VehicleDetail() {
         renderItem={({ item }) => (
           <View style={styles.containerInfocar}>
             <View style={styles.infoCar}>
-              <VehicleImage uri={item.imgUrl} />
-
               <VehicleTable data={item} />
-
               <VehicleButtons
                 vehicleId={item.id}
                 licensePlate={item.licensePlate}
@@ -93,7 +85,7 @@ export default function VehicleDetail() {
                 router.push(`/calendar`);
               }}
             >
-              <Text style={styles.textReserva}>Reservar</Text>
+              <Text style={styles.textReserva}>+ Reservar</Text>
             </Pressable>
           </View>
         )}
@@ -102,20 +94,6 @@ export default function VehicleDetail() {
     </View>
   );
 }
-
-const VehicleImage = ({ uri }) => (
-  <View style={styles.containerImage}>
-    {uri ? (
-      <Image source={{ uri }} style={styles.image} />
-    ) : (
-      <Image
-        source={require("../../assets/logo_azul.webp")}
-        style={styles.image}
-        resizeMode="contain"
-      />
-    )}
-  </View>
-);
 
 const VehicleTable = ({ data }) => (
   <Table
@@ -129,7 +107,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId, licensePlate, TechnicalSheet }) => {
+const VehicleButtons = ({ vehicleId, licensePlate }) => {
   const router = useRouter();
 
   return (
@@ -166,35 +144,28 @@ const VehicleButtons = ({ vehicleId, licensePlate, TechnicalSheet }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#ffffff" },
-  containerInfocar: {
+  container: {
     flex: 1,
+  },
+
+  containerInfocar: {
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 10,
     padding: 2,
     width: "100%",
+    gap: 20,
   },
   infoCar: {
-    flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     margin: 10,
     padding: 10,
     borderRadius: 8,
     width: "100%",
+    gap: 20,
   },
-  image: { width: 300, height: 150, borderRadius: 8 },
-  containerImage: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
-  },
+
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -224,6 +195,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     shadowColor: "#000",
+    minWidth: 400,
+    width: "100%",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -246,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#282D86",
     borderRadius: 8,
     margin: 30,
-    width: 300,
+    width: 380,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,

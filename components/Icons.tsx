@@ -237,3 +237,18 @@ export const IconClose = (props: {
     />
   );
 };
+
+export const IconFile = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="filetext1"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "#282D86"}
+      style={props.style}
+    />
+  );
+};

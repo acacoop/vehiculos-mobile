@@ -41,18 +41,27 @@ export function Table({ data }: { data: any }) {
 const style = StyleSheet.create({
   container: {
     flexDirection: "column",
-    width: 300,
-    margin: 20,
+    width: "100%",
+    padding: 20,
     gap: 10,
+    borderRadius: 20,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    shadowColor: "#0000006c",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
   keyText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#333",
+    color: "#282D86",
   },
   valueText: {
     fontSize: 20,
-    color: "#000",
+    color: "#FE9000",
   },
   itemContainer: {
     flexDirection: "row",

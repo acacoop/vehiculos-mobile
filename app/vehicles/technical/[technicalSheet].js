@@ -3,13 +3,12 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  FlatList,
-  Image,
+  ScrollView,
 } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { getVehicle } from "../../../services/vehicles";
-import { Table } from "../../../components/Table";
+import { InfoVehicle } from "../../../components/InfoVehicle";
 
 export default function TechnicalSheet() {
   const params = useLocalSearchParams();
@@ -72,7 +71,12 @@ export default function TechnicalSheet() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <Stack.Screen options={{ headerTitle: "Ficha técnica vehicular" }} />
+        <Stack.Screen
+          options={{
+            headerTitle: "Ficha técnica vehicular",
+            headerTitleAlign: "center",
+          }}
+        />
         <ActivityIndicator size="large" color="#282D86" />
       </View>
     );
@@ -91,58 +95,45 @@ export default function TechnicalSheet() {
     return null;
   }
 
+  const sections = [
+    {
+      title: "Información general",
+      items: [
+        { label: "Dominio", value: vehicleDetail.licensePlate },
+        { label: "Marca", value: vehicleDetail.brand },
+        { label: "Modelo", value: vehicleDetail.model },
+        { label: "Año", value: vehicleDetail.year },
+      ],
+    },
+    {
+      title: "Información técnica",
+      items: [
+        { label: "Tipo de vehículo", value: vehicleDetail.vehicleType },
+        { label: "Tipo de combustible", value: vehicleDetail.fuelType },
+        { label: "Transmisión", value: vehicleDetail.transmission },
+        { label: "N.º de motor", value: vehicleDetail.engineNumber },
+        { label: "N.º de chasis", value: vehicleDetail.chassisNumber },
+      ],
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Ficha técnica vehicular" }} />
-      <FlatList
-        data={[vehicleDetail]}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.infoCar}>
-            <VehicleTable data={item} />
-          </View>
-        )}
-        contentContainerStyle={styles.flatListContainer}
+      <ScrollView
+        contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}
-      ></FlatList>
+      >
+        <InfoVehicle sections={sections} />
+      </ScrollView>
     </View>
   );
 }
 
-const VehicleImage = ({ uri, licensePlate }) => (
-  <View style={styles.containerImage}>
-    {uri ? (
-      <Image source={{ uri }} style={styles.image} />
-    ) : (
-      <View style={styles.fallbackImage}>
-        <Text style={styles.fallbackText}>{licensePlate}</Text>
-      </View>
-    )}
-  </View>
-);
-
-const VehicleTable = ({ data }) => (
-  <Table
-    data={{
-      Dominio: data.licensePlate,
-      Año: data.year,
-      Marca: data.brand || "No informado",
-      Modelo: data.model || "No informado",
-      Tipo: data.vehicleType || "No informado",
-      Transmisión: data.transmission || "No informado",
-      "Tipo de combustible": data.fuelType || "No informado",
-      "N.º de motor": data.engineNumber || "No informado",
-      "N.º de chasis": data.chassisNumber || "No informado",
-    }}
-  />
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#F5F5F5",
   },
   scrollContainer: {
     alignItems: "center",
@@ -154,45 +145,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     paddingHorizontal: 24,
   },
-  flatListContainer: {
-    flexGrow: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%",
-  },
-  infoCar: {
-    width: "100%",
+  content: {
     paddingHorizontal: 24,
-    paddingVertical: 16,
-    gap: 16,
+    paddingVertical: 24,
+    rowGap: 32,
   },
   errorText: {
     marginTop: 16,
     fontSize: 16,
     color: "#d32f2f",
     textAlign: "center",
-  },
-  containerImage: {
-    width: "100%",
-    alignItems: "center",
-  },
-  image: {
-    width: "100%",
-    height: 200,
-    borderRadius: 12,
-    resizeMode: "cover",
-  },
-  fallbackImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 12,
-    backgroundColor: "#ECEFF1",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fallbackText: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#607D8B",
   },
 });

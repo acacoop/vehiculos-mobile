@@ -25,7 +25,12 @@ export default function VehicleMaintenanceEntry() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Detalle del Mantenimiento" }} />
+      <Stack.Screen
+        options={{
+          headerTitle: "Detalle del Mantenimiento",
+          headerTitleAlign: "center",
+        }}
+      />
       <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.containerInfocar}>

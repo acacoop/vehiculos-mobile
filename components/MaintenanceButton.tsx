@@ -45,7 +45,7 @@ export default function MaintenanceButton({
   return (
     <View>
       <Pressable onPress={() => setModalVisible(true)} style={styles.button}>
-        <Text style={styles.buttonText}>Agregar Mantenimiento</Text>
+        <Text style={styles.buttonText}>+ Agregar Mantenimiento</Text>
       </Pressable>
 
       <Modal
@@ -91,7 +91,7 @@ export default function MaintenanceButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#282D86",
-    padding: 20,
+    padding: 15,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
   },
   modalOverlay: {
     flex: 1,

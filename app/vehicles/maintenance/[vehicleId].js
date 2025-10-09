@@ -60,23 +60,14 @@ export default function Maintenance() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Mantenimiento del vehículo" }} />
+      <Stack.Screen
+        options={{
+          headerTitle: "Mantenimiento del vehículo",
+          headerTitleAlign: "center",
+        }}
+      />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            router.push({
-              pathname:
-                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
-              VehicleMaintenanceEntry: JSON.stringify(maintenance),
-            })
-          }
-        >
-          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
-            Mantenimiento correctivo
-          </Text>
-        </Pressable>
         {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
           <View
             key={category}
@@ -101,6 +92,20 @@ export default function Maintenance() {
             ))}
           </View>
         ))}
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname:
+                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+              VehicleMaintenanceEntry: JSON.stringify(maintenance),
+            })
+          }
+        >
+          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
+            + Mantenimiento correctivo
+          </Text>
+        </Pressable>
       </ScrollView>
     </View>
   );
@@ -109,7 +114,7 @@ export default function Maintenance() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    paddingTop: 30,
   },
   scrollContainer: {
     alignItems: "center",
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#282D86",
-    width: 320,
+    width: "90%",
     height: 50,
     justifyContent: "center",
     alignItems: "center",

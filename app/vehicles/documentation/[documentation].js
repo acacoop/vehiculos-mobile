@@ -15,20 +15,9 @@ export default function Documentation() {
   const { documentation } = useLocalSearchParams();
   const router = useRouter();
   const [vehicleDetail, setVehicles] = useState(null);
-  // Local demo fallback
-  const MOCK_VEHICLE = {
-    id: "mock-1",
-    licensePlate: documentation || "MOCK-PLATE",
-    brand: "DemoBrand",
-    model: "DemoModel",
-    year: 2022,
-    imgUrl: "",
-    engineNumber: "EN-MOCK-1",
-    chassisNumber: "CH-MOCK-1",
-  };
 
   useEffect(() => {
-    getVehicle(documentation).then((v) => setVehicles(v || MOCK_VEHICLE));
+    getVehicle(documentation).then((v) => setVehicles(v || null));
   }, [documentation]);
   if (vehicleDetail === null) {
     return (
@@ -40,7 +29,9 @@ export default function Documentation() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Documentación" }} />
+      <Stack.Screen
+        options={{ headerTitle: "Documentación", headerTitleAlign: "center" }}
+      />
       <ScrollView
         styles={styles.scrollViewContainer}
         showsVerticalScrollIndicator={false}
@@ -54,7 +45,7 @@ export default function Documentation() {
           </View>
         </View>
         <View style={styles.tittleContainer}>
-          <Text style={styles.Tittle}>Seguro </Text>
+          <Text style={styles.Tittle}>Seguro</Text>
           <View style={styles.view}>
             <DownloadButton />
           </View>
@@ -75,13 +66,12 @@ export default function Documentation() {
 styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   scrollViewContainer: {
-    marginBottom: 20,
+    width: "100%",
   },
   Tittle: {
     fontSize: 24,
@@ -89,7 +79,6 @@ styles = StyleSheet.create({
     color: "#282D86",
     marginTop: 30,
     textAlign: "start",
-    marginLeft: 20,
   },
   view: {
     width: "100%",
@@ -109,8 +98,8 @@ styles = StyleSheet.create({
   },
   tittleContainer: {
     width: "100%",
-    justifyContent: "center",
-    alignItems: "start",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     marginTop: 20,
   },
 });
