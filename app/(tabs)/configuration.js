@@ -4,11 +4,18 @@ import { IconUser, IconWallet, IconLogout } from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
 import { PressableButton } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Configuration() {
   const router = useRouter();
+  const { signOut } = useAuth();
   const configButtons = ({ user }) => {
     router.push(`/configuration/${user}`);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.replace("/login");
   };
 
   const openMiArgentina = async () => {
@@ -57,6 +64,7 @@ export default function Configuration() {
         <PressableButton
           text="Cerrar sesión"
           icon={({ pressed }) => <IconLogout pressed={pressed} />}
+          onPress={handleSignOut}
         />
       </View>
     </View>

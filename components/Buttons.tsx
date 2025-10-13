@@ -3,7 +3,7 @@ import { StyleSheet, Pressable, Text, View } from "react-native";
 type PressableButtonProps = {
   text: string;
   icon: (props: { pressed: boolean }) => React.JSX.Element;
-  onPress: () => void;
+  onPress: () => void | Promise<void>;
 };
 
 export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
