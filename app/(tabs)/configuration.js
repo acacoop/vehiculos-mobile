@@ -1,14 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Linking, Platform } from "react-native";
-import {
-  IconUser,
-  IconWallet,
-  IconLock,
-  IconLogout,
-} from "../../components/Icons";
+import { View, StyleSheet, Linking, Platform, Text } from "react-native";
+import { IconUser, IconWallet, IconLogout } from "../../components/Icons";
+import { CardConfig } from "../../components/CardConfig";
 import { PressableButton } from "../../components/Buttons";
-import { Stack } from "expo-router";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 export default function Configuration() {
   const router = useRouter();
@@ -43,19 +38,22 @@ export default function Configuration() {
           headerTitle: "Configuración",
         }}
       />
-
       <View style={styles.containerconfig}>
-        <PressableButton
-          text="Usuario"
+        <View style={{ textAlign: "start", width: "90%", marginTop: 20 }}>
+          <Text style={styles.text}>Cuenta</Text>
+        </View>
+        <CardConfig
+          title="Información de la cuenta"
+          description="Gestionar Información de la cuenta"
+          icon={<IconUser />}
           onPress={() => configButtons({ user: "user" })}
-          icon={({ pressed }) => <IconUser pressed={pressed} />}
         />
-        <PressableButton
-          text="Credenciales"
-          icon={({ pressed }) => <IconWallet pressed={pressed} />}
+        <CardConfig
+          title="Credenciales"
+          description="Consulta con MiArgentina los documentos disponibles"
+          icon={<IconWallet />}
           onPress={openMiArgentina}
         />
-
         <PressableButton
           text="Cerrar sesión"
           icon={({ pressed }) => <IconLogout pressed={pressed} />}
@@ -68,18 +66,21 @@ export default function Configuration() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-
+    justifyContent: "flex-start",
     flexDirection: "column",
+    backgroundColor: "#f9f9f9",
   },
   text: {
     fontSize: 20,
+    fontWeight: "bold",
+    color: "#282D86",
   },
   containerconfig: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
-    gap: 50,
+    gap: 10,
+    width: "100%",
   },
 });

@@ -11,14 +11,14 @@ export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: pressed ? "#282D86" : "#f9f9f9" },
+        { backgroundColor: pressed ? "#FFF" : "#FE9000" },
       ]}
       onPress={onPress}
     >
       {({ pressed }) => (
         <View style={styles.content}>
           {icon({ pressed })}
-          <Text style={[styles.text, { color: pressed ? "white" : "#282D86" }]}>
+          <Text style={[styles.text, { color: pressed ? "#FE9000" : "#fff" }]}>
             {text}
           </Text>
         </View>
@@ -30,13 +30,12 @@ export function PressableButton({ text, icon, onPress }: PressableButtonProps) {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "600",
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 20,
+    justifyContent: "center",
     paddingVertical: 18,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -48,11 +47,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: 250,
+    width: "90%",
+    color: "#ffff",
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    justifyContent: "center",
+    gap: 20,
   },
 });

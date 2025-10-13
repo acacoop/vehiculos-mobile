@@ -108,7 +108,7 @@ export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
     <AntDesign
       name="logout"
       size={20}
-      color={props.pressed ? "white" : "#282D86"}
+      color={props.pressed ? "#fe9000" : "#ffffff"}
       style={props.style}
     />
   );
