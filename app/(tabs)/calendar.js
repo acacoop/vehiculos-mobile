@@ -124,7 +124,7 @@ const Calendar = () => {
           style={styles.buttonReserve}
           onPress={() => setShowReserveModal(true)}
         >
-          <Text style={styles.buttonTextReserve}>Reservar vehículo</Text>
+          <Text style={styles.buttonTextReserve}> + Reservar vehículo</Text>
         </Pressable>
       </View>
 
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     gap: 20,
     justifyContent: "space-between",
-    backgroundColor: "#f9f9f9",
     alignItems: "center",
   },
   button: {
@@ -171,9 +170,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   buttonReserve: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#FE9000",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 30,
     alignItems: "center",
     width: 350,
     alignSelf: "center",
