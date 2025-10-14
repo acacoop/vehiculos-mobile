@@ -87,7 +87,7 @@ export function Schedule({
       >
         <Text style={styles.title}>Detalles de la Reserva</Text>
         <View style={styles.containerImage}>
-          <IconCar size={25} />
+          <IconCar size={25} color="#fe9000" />
         </View>
       </View>
 

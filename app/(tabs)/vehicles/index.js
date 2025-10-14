@@ -60,11 +60,7 @@ export default function Vehicles() {
           data={vehicles}
           renderItem={({ item }) => <VehicleCard vehicle={item} />}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{
-            alignItems: "center",
-            padding: 20,
-            gap: 20,
-          }}
+          contentContainerStyle={styles.listContent}
         />
       )}
     </View>
@@ -96,5 +92,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 32,
+  },
+  listContent: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    gap: 20,
+    alignItems: "stretch",
   },
 });

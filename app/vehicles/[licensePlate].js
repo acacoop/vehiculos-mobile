@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
-import { IconTool, IconClip, IconIdCard } from "../../components/Icons";
+import { IconClip, IconIdCard, IconArrowRigth } from "../../components/Icons";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -68,6 +68,7 @@ export default function VehicleDetail() {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         bounces={false}
+        style={{ width: "100%", flex: 1 }}
         data={[vehicleDetail]}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
@@ -79,18 +80,26 @@ export default function VehicleDetail() {
                 licensePlate={item.licensePlate}
               />
             </View>
-            <Pressable
-              style={styles.PressableReservar}
-              onPress={() => {
-                router.push(`/calendar`);
-              }}
-            >
-              <Text style={styles.textReserva}>+ Reservar</Text>
-            </Pressable>
           </View>
         )}
         contentContainerStyle={styles.flatListContainer}
       />
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 20,
+          justifyContent: "center",
+        }}
+      >
+        <Pressable
+          style={styles.PressableReservar}
+          onPress={() => {
+            router.push(`/calendar`);
+          }}
+        >
+          <Text style={styles.textReserva}> + Reservar</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -113,31 +122,31 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
   return (
     <View style={styles.containerButton}>
       <Pressable
-        style={styles.Pressable}
+        style={styles.actionButton}
         onPress={() => {
           router.push(`/vehicles/maintenance/${vehicleId}`);
         }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
-        <IconTool />
+        <IconArrowRigth size={20} />
       </Pressable>
       <Pressable
-        style={styles.Pressable}
+        style={styles.actionButton}
         onPress={() => {
           router.push(`/vehicles/technical/${licensePlate}`);
         }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
-        <IconClip />
+        <IconArrowRigth size={20} />
       </Pressable>
       <Pressable
-        style={styles.Pressable}
+        style={styles.actionButton}
         onPress={() => {
           router.push(`/vehicles/documentation/${licensePlate}`);
         }}
       >
         <Text style={styles.buttonText}>Documentación</Text>
-        <IconIdCard />
+        <IconArrowRigth size={20} />
       </Pressable>
     </View>
   );
@@ -146,24 +155,24 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
   },
 
   containerInfocar: {
+    flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: 10,
-    padding: 2,
+    alignItems: "stretch",
+    paddingVertical: 20,
     width: "100%",
-    gap: 20,
+    gap: 24,
   },
   infoCar: {
+    flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center",
-    margin: 10,
-    padding: 10,
-    borderRadius: 8,
+    alignItems: "stretch",
+    paddingHorizontal: 20,
+    gap: 24,
     width: "100%",
-    gap: 20,
   },
 
   loadingContainer: {
@@ -181,22 +190,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   containerButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    borderRadius: 8,
     width: "100%",
-    gap: 10,
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: 12,
   },
-  Pressable: {
+  actionButton: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     shadowColor: "#000",
-    minWidth: 400,
-
     shadowOffset: {
       width: 0,
       height: 2,
@@ -204,8 +209,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin: 10,
-    width: "90%",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    width: "100%",
   },
   buttonText: {
     color: "#282D86",
@@ -218,13 +224,14 @@ const styles = StyleSheet.create({
   PressableReservar: {
     backgroundColor: "#282D86",
     borderRadius: 8,
-    margin: 30,
-    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5,
+    width: "90%",
   },
   textReserva: {
     color: "#FFFFFF",
@@ -235,8 +242,10 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    paddingHorizontal: 20,
+    paddingBottom: 40,
     width: "100%",
   },
 });

@@ -55,6 +55,7 @@ export function CarVisualizer({
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
+
             gap: 30,
             flex: 1,
           }}
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   },
   vehicleInfo: {
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
