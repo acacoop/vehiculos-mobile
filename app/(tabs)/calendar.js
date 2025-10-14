@@ -199,7 +199,9 @@ const Calendar = () => {
       )}
       <View
         style={{
+          flexDirection: "column",
           gap: 20,
+          width: "100%",
         }}
       >
         <Pressable
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    width: 350,
+    width: "90%",
     alignSelf: "center",
     shadowColor: "#00000070",
     shadowOffset: {
@@ -266,9 +268,9 @@ const styles = StyleSheet.create({
   buttonReserve: {
     backgroundColor: "#FE9000",
     padding: 15,
-    borderRadius: 30,
+    borderRadius: 10,
     alignItems: "center",
-    width: 350,
+    width: "90%",
     alignSelf: "center",
     shadowColor: "#00000070",
     shadowOffset: {

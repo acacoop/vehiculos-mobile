@@ -214,10 +214,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   month: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "start",
     color: "#282D86",
+    marginLeft: 10,
   },
   emptyContainer: {
     flex: 1,

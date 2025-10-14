@@ -11,6 +11,13 @@ import { IconArrowLeft, IconArrowRigth, IconCalendar } from "./Icons";
 
 const daysOfWeek = ["D", "L", "Ma", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
+const CELL_HEIGHT = 34;
+const MAX_WEEK_ROWS = 6;
+const GRID_GAP = 4;
+const GRID_ROW_COUNT = MAX_WEEK_ROWS + 1; // header row + week rows
+const GRID_WIDTH = CELL_WIDTH * 7 + 14;
+const GRID_HEIGHT =
+  GRID_ROW_COUNT * CELL_HEIGHT + GRID_GAP * (GRID_ROW_COUNT - 1);
 
 const generateWeeksInMonth = (month: number, year: number) => {
   const totalDays = new Date(year, month, 0).getDate();
@@ -107,12 +114,17 @@ export const Calendario = ({
         <TouchableOpacity
           onPress={handleMoveToToday}
           style={{
-            borderWidth: 1,
-            borderColor: "#282D86",
             borderRadius: 20,
-            paddingVertical: 6,
-            paddingHorizontal: 18,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingVertical: 10,
+            paddingHorizontal: 15,
             backgroundColor: "transparent",
+            elevation: 2,
+            shadowColor: "#000000f6",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.4,
+            shadowRadius: 1.41,
           }}
         >
           <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>
@@ -147,14 +159,8 @@ export const Calendario = ({
         />
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          gap: 2,
-          justifyContent: "space-between",
-        }}
-      >
-        <View style={styles.weekRow}>
+      <View style={styles.gridContainer}>
+        <View style={[styles.weekRow, styles.gridRow]}>
           {daysOfWeek.map((day) => (
             <View key={day} style={styles.dayOfWeek}>
               <Text style={styles.dayText}>{day}</Text>
@@ -162,18 +168,13 @@ export const Calendario = ({
           ))}
         </View>
 
-        <View
-          style={{
-            flex: 1,
-            gap: 2,
-            justifyContent: "center",
-          }}
-        >
+        <View style={styles.weeksWrapper}>
           {weeks.map((week, index) => (
             <View
               key={index}
               style={[
                 styles.weekRow,
+                styles.gridRow,
                 index === 0
                   ? { justifyContent: "flex-end" }
                   : index === weeks.length - 1
@@ -221,12 +222,13 @@ export const Calendario = ({
 
 const styles = StyleSheet.create({
   container: {
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
     padding: 20,
     backgroundColor: "#ffff",
     borderRadius: 10,
     gap: 2,
-    justifyContent: "space-between",
-    height: CELL_WIDTH * 7 + 10,
     shadowColor: "#00000070",
     shadowOffset: {
       width: 0,
@@ -241,9 +243,9 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignContent: "center",
     alignItems: "center",
-    gap: 10,
+    gap: 20,
+    width: "90%",
   },
   navButton: {
     backgroundColor: "#282d8621",
@@ -264,9 +266,27 @@ const styles = StyleSheet.create({
     gap: 1,
     justifyContent: "center",
   },
+  gridContainer: {
+    width: "100%",
+    alignItems: "center",
+    height: GRID_HEIGHT,
+    marginTop: 12,
+    justifyContent: "flex-start",
+  },
+  weeksWrapper: {
+    width: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: GRID_GAP,
+  },
+  gridRow: {
+    width: GRID_WIDTH,
+    alignSelf: "center",
+  },
   dayOfWeek: {
     width: CELL_WIDTH,
-    height: 30,
+    height: CELL_HEIGHT,
     fontSize: 16,
     color: "#282D86",
     textAlign: "center",
@@ -276,7 +296,7 @@ const styles = StyleSheet.create({
   },
   dayCell: {
     width: CELL_WIDTH,
-    height: 30,
+    height: CELL_HEIGHT,
     justifyContent: "center",
     alignItems: "center",
     margin: 1,

@@ -101,7 +101,7 @@ export function CarVisualizer({
 const styles = StyleSheet.create({
   container: {
     height: 100,
-    width: 350,
+    width: "90%",
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
