@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Stack } from "expo-router";
 import {
   View,
@@ -12,20 +12,15 @@ import { Schedule } from "../../components/Schedule";
 import { getAllVehicles } from "../../services/vehicles";
 import { DatePicker } from "../../components/DatePicker";
 import { CarVisualizer } from "../../components/CarVisualizer";
+import { getReservationsByVehicle } from "../../services/reservations";
 
 const getMonthYearKey = (date) => {
   const d = new Date(date);
   return d.toLocaleString("es-ES", { month: "long", year: "numeric" });
 };
 
-const groupReservationsByMonth = (reservations, selectedVehicle) => {
-  const filtered = selectedVehicle
-    ? reservations.filter(
-        (res) => res.licensePlate === selectedVehicle.licensePlate
-      )
-    : reservations;
-
-  const grouped = filtered.reduce((acc, res) => {
+const groupReservationsByMonth = (reservations) => {
+  const grouped = reservations.reduce((acc, res) => {
     const key = getMonthYearKey(res.from);
     if (!acc[key]) acc[key] = [];
     acc[key].push(res);
@@ -43,6 +38,9 @@ export default function Reservations() {
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reservations, setReservations] = useState([]);
+  const [reservationsLoading, setReservationsLoading] = useState(true);
+  const [reservationsError, setReservationsError] = useState(null);
 
   // Set selectedVehicle from vehicleId param after vehicles are loaded
   useEffect(() => {
@@ -67,14 +65,6 @@ export default function Reservations() {
   const [fromDate, setFromDate] = useState(initialFrom);
   const [toDate, setToDate] = useState(initialTo);
 
-  const reservations = params.reservations
-    ? JSON.parse(params.reservations).map((r) => ({
-        ...r,
-        from: new Date(r.from),
-        to: new Date(r.to),
-      }))
-    : [];
-
   useEffect(() => {
     getAllVehicles()
       .then((data) => {
@@ -85,8 +75,57 @@ export default function Reservations() {
       });
   }, []);
 
+  useEffect(() => {
+    if (!selectedVehicle?.id) {
+      setReservations([]);
+      setReservationsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    setReservationsLoading(true);
+    setReservationsError(null);
+
+    getReservationsByVehicle(selectedVehicle.id)
+      .then((data) => {
+        if (!isMounted) return;
+        setReservations(data);
+      })
+      .catch((error) => {
+        console.error("Error al cargar las reservas", error);
+        if (!isMounted) return;
+        setReservations([]);
+        setReservationsError(
+          error?.message || "No se pudieron obtener las reservas"
+        );
+      })
+      .finally(() => {
+        if (isMounted) setReservationsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedVehicle?.id]);
+
   // Date filter logic: intersection with at least one day (compare only by date)
-  const filteredReservations = reservations.filter((res) => {
+  const mappedReservations = useMemo(
+    () =>
+      reservations.map((res) => ({
+        id: res.id,
+        from: res.startDate,
+        to: res.endDate,
+        licensePlate: res.licensePlate,
+        vehicleId: res.vehicleId,
+        vehicleLabel: `${res.vehicleBrand} ${res.vehicleModel}`.trim(),
+        requesterName: `${res.user.firstName ?? ""} ${res.user.lastName ?? ""}`
+          .trim()
+          .replace(/\s+/g, " "),
+      })),
+    [reservations]
+  );
+
+  const filteredReservations = mappedReservations.filter((res) => {
     if (!fromDate || !toDate) return true;
     // Compare only by date (ignore time)
     const resFrom = new Date(res.from);
@@ -100,14 +139,13 @@ export default function Reservations() {
     return resFrom <= filterTo && resTo >= filterFrom;
   });
 
-  const sections = groupReservationsByMonth(
-    filteredReservations,
-    selectedVehicle
-  );
+  const sections = groupReservationsByMonth(filteredReservations);
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Reservas" }} />
+      <Stack.Screen
+        options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
+      />
 
       <CarVisualizer
         vehicles={vehicles}
@@ -120,8 +158,17 @@ export default function Reservations() {
         <DatePicker value={fromDate} label="Desde" onChange={setFromDate} />
         <DatePicker value={toDate} label="Hasta" onChange={setToDate} />
       </View>
-
-      {filteredReservations.length === 0 ? (
+      {reservationsLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#282D86" />
+        </View>
+      ) : reservationsError ? (
+        <View style={styles.emptyContainer}>
+          <Text style={[styles.emptyText, { color: "#D32F2F" }]}>
+            {reservationsError}
+          </Text>
+        </View>
+      ) : filteredReservations.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No existen reservas disponibles</Text>
         </View>
@@ -130,7 +177,7 @@ export default function Reservations() {
           contentContainerStyle={styles.scrollContent}
           style={{ width: "100%" }}
           sections={sections}
-          keyExtractor={(item, index) => item.licensePlate + index}
+          keyExtractor={(item, index) => item.id + index}
           renderSectionHeader={({ section: { title } }) => (
             <Text style={styles.month}>{title}</Text>
           )}
@@ -139,7 +186,8 @@ export default function Reservations() {
               from={item.from}
               to={item.to}
               licensePlate={item.licensePlate}
-              vehicles={vehicles}
+              vehicleLabel={item.vehicleLabel}
+              requesterName={item.requesterName}
             />
           )}
         />
@@ -152,7 +200,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
     flex: 1,
-    backgroundColor: "#fff",
+
     alignItems: "center",
   },
   scrollContent: {

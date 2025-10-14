@@ -122,7 +122,7 @@ export const IconArrowLeft = (props: {
 }) => {
   return (
     <AntDesign
-      name="leftcircleo"
+      name="left"
       onPress={props.onPress}
       size={props.size || 50}
       color={props.pressed ? "white" : "#282D86"}
@@ -139,7 +139,7 @@ export const IconArrowRigth = (props: {
 }) => {
   return (
     <AntDesign
-      name="rightcircleo"
+      name="right"
       onPress={props.onPress}
       size={props.size || 50}
       color={props.pressed ? "white" : "#282D86"}
@@ -261,6 +261,21 @@ export const IconQuestion = (props: {
   return (
     <AntDesign
       name="question"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "#282D86"}
+      style={props.style}
+    />
+  );
+};
+
+export const IconClock = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="clockcircleo"
       size={props.size || 25}
       color={props.pressed ? "white" : "#282D86"}
       style={props.style}

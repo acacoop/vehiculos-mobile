@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ScrollView,
   View,
@@ -6,27 +6,35 @@ import {
   Pressable,
   Text,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { Stack, useRouter } from "expo-router";
 import { getAllVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
+import {
+  createReservation,
+  getReservationsByVehicle,
+} from "../../services/reservations";
+import { getCurrentUser } from "../../services/me";
 
 const Calendar = () => {
-  const [reservations, setReservations] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const router = useRouter();
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reservations, setReservations] = useState([]);
+  const [reservationsLoading, setReservationsLoading] = useState(false);
+  const [reservationsError, setReservationsError] = useState(null);
   const [showReserveModal, setShowReserveModal] = useState(false);
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isSubmittingReservation, setIsSubmittingReservation] = useState(false);
 
   const navigateToReservations = ({ start, end } = {}) => {
-    const params = {
-      reservations: JSON.stringify(reservations),
-    };
+    const params = {};
     if (selectedVehicle) params.vehicleId = selectedVehicle.id;
     if (start) params.start = start;
     if (end) params.end = end;
@@ -45,27 +53,98 @@ const Calendar = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  const handleConfirmReservationFromCalendar = (from, to) => {
-    setReservations((prev) => [
-      ...prev,
-      { from, to, vehicleId: selectedVehicle.id },
-    ]);
+  useEffect(() => {
+    getCurrentUser()
+      .then((user) => {
+        setCurrentUser(user);
+      })
+      .catch((error) => {
+        console.error("No se pudo obtener el usuario actual", error);
+        setCurrentUser(null);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!selectedVehicle?.id) {
+      setReservations([]);
+      return;
+    }
+
+    let isMounted = true;
+    setReservationsLoading(true);
+    setReservationsError(null);
+
+    getReservationsByVehicle(selectedVehicle.id)
+      .then((data) => {
+        if (!isMounted) return;
+        setReservations(data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las reservas", error);
+        if (!isMounted) return;
+        setReservations([]);
+        setReservationsError(
+          error?.message || "No se pudieron cargar las reservas"
+        );
+      })
+      .finally(() => {
+        if (isMounted) setReservationsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedVehicle?.id]);
+
+  const handleModalConfirm = async () => {
+    if (!selectedVehicle?.id) {
+      Alert.alert(
+        "Selecciona un vehículo",
+        "Debes elegir un vehículo antes de crear la reserva."
+      );
+      return;
+    }
+
+    if (!currentUser?.id) {
+      Alert.alert(
+        "Sesión no disponible",
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
+      );
+      return;
+    }
+
+    try {
+      setIsSubmittingReservation(true);
+      const created = await createReservation({
+        vehicleId: selectedVehicle.id,
+        userId: currentUser.id,
+        startDate: fromDate,
+        endDate: toDate,
+      });
+      setReservations((prev) => [created, ...prev]);
+      setShowReserveModal(false);
+    } catch (error) {
+      console.error("No se pudo crear la reserva", error);
+      Alert.alert(
+        "Error",
+        error?.message || "No se pudo crear la reserva. Intenta nuevamente."
+      );
+    } finally {
+      setIsSubmittingReservation(false);
+    }
   };
 
-  const handleConfirmReservationFromButton = (reservation) => {
-    setReservations((prev) => [
-      ...prev,
-      { ...reservation, licensePlate: selectedVehicle.licensePlate }, // Cambia vehicleId por licensePlate
-    ]);
-    setShowReserveModal(false);
-  };
-
-  const handleModalConfirm = () => {
-    handleConfirmReservationFromButton({
-      from: fromDate,
-      to: toDate,
-    });
-  };
+  const calendarReservations = useMemo(
+    () =>
+      reservations.map((reservation) => ({
+        id: reservation.id,
+        from: reservation.startDate,
+        to: reservation.endDate,
+        vehicleId: reservation.vehicleId,
+        licensePlate: reservation.licensePlate,
+      })),
+    [reservations]
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -92,7 +171,7 @@ const Calendar = () => {
         selectedVehicle && (
           <Calendario
             key={selectedVehicle.id}
-            reservations={reservations}
+            reservations={calendarReservations}
             selectedVehicle={selectedVehicle}
             onDayPress={(date) => {
               const day = new Date(date);
@@ -105,6 +184,18 @@ const Calendar = () => {
             }}
           />
         )
+      )}
+      {reservationsLoading && (
+        <ActivityIndicator
+          size="small"
+          color="#282D86"
+          style={{ marginTop: 10 }}
+        />
+      )}
+      {reservationsError && (
+        <Text style={{ color: "#D32F2F", marginTop: 8 }}>
+          {reservationsError}
+        </Text>
       )}
       <View
         style={{
@@ -136,6 +227,8 @@ const Calendar = () => {
         toDate={toDate}
         setFromDate={setFromDate}
         setToDate={setToDate}
+        confirmLoading={isSubmittingReservation}
+        confirmDisabled={!selectedVehicle}
       />
     </ScrollView>
   );

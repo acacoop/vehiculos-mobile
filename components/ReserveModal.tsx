@@ -11,6 +11,8 @@ type ReserveModalProps = {
   toDate: Date;
   setFromDate: (date: Date) => void;
   setToDate: (date: Date) => void;
+  confirmDisabled?: boolean;
+  confirmLoading?: boolean;
 };
 
 export const ReserveModal = ({
@@ -21,6 +23,8 @@ export const ReserveModal = ({
   toDate,
   setFromDate,
   setToDate,
+  confirmDisabled,
+  confirmLoading,
 }: ReserveModalProps) => {
   // Si cambia desde y es mayor que hasta, iguala hasta a desde
   const handleFromChange = (date: Date) => {
@@ -66,8 +70,17 @@ export const ReserveModal = ({
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
-              <Text style={styles.buttonText}>Confirmar</Text>
+            <TouchableOpacity
+              style={[
+                styles.confirmButton,
+                (confirmDisabled || confirmLoading) && { opacity: 0.7 },
+              ]}
+              onPress={onConfirm}
+              disabled={confirmDisabled || confirmLoading}
+            >
+              <Text style={styles.buttonText}>
+                {confirmLoading ? "Confirmando..." : "Confirmar"}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

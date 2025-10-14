@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#282D86",
   },
   errorText: {
     fontSize: 16,
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   historyEntry: {
     backgroundColor: "#fff",
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 10,
     borderColor: "#ddd",
     borderWidth: 1,

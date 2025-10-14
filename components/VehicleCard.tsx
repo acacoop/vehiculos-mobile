@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { Vehicle } from "../interfaces/vehicle";
 import { Image, Text, View, StyleSheet, Pressable } from "react-native";
+import { IconCar } from "./Icons";
 
 type VehicleCardProps = { vehicle: Vehicle };
 export function VehicleCard({ vehicle }: VehicleCardProps) {
@@ -8,7 +9,9 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
     <Link href={`/vehicles/${vehicle.licensePlate}`} asChild>
       <Pressable>
         <View style={styles.card}>
-          <Image source={{ uri: vehicle.imgUrl }} style={styles.image} />
+          <View style={styles.containerImage}>
+            <IconCar size={40} />
+          </View>
           <View style={styles.textContainer}>
             <Text style={styles.text1}>
               {vehicle.brand} {vehicle.model}
@@ -28,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
     width: 350,
+    height: 100,
     backgroundColor: "#f9f9f9",
     padding: 10,
     borderRadius: 15,
@@ -39,11 +43,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
   },
   textContainer: {
     flex: 1,
@@ -59,5 +58,13 @@ const styles = StyleSheet.create({
   text2: {
     fontSize: 16,
     color: "#FE9000",
+  },
+  containerImage: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+    backgroundColor: "#f1f1f1ff",
+    borderRadius: "100%",
+    padding: 5,
   },
 });

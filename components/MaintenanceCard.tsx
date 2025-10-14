@@ -67,13 +67,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#f1f1f1ff",
     borderRadius: "100%",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+
     padding: 5,
   },
 });
