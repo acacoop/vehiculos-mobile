@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: "#000",
     minWidth: 400,
-    width: "100%",
+
     shadowOffset: {
       width: 0,
       height: 2,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     margin: 10,
-    width: 300,
+    width: "90%",
   },
   buttonText: {
     color: "#282D86",
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#282D86",
     borderRadius: 8,
     margin: 30,
-    width: 380,
+    width: "90%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,

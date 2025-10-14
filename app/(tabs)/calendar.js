@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: "space-between",
     alignItems: "center",
+    width: "100%",
   },
   button: {
     backgroundColor: "#ffff",

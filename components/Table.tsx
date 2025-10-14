@@ -41,7 +41,7 @@ export function Table({ data }: { data: any }) {
 const style = StyleSheet.create({
   container: {
     flexDirection: "column",
-    width: "100%",
+    width: "90%",
     padding: 20,
     gap: 10,
     borderRadius: 20,

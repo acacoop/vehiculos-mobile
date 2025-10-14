@@ -4,10 +4,10 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   Pressable,
 } from "react-native";
+import { DatePicker } from "./DatePicker";
 
 interface MaintenanceEntry {
   date: string;
@@ -22,23 +22,23 @@ export default function MaintenanceButton({
   onAddMaintenance,
 }: MaintenanceButtonProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState("");
 
   const handleSave = () => {
-    if (!date || !description) {
+    if (!description.trim()) {
       alert("Por favor completa todos los campos");
       return;
     }
 
     const newEntry: MaintenanceEntry = {
-      date,
-      description,
+      date: date.toISOString(),
+      description: description.trim(),
     };
 
     onAddMaintenance(newEntry);
     setModalVisible(false);
-    setDate("");
+    setDate(new Date());
     setDescription("");
   };
 
@@ -57,30 +57,39 @@ export default function MaintenanceButton({
         <View style={styles.modalOverlay}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>Nuevo Mantenimiento</Text>
-
-            <TextInput
-              placeholder="Fecha"
+            <DatePicker
+              label="Fecha"
               value={date}
-              onChangeText={setDate}
-              style={styles.input}
+              onChange={setDate}
+              containerStyle={styles.datePicker}
             />
             <TextInput
               placeholder="Descripción"
               value={description}
               onChangeText={setDescription}
               style={styles.input}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
             />
-
-            <Pressable onPress={handleSave} style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Guardar</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.cancelButton}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 10,
+              }}
             >
-              <Text style={styles.cancelButtonText}>Cancelar</Text>
-            </Pressable>
+              <Pressable onPress={handleSave} style={styles.saveButton}>
+                <Text style={styles.saveButtonText}>Guardar</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setModalVisible(false)}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.cancelButtonText}>Cancelar</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
@@ -110,11 +119,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.21)",
   },
   modalView: {
-    width: 300,
+    width: "90%",
     backgroundColor: "white",
     borderRadius: 8,
     padding: 20,
-    alignItems: "center",
+    alignItems: "stretch",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -127,10 +136,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#282D86",
   },
+  datePicker: {
+    width: "100%",
+    marginBottom: 12,
+  },
   input: {
     width: "100%",
     marginBottom: 12,
-    padding: 20,
+    padding: 16,
     borderRadius: 8,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -141,12 +154,11 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: "#282D86",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 8,
     marginTop: 10,
-    width: "100%",
-    alignItems: "center",
+    width: "50%",
   },
 
   saveButtonText: {
@@ -157,12 +169,12 @@ const styles = StyleSheet.create({
 
   cancelButton: {
     backgroundColor: "#E53935",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 8,
     marginTop: 10,
-    width: "100%",
-    alignItems: "center",
+    width: "50%",
+    padding: 10,
   },
 
   cancelButtonText: {

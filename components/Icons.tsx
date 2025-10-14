@@ -252,3 +252,18 @@ export const IconFile = (props: {
     />
   );
 };
+
+export const IconQuestion = (props: {
+  pressed?: boolean;
+  style?: any;
+  size?: number;
+}) => {
+  return (
+    <AntDesign
+      name="question"
+      size={props.size || 25}
+      color={props.pressed ? "white" : "#282D86"}
+      style={props.style}
+    />
+  );
+};

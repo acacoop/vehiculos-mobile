@@ -1,6 +1,11 @@
 import React from "react";
 import { View, StyleSheet, Linking, Platform, Text } from "react-native";
-import { IconUser, IconWallet, IconLogout } from "../../components/Icons";
+import {
+  IconUser,
+  IconWallet,
+  IconLogout,
+  IconQuestion,
+} from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
 import { PressableButton } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
@@ -38,6 +43,12 @@ export default function Configuration() {
     }
   };
 
+  const openSupportPortal = async () => {
+    await Linking.openURL(
+      "https://acacoop.atlassian.net/servicedesk/customer/portals"
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -61,6 +72,24 @@ export default function Configuration() {
           icon={<IconWallet />}
           onPress={openMiArgentina}
         />
+        <View style={{ textAlign: "start", width: "90%", marginTop: 20 }}>
+          <Text style={styles.text}>Soporte</Text>
+        </View>
+        <CardConfig
+          title="Contacto"
+          description="Contáctanos para soporte o sugerencias"
+          icon={<IconQuestion />}
+          onPress={openSupportPortal}
+        />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          alignItems: "center",
+          marginBottom: 30,
+        }}
+      >
         <PressableButton
           text="Cerrar sesión"
           icon={({ pressed }) => <IconLogout pressed={pressed} />}

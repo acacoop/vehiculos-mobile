@@ -10,10 +10,6 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
     <View style={styles.container}>
       <View style={styles.containerCard}>
         <View style={styles.containerImage}>
-          {/* <Image
-            source={require("../assets/aceite.jpg")}
-            style={{ width: 75, height: 75, borderRadius: 12 }}
-          /> */}
           <IconTool size={40} />
         </View>
         <View style={styles.containerText}>
@@ -59,7 +55,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
-    borderColor: "#c4c4c4ff",
+    borderColor: "#e4e2e2ff",
     borderWidth: 1,
   },
   containerText: {

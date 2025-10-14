@@ -41,7 +41,7 @@ export default function VehicleMaintenanceEntry() {
             </Text>
           </View>
           <View style={styles.rowOdd}>
-            <Text style={styles.textTitle}>Kilómetros actuales:</Text>
+            <Text style={styles.textTitle}>Kilómetros del mantenimiento:</Text>
             <Text style={styles.textInfo}>
               {maintenance.kilometersFrequency}
             </Text>
