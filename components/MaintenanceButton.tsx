@@ -8,38 +8,83 @@ import {
   Pressable,
 } from "react-native";
 import { DatePicker } from "./DatePicker";
-
-interface MaintenanceEntry {
-  date: string;
-  description: string;
-}
+import {
+  createMaintenanceRecord,
+  CreateMaintenanceRecordInput,
+} from "../services/maintenanceRecords";
+import { MaintenanceRecord } from "../interfaces/maintenanceRecord";
 
 interface MaintenanceButtonProps {
-  onAddMaintenance: (entry: MaintenanceEntry) => void;
+  assignedMaintenanceId: string | undefined;
+  userId: string | null;
+  onAddMaintenance: (entry: MaintenanceRecord) => void;
 }
 
 export default function MaintenanceButton({
+  assignedMaintenanceId,
+  userId,
   onAddMaintenance,
 }: MaintenanceButtonProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState("");
+  const [kilometers, setKilometers] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSave = () => {
-    if (!description.trim()) {
-      alert("Por favor completa todos los campos");
+  const resetForm = () => {
+    setDate(new Date());
+    setDescription("");
+    setKilometers("");
+  };
+
+  const handleSave = async () => {
+    const trimmedDescription = description.trim();
+    const parsedKilometers = Number.parseFloat(
+      kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, ".")
+    );
+
+    if (!assignedMaintenanceId) {
+      alert("No se puede registrar el mantenimiento: falta el identificador.");
       return;
     }
 
-    const newEntry: MaintenanceEntry = {
-      date: date.toISOString(),
-      description: description.trim(),
+    if (!userId) {
+      alert(
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
+      );
+      return;
+    }
+
+    if (!trimmedDescription || Number.isNaN(parsedKilometers)) {
+      alert("Por favor completa todos los campos obligatorios");
+      return;
+    }
+
+    if (parsedKilometers <= 0) {
+      alert("Los kilómetros deben ser mayores a cero");
+      return;
+    }
+
+    const payload: CreateMaintenanceRecordInput = {
+      assignedMaintenanceId,
+      userId,
+      date,
+      kilometers: parsedKilometers,
+      notes: trimmedDescription,
     };
 
-    onAddMaintenance(newEntry);
-    setModalVisible(false);
-    setDate(new Date());
-    setDescription("");
+    try {
+      setIsSubmitting(true);
+      const record = await createMaintenanceRecord(payload);
+      onAddMaintenance(record);
+      setModalVisible(false);
+      resetForm();
+    } catch (error) {
+      console.error("Error al crear el mantenimiento", error);
+      alert("No se pudo guardar el mantenimiento. Intenta nuevamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -52,7 +97,10 @@ export default function MaintenanceButton({
         animationType="fade"
         transparent
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => {
+          setModalVisible(false);
+          resetForm();
+        }}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalView}>
@@ -62,6 +110,14 @@ export default function MaintenanceButton({
               value={date}
               onChange={setDate}
               containerStyle={styles.datePicker}
+            />
+            <TextInput
+              placeholder="Kilómetros actuales"
+              value={kilometers}
+              onChangeText={setKilometers}
+              style={styles.input}
+              keyboardType="numeric"
+              inputMode="numeric"
             />
             <TextInput
               placeholder="Descripción"
@@ -79,12 +135,21 @@ export default function MaintenanceButton({
                 gap: 10,
               }}
             >
-              <Pressable onPress={handleSave} style={styles.saveButton}>
-                <Text style={styles.saveButtonText}>Guardar</Text>
+              <Pressable
+                onPress={handleSave}
+                style={[styles.saveButton, isSubmitting && { opacity: 0.6 }]}
+                disabled={isSubmitting}
+              >
+                <Text style={styles.saveButtonText}>
+                  {isSubmitting ? "Guardando..." : "Guardar"}
+                </Text>
               </Pressable>
 
               <Pressable
-                onPress={() => setModalVisible(false)}
+                onPress={() => {
+                  setModalVisible(false);
+                  resetForm();
+                }}
                 style={styles.cancelButton}
               >
                 <Text style={styles.cancelButtonText}>Cancelar</Text>
@@ -159,6 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
     width: "50%",
+    paddingVertical: 14,
   },
 
   saveButtonText: {
@@ -174,7 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
     width: "50%",
-    padding: 10,
+    paddingVertical: 14,
   },
 
   cancelButtonText: {
