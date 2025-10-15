@@ -208,14 +208,13 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#282D86",
   },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-
     backgroundColor: "#f1f1f1ff",
     borderRadius: "100%",
     padding: 5,
