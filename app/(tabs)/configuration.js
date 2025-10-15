@@ -87,7 +87,7 @@ export default function Configuration() {
           flex: 1,
           justifyContent: "flex-end",
           alignItems: "center",
-          marginBottom: 30,
+          marginBottom: 20,
         }}
       >
         <PressableButton
