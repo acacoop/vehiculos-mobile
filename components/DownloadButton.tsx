@@ -8,7 +8,7 @@ export default function DownloadButton() {
       <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
         <View
           style={{
-            backgroundColor: "#E6E8FF",
+            backgroundColor: "#f9f9f9",
             borderRadius: 100,
             padding: 10,
             justifyContent: "center",

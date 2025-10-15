@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    margin: 10,
+    marginVertical: 10,
+    width: "100%",
   },
   containerTitle: {
     justifyContent: "flex-start",
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     gap: 25,
-    width: "90%",
+    width: "100%",
     padding: 15,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,
-    backgroundColor: "#f1f1f1ff",
+    backgroundColor: "#f9f9f9",
     borderRadius: "100%",
 
     padding: 5,

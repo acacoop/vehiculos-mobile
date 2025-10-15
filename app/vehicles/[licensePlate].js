@@ -97,7 +97,7 @@ export default function VehicleDetail() {
             router.push(`/calendar`);
           }}
         >
-          <Text style={styles.textReserva}> + Reservar</Text>
+          <Text style={styles.textReserva}>+ Reservar</Text>
         </Pressable>
       </View>
     </View>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     color: "#282D86",
   },
   PressableReservar: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#fe9000",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
     width: "85%",
+    flexDirection: "row",
   },
   textReserva: {
     color: "#FFFFFF",

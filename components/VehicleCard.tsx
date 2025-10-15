@@ -17,7 +17,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               {vehicle.brand} {vehicle.model}
             </Text>
             <Text style={styles.text2}>{vehicle.licensePlate}</Text>
-            <Text style={styles.text2}>{vehicle.fuelType}</Text>
+            <Text style={styles.text3}>{vehicle.fuelType}</Text>
           </View>
         </View>
       </Pressable>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 30,
+    gap: 50,
     width: "90%",
     alignSelf: "center",
     height: 120,
@@ -65,12 +65,17 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#8b8b8bff",
   },
+  text3: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#fe9000",
+  },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10,
+    padding: 10,
     backgroundColor: "#f1f1f1ff",
-    borderRadius: 40,
-    padding: 5,
+    borderRadius: "100%",
+    marginLeft: 20,
   },
 });

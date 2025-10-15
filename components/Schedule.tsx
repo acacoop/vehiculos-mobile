@@ -104,7 +104,7 @@ export function Schedule({
           </Text>
         </View>
       ) : null}
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
           <IconCalendar color="#282D86" />
         </View>
@@ -123,7 +123,7 @@ export function Schedule({
           </View>
         </View>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
           <IconCalendar color="#282D86" />
         </View>
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10,
+
     backgroundColor: "#f1f1f1ff",
     borderRadius: "100%",
     padding: 5,

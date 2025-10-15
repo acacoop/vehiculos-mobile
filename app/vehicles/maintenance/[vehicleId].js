@@ -67,7 +67,10 @@ export default function Maintenance() {
         }}
       />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContainer}
+      >
         {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
           <View
             key={category}
@@ -77,6 +80,7 @@ export default function Maintenance() {
             {maintenances.map((maintenance) => (
               <Pressable
                 key={maintenance.id}
+                style={styles.maintenanceWrapper}
                 onPress={() =>
                   router.push({
                     pathname:
@@ -92,25 +96,25 @@ export default function Maintenance() {
             ))}
           </View>
         ))}
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            router.push({
-              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-              params: {
-                assignedMaintenanceId: "",
-                maintenanceName: "Mantenimiento correctivo",
-                maintenanceCategoryName: "Correctivo",
-                kilometersFrequency: "",
-              },
-            })
-          }
-        >
-          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
-            + Mantenimiento correctivo
-          </Text>
-        </Pressable>
       </ScrollView>
+      <Pressable
+        style={styles.button}
+        onPress={() =>
+          router.push({
+            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+            params: {
+              assignedMaintenanceId: "",
+              maintenanceName: "Mantenimiento correctivo",
+              maintenanceCategoryName: "Correctivo",
+              kilometersFrequency: "",
+            },
+          })
+        }
+      >
+        <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
+          + Mantenimiento correctivo
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -119,15 +123,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  scroll: {
+    width: "100%",
   },
   scrollContainer: {
-    alignItems: "center",
+    width: "100%",
+    alignItems: "stretch",
+    paddingHorizontal: "5%",
   },
 
   categoryTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 30,
+    marginLeft: 10,
     color: "#282D86",
   },
   loadingContainer: {
@@ -139,9 +151,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   button: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#fe9000",
     width: "90%",
-    height: 50,
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -153,5 +165,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 32,
+  },
+  maintenanceWrapper: {
+    width: "100%",
   },
 });
