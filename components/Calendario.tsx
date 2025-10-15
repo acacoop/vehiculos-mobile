@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: 20,
-    width: "90%",
+    width: "100%",
   },
   navButton: {
     backgroundColor: "#282d8621",
