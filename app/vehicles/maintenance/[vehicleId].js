@@ -106,7 +106,7 @@ export default function Maintenance() {
             })
           }
         >
-          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
+          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
             + Mantenimiento correctivo
           </Text>
         </Pressable>

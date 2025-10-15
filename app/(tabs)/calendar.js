@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
 
   buttonTextReserve: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 20,
   },
 

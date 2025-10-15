@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Stack } from "expo-router";
 import { View, StyleSheet, Text, Pressable, Modal, Image } from "react-native";
 import { DniModal } from "../../components/DniModal";
 import { IconUser, IconArrowRigth } from "../../components/Icons";
+import { getCurrentUser } from "../../services/me";
 
 export default function UserConfig() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -12,6 +13,9 @@ export default function UserConfig() {
   const [carnetFrente, setCarnetFrente] = useState(null);
   const [carnetDorso, setCarnetDorso] = useState(null);
   const [imageToView, setImageToView] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [userError, setUserError] = useState(null);
 
   const openModal = (type) => {
     setModalType(type);
@@ -33,6 +37,57 @@ export default function UserConfig() {
     }
   }
 
+  useEffect(() => {
+    let isMounted = true;
+    const fetchUser = async () => {
+      try {
+        setLoadingUser(true);
+        const currentUser = await getCurrentUser();
+        if (!isMounted) return;
+        setUserInfo(currentUser);
+        setUserError(null);
+      } catch (error) {
+        console.error("No se pudo obtener la información del usuario", error);
+        if (isMounted) {
+          setUserInfo(null);
+          setUserError("No se pudo cargar tu información");
+        }
+      } finally {
+        if (isMounted) {
+          setLoadingUser(false);
+        }
+      }
+    };
+
+    fetchUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const userFullName = useMemo(() => {
+    if (!userInfo) return "";
+    const fullName = `${userInfo.firstName ?? ""} ${userInfo.lastName ?? ""}`
+      .trim()
+      .replace(/\s+/g, " ");
+    return fullName || userInfo.email || "";
+  }, [userInfo]);
+
+  const userEmail = userInfo?.email ?? "";
+
+  const renderUserName = () => {
+    if (loadingUser) return "Cargando nombre...";
+    if (userError) return userError;
+    return userFullName || "Nombre no disponible";
+  };
+
+  const renderUserEmail = () => {
+    if (loadingUser) return "Cargando correo...";
+    if (userError) return "Correo no disponible";
+    return userEmail || "Correo no disponible";
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -45,10 +100,10 @@ export default function UserConfig() {
         <View style={styles.avatar}>
           <IconUser size={20} />
         </View>
-        <Text style={styles.text}>Nombre y Apellido</Text>
+        <Text style={styles.text}>{renderUserName()}</Text>
       </View>
       <View style={styles.pressable}>
-        <Text style={styles.text}>ejemplocorreo@acacoop.com</Text>
+        <Text style={styles.text}>{renderUserEmail()}</Text>
       </View>
       <Pressable
         style={styles.pressable}
@@ -151,18 +206,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     marginTop: 20,
-    width: "80%",
+    width: "90%",
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#00000077",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 1,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   avatar: {
     backgroundColor: "#f9f9f9",

@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#282D86",
   },
   PressableReservar: {
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 15,
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   flatListContainer: {
     flexGrow: 1,
