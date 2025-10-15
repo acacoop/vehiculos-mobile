@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 18,
     paddingHorizontal: 20,
-    borderRadius: 30,
+    borderRadius: 10,
     shadowColor: "#00000062",
     shadowOffset: {
       width: 0,
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 20,
+    gap: 10,
   },
 });

@@ -96,9 +96,13 @@ export default function Maintenance() {
           style={styles.button}
           onPress={() =>
             router.push({
-              pathname:
-                "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
-              VehicleMaintenanceEntry: JSON.stringify(maintenance),
+              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+              params: {
+                assignedMaintenanceId: "",
+                maintenanceName: "Mantenimiento correctivo",
+                maintenanceCategoryName: "Correctivo",
+                kilometersFrequency: "",
+              },
             })
           }
         >

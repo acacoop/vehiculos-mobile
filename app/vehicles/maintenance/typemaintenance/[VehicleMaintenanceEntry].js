@@ -4,27 +4,33 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
-import { useLocalSearchParams, Stack, useNavigation } from "expo-router";
-import MaintenanceButton from "../../../../components/MaintenanceButton";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useLocalSearchParams,
+  Stack,
+  useNavigation,
+  useRouter,
+} from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 import { getMaintenanceRecordsByAssignedMaintenance } from "../../../../services/maintenanceRecords";
-import { getCurrentUser } from "../../../../services/me";
 
 export default function VehicleMaintenanceEntry() {
   const { VehicleMaintenanceEntry } = useLocalSearchParams();
   const maintenance = JSON.parse(VehicleMaintenanceEntry);
 
   const navigation = useNavigation();
+  const router = useRouter();
 
   const [maintenanceHistory, setMaintenanceHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [historyError, setHistoryError] = useState(null);
-  const [userId, setUserId] = useState(null);
 
   const assignedMaintenanceId = maintenance?.id;
 
-  const loadMaintenanceRecords = async (assignedId) => {
+  const loadMaintenanceRecords = useCallback(async (assignedId) => {
+    if (!assignedId) return;
     setLoadingHistory(true);
     try {
       const records =
@@ -40,7 +46,7 @@ export default function VehicleMaintenanceEntry() {
     } finally {
       setLoadingHistory(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (maintenance?.maintenanceName) {
@@ -53,17 +59,14 @@ export default function VehicleMaintenanceEntry() {
   useEffect(() => {
     if (!assignedMaintenanceId) return;
     loadMaintenanceRecords(assignedMaintenanceId);
-  }, [assignedMaintenanceId]);
+  }, [assignedMaintenanceId, loadMaintenanceRecords]);
 
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      setUserId(user?.id ?? null);
-    });
-  }, []);
-
-  const handleAddMaintenance = (entry) => {
-    setMaintenanceHistory((prevHistory) => [entry, ...prevHistory]);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      if (!assignedMaintenanceId) return;
+      loadMaintenanceRecords(assignedMaintenanceId);
+    }, [assignedMaintenanceId, loadMaintenanceRecords])
+  );
 
   const formattedHistory = useMemo(() => {
     return maintenanceHistory.map((entry) => ({
@@ -137,11 +140,33 @@ export default function VehicleMaintenanceEntry() {
         </View>
       </ScrollView>
 
-      <MaintenanceButton
-        assignedMaintenanceId={assignedMaintenanceId}
-        userId={userId}
-        onAddMaintenance={handleAddMaintenance}
-      />
+      <Pressable
+        style={[
+          styles.addButton,
+          !assignedMaintenanceId && styles.addButtonDisabled,
+        ]}
+        onPress={() =>
+          router.push({
+            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+            params: {
+              assignedMaintenanceId,
+              maintenanceName: maintenance?.maintenanceName ?? "",
+              maintenanceCategoryName:
+                maintenance?.maintenanceCategoryName ?? "",
+              kilometersFrequency: String(
+                maintenance?.kilometersFrequency ?? ""
+              ),
+            },
+          })
+        }
+        disabled={!assignedMaintenanceId}
+      >
+        <Text style={styles.addButtonText}>
+          {!assignedMaintenanceId
+            ? "Mantenimiento no disponible"
+            : "+ Registrar mantenimiento"}
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -232,5 +257,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     marginTop: 8,
+  },
+  addButton: {
+    backgroundColor: "#282D86",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
+  },
+  addButtonDisabled: {
+    opacity: 0.6,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
