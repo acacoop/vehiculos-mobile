@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "column",
     alignItems: "stretch",
-    gap: 12,
+    gap: 20,
   },
   actionButton: {
     flexDirection: "row",
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5,
-    width: "90%",
+    width: "85%",
   },
   textReserva: {
     color: "#FFFFFF",

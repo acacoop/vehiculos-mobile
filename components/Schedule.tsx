@@ -18,6 +18,13 @@ export function Schedule({
   vehicleLabel,
   requesterName,
 }: ScheduleProps) {
+  const formatDateToText = (date: Date) =>
+    date.toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
     requesterName ?? null
   );
@@ -90,7 +97,6 @@ export function Schedule({
           <IconCar size={25} color="#fe9000" />
         </View>
       </View>
-
       {vehicleLabel ? (
         <View style={styles.metaRow}>
           <Text style={styles.metaValue} numberOfLines={2}>
@@ -106,13 +112,7 @@ export function Schedule({
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Inicio de la reserva</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              {from.toLocaleDateString("es-ES", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-              })}
-            </Text>
+            <Text style={styles.text}>{formatDateToText(from)}</Text>
             <Text style={styles.text}>-</Text>
             <Text style={styles.text}>
               {from.toLocaleTimeString([], {
@@ -130,13 +130,7 @@ export function Schedule({
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Fin de la reserva</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              {to.toLocaleDateString("es-ES", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-              })}
-            </Text>
+            <Text style={styles.text}>{formatDateToText(to)}</Text>
             <Text style={styles.text}>-</Text>
             <Text style={styles.text}>
               {to.toLocaleTimeString([], {
@@ -180,6 +174,7 @@ const styles = StyleSheet.create({
     gap: 15,
     borderColor: "#ddd",
     borderWidth: 1,
+    paddingBottom: 30,
   },
   itemContainer: {
     gap: 5,
@@ -202,7 +197,7 @@ const styles = StyleSheet.create({
   metaValue: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#282D86",
+    color: "#fe9000",
   },
 
   textContainer: {
@@ -210,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     flexDirection: "row",
-    gap: 40,
+    gap: 5,
   },
   text: {
     fontSize: 18,
