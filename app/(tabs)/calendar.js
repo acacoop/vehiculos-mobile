@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { getAllVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
 import {
@@ -20,6 +20,7 @@ import {
 import { getCurrentUser } from "../../services/me";
 
 const Calendar = () => {
+  const params = useLocalSearchParams();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const router = useRouter();
   const [vehicles, setVehicles] = useState([]);
@@ -32,6 +33,8 @@ const Calendar = () => {
   const [toDate, setToDate] = useState(new Date());
   const [currentUser, setCurrentUser] = useState(null);
   const [isSubmittingReservation, setIsSubmittingReservation] = useState(false);
+  const [initialVehicleId, setInitialVehicleId] = useState(null);
+  const [initialSelectionApplied, setInitialSelectionApplied] = useState(false);
 
   const navigateToReservations = ({ start, end } = {}) => {
     const params = {};
@@ -63,6 +66,46 @@ const Calendar = () => {
         setCurrentUser(null);
       });
   }, []);
+
+  const coerceParam = (value) => {
+    if (Array.isArray(value)) return value[0];
+    return value ?? null;
+  };
+
+  useEffect(() => {
+    setInitialSelectionApplied(false);
+  }, [params.vehicleId, params.licensePlate]);
+
+  useEffect(() => {
+    if (!vehicles.length || initialSelectionApplied) return;
+
+    const desiredId = coerceParam(params.vehicleId);
+    const desiredPlate = coerceParam(params.licensePlate);
+
+    if (!desiredId && !desiredPlate) {
+      setInitialVehicleId((prev) => (prev === null ? prev : null));
+      setInitialSelectionApplied(true);
+      return;
+    }
+
+    const found = vehicles.find(
+      (vehicle) =>
+        (desiredId && vehicle.id === desiredId) ||
+        (desiredPlate && vehicle.licensePlate === desiredPlate)
+    );
+
+    if (found) {
+      setSelectedVehicle(found);
+      setInitialVehicleId((prev) => (prev === found.id ? prev : found.id));
+    }
+
+    setInitialSelectionApplied(true);
+  }, [
+    vehicles,
+    params.vehicleId,
+    params.licensePlate,
+    initialSelectionApplied,
+  ]);
 
   useEffect(() => {
     if (!selectedVehicle?.id) {
@@ -156,6 +199,7 @@ const Calendar = () => {
 
       <CarVisualizer
         vehicles={vehicles}
+        initialVehicleId={initialVehicleId}
         onVehicleChange={(vehicle) => {
           setSelectedVehicle(vehicle);
         }}

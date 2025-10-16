@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Stack } from "expo-router";
 import {
   View,
@@ -41,14 +41,48 @@ export default function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
   const [reservationsError, setReservationsError] = useState(null);
+  const [initialVehicleId, setInitialVehicleId] = useState(null);
+  const [initialSelectionApplied, setInitialSelectionApplied] = useState(false);
 
-  // Set selectedVehicle from vehicleId param after vehicles are loaded
+  const coerceParam = (value) => {
+    if (Array.isArray(value)) return value[0];
+    return value ?? null;
+  };
+
   useEffect(() => {
-    if (params.vehicleId && vehicles.length > 0) {
-      const found = vehicles.find((v) => v.id == params.vehicleId);
-      if (found) setSelectedVehicle(found);
+    setInitialSelectionApplied(false);
+  }, [params.vehicleId, params.licensePlate]);
+
+  useEffect(() => {
+    if (!vehicles.length || initialSelectionApplied) return;
+
+    const desiredId = coerceParam(params.vehicleId);
+    const desiredPlate = coerceParam(params.licensePlate);
+
+    if (!desiredId && !desiredPlate) {
+      setInitialVehicleId((prev) => (prev === null ? prev : null));
+      setInitialSelectionApplied(true);
+      return;
     }
-  }, [params.vehicleId, vehicles]);
+
+    const found = vehicles.find(
+      (vehicle) =>
+        (desiredId && String(vehicle.id) === String(desiredId)) ||
+        (desiredPlate && vehicle.licensePlate === desiredPlate)
+    );
+
+    if (found) {
+      setSelectedVehicle(found);
+      setInitialVehicleId((prev) => (prev === found.id ? prev : found.id));
+    }
+
+    setInitialSelectionApplied(true);
+  }, [
+    vehicles,
+    params.vehicleId,
+    params.licensePlate,
+    initialSelectionApplied,
+  ]);
 
   // Parse start and end from params, fallback to today 00:00 and 6 months after
   const today = new Date();
@@ -141,6 +175,10 @@ export default function Reservations() {
 
   const sections = groupReservationsByMonth(filteredReservations);
 
+  const handleVehicleChange = useCallback((vehicle) => {
+    setSelectedVehicle(vehicle);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -149,9 +187,8 @@ export default function Reservations() {
 
       <CarVisualizer
         vehicles={vehicles}
-        onVehicleChange={(vehicle) => {
-          setSelectedVehicle(vehicle);
-        }}
+        initialVehicleId={initialVehicleId}
+        onVehicleChange={handleVehicleChange}
       />
 
       <View style={{ flexDirection: "row", gap: 10, padding: 20 }}>

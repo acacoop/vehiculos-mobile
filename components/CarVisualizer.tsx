@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
-import { Ionicons } from "@expo/vector-icons"; // Asegúrate de tener esta importación
-import { IconArrowLeft, IconArrowRigth } from "./Icons"; // Asegúrate de que esta ruta sea correcta
+import { IconArrowLeft, IconArrowRigth } from "./Icons";
 
 type CarVisualizerProps = {
   vehicles: Vehicle[];
   onVehicleChange?: (vehicle: Vehicle) => void;
+  initialVehicleId?: string | null;
 };
 
 export function CarVisualizer({
   vehicles,
   onVehicleChange,
+  initialVehicleId,
 }: CarVisualizerProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (onVehicleChange && vehicles.length > 0) {
+    if (initialVehicleId == null) return;
+    const targetIndex = vehicles.findIndex(
+      (vehicle) => String(vehicle.id) === String(initialVehicleId)
+    );
+    if (targetIndex >= 0) {
+      setIndex((current) => (current === targetIndex ? current : targetIndex));
+    }
+  }, [initialVehicleId, vehicles]);
+
+  useEffect(() => {
+    if (onVehicleChange && vehicles.length > 0 && vehicles[index]) {
       onVehicleChange(vehicles[index]);
     }
-  }, [index, vehicles]);
+  }, [index, vehicles, onVehicleChange]);
 
   if (!vehicles || vehicles.length === 0 || !vehicles[index]) {
     return (

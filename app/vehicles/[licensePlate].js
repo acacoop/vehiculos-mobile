@@ -94,7 +94,13 @@ export default function VehicleDetail() {
         <Pressable
           style={styles.PressableReservar}
           onPress={() => {
-            router.push(`/calendar`);
+            router.push({
+              pathname: `/calendar`,
+              params: {
+                vehicleId: vehicleDetail.id,
+                licensePlate: vehicleDetail.licensePlate,
+              },
+            });
           }}
         >
           <Text style={styles.textReserva}>+ Reservar</Text>
