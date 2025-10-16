@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     gap: 15,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 15,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   rowEven: {
     flexDirection: "row",
