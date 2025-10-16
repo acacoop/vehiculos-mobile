@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
     shadowColor: "#00000070",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 2,
+    elevation: 1,
     borderColor: "#ddd",
     borderWidth: 1,
   },
