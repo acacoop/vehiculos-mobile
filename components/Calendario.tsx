@@ -53,7 +53,7 @@ export const Calendario = ({
     licensePlate: string;
   }[];
   selectedVehicle: Vehicle;
-  onDayPress?: (date: Date) => void; // <-- add this prop type
+  onDayPress?: (date: Date) => void;
 }) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
