@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { IconCalendar, IconCar, IconUser } from "./Icons";
 import { getCurrentUser } from "../services/me";
