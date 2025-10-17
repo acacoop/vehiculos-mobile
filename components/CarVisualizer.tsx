@@ -7,12 +7,14 @@ type CarVisualizerProps = {
   vehicles: Vehicle[];
   onVehicleChange?: (vehicle: Vehicle) => void;
   initialVehicleId?: string | null;
+  containerWidth?: string | number;
 };
 
 export function CarVisualizer({
   vehicles,
   onVehicleChange,
   initialVehicleId,
+  containerWidth = "90%",
 }: CarVisualizerProps) {
   const [index, setIndex] = useState(0);
 
@@ -53,7 +55,7 @@ export function CarVisualizer({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width: containerWidth as any }]}>
       <View style={styles.vehicleInfo}>
         <IconArrowLeft
           onPress={goPrevious}
@@ -66,7 +68,6 @@ export function CarVisualizer({
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
-
             gap: 30,
             flex: 1,
           }}
@@ -119,17 +120,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     backgroundColor: "#ffff",
-    shadowColor: "#0000003a",
+    shadowColor: "#00000070",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 10,
+    elevation: 2,
     borderColor: "#ddd",
     borderWidth: 1,
+    borderRadius: 10,
   },
   title: {
     fontSize: 25,
@@ -145,8 +146,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   text: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "600",
     color: "#282D86",
   },
   dot: {

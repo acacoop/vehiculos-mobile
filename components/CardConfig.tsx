@@ -26,7 +26,8 @@ export function CardConfig({
       <Pressable style={styles.card} onPress={onPress}>
         <View
           style={{
-            width: "10%",
+            width: 50,
+            height: 50,
             alignItems: "center",
             justifyContent: "center",
             padding: 5,

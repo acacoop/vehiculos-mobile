@@ -83,8 +83,35 @@ export default function VehicleMaintenanceEntry() {
           headerTitleAlign: "center",
         }}
       />
-      <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
-      <ScrollView style={{ flex: 1 }}>
+      <View
+        style={{
+          padding: 16,
+          backgroundColor: "#fff",
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          shadowColor: "#00000070",
+          shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 4,
+          borderColor: "#ddd",
+          borderWidth: 1,
+          zIndex: 10,
+        }}
+      >
+        <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
+      </View>
+      <ScrollView
+        style={{
+          flex: 1,
+          width: "90%",
+          alignSelf: "center",
+          paddingTop: 16,
+        }}
+      >
         <View style={styles.containerInfocar}>
           <View style={styles.rowEven}>
             <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
@@ -139,34 +166,46 @@ export default function VehicleMaintenanceEntry() {
           )}
         </View>
       </ScrollView>
+      <View
+        style={{
+          padding: 16,
+          backgroundColor: "#fff",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
 
-      <Pressable
-        style={[
-          styles.addButton,
-          !assignedMaintenanceId && styles.addButtonDisabled,
-        ]}
-        onPress={() =>
-          router.push({
-            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-            params: {
-              assignedMaintenanceId,
-              maintenanceName: maintenance?.maintenanceName ?? "",
-              maintenanceCategoryName:
-                maintenance?.maintenanceCategoryName ?? "",
-              kilometersFrequency: String(
-                maintenance?.kilometersFrequency ?? ""
-              ),
-            },
-          })
-        }
-        disabled={!assignedMaintenanceId}
+          borderColor: "#ddd",
+          borderWidth: 1,
+          zIndex: 10,
+        }}
       >
-        <Text style={styles.addButtonText}>
-          {!assignedMaintenanceId
-            ? "Mantenimiento no disponible"
-            : "+ Registrar mantenimiento"}
-        </Text>
-      </Pressable>
+        <Pressable
+          style={[
+            styles.addButton,
+            !assignedMaintenanceId && styles.addButtonDisabled,
+          ]}
+          onPress={() =>
+            router.push({
+              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+              params: {
+                assignedMaintenanceId,
+                maintenanceName: maintenance?.maintenanceName ?? "",
+                maintenanceCategoryName:
+                  maintenance?.maintenanceCategoryName ?? "",
+                kilometersFrequency: String(
+                  maintenance?.kilometersFrequency ?? ""
+                ),
+              },
+            })
+          }
+          disabled={!assignedMaintenanceId}
+        >
+          <Text style={styles.addButtonText}>
+            {!assignedMaintenanceId
+              ? "Mantenimiento no disponible"
+              : "+ Registrar mantenimiento"}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -174,13 +213,11 @@ export default function VehicleMaintenanceEntry() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: "#f5f5f5",
   },
   categoryTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 16,
     color: "#282D86",
   },
   containerInfocar: {
@@ -268,6 +305,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     width: "100%",
+    alignSelf: "center",
   },
   addButtonDisabled: {
     opacity: 0.6,

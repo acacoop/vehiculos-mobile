@@ -149,8 +149,8 @@ export default function AddMaintenance() {
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.sectionTitle}>Mantenimiento seleccionado</Text>
         <View style={styles.disabledInputs}>
+          <Text style={styles.sectionTitle}>Mantenimiento seleccionado</Text>
           <TextInput
             value={maintenanceName || "Nombre no disponible"}
             editable={false}
@@ -163,8 +163,8 @@ export default function AddMaintenance() {
           />
         </View>
 
-        <Text style={styles.sectionTitle}>Completa los datos</Text>
         <View style={styles.formRow}>
+          <Text style={styles.sectionTitle}>Completa los datos</Text>
           <DatePicker
             label="Fecha"
             value={date}
@@ -241,14 +241,22 @@ const styles = StyleSheet.create({
     color: "#424242",
     fontWeight: "600",
   },
-  summaryText: {
-    color: "#424242",
-    fontStyle: "italic",
-  },
   formRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    justifyContent: "start",
+
     marginBottom: 16,
+    backgroundColor: "#fff",
+    gap: 10,
+    padding: 16,
+    borderRadius: 10,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
   },
   datePicker: {
     width: "100%",

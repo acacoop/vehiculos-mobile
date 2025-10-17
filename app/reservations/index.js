@@ -184,16 +184,18 @@ export default function Reservations() {
       <Stack.Screen
         options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
       />
+      <View style={styles.containerHeader}>
+        <CarVisualizer
+          vehicles={vehicles}
+          initialVehicleId={initialVehicleId}
+          onVehicleChange={handleVehicleChange}
+          containerWidth={"100%"}
+        />
 
-      <CarVisualizer
-        vehicles={vehicles}
-        initialVehicleId={initialVehicleId}
-        onVehicleChange={handleVehicleChange}
-      />
-
-      <View style={{ flexDirection: "row", gap: 10, padding: 20 }}>
-        <DatePicker value={fromDate} label="Desde" onChange={setFromDate} />
-        <DatePicker value={toDate} label="Hasta" onChange={setToDate} />
+        <View style={{ flexDirection: "row", gap: 10, padding: 20 }}>
+          <DatePicker value={fromDate} label="Desde" onChange={setFromDate} />
+          <DatePicker value={toDate} label="Hasta" onChange={setToDate} />
+        </View>
       </View>
       {reservationsLoading ? (
         <View style={styles.loader}>
@@ -216,7 +218,9 @@ export default function Reservations() {
           sections={sections}
           keyExtractor={(item, index) => item.id + index}
           renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.month}>{title}</Text>
+            <View style={styles.sectionMonth}>
+              <Text style={styles.month}>{title}</Text>
+            </View>
           )}
           renderItem={({ item }) => (
             <Schedule
@@ -235,15 +239,51 @@ export default function Reservations() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
     flex: 1,
-
     alignItems: "center",
+    justifyContent: "center",
+  },
+  containerHeader: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    zIndex: 10,
+    padding: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 4,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   scrollContent: {
     paddingVertical: 20,
     paddingHorizontal: 20,
     gap: 20,
+  },
+  sectionMonth: {
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   loader: {
     flex: 1,
