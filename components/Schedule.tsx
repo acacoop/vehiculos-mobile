@@ -14,7 +14,6 @@ interface ScheduleProps {
 export function Schedule({
   from,
   to,
-  licensePlate,
   vehicleLabel,
   requesterName,
 }: ScheduleProps) {
