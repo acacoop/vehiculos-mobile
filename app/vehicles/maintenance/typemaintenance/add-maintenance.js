@@ -244,7 +244,6 @@ const styles = StyleSheet.create({
   formRow: {
     flexDirection: "column",
     justifyContent: "start",
-
     marginBottom: 16,
     backgroundColor: "#fff",
     gap: 10,
