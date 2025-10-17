@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState, useMemo } from "react";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { IconCalendar, IconCar, IconUser } from "./Icons";
 import { getCurrentUser } from "../services/me";
 
@@ -29,6 +29,15 @@ export function Schedule({
     requesterName ?? null
   );
   const [loadingRequester, setLoadingRequester] = useState(!requesterName);
+
+  const isSmallScreen = Dimensions.get("window").width < 375;
+
+  const resolutionFormatDate = (date: Date) =>
+    date.toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: isSmallScreen ? "short" : "long",
+      year: "numeric",
+    });
 
   useEffect(() => {
     if (requesterName) {
@@ -112,7 +121,7 @@ export function Schedule({
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Inicio de la reserva</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>{formatDateToText(from)}</Text>
+            <Text style={styles.text}>{resolutionFormatDate(from)}</Text>
             <Text style={styles.text}>-</Text>
             <Text style={styles.text}>
               {from.toLocaleTimeString([], {
@@ -130,7 +139,7 @@ export function Schedule({
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Fin de la reserva</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>{formatDateToText(to)}</Text>
+            <Text style={styles.text}>{resolutionFormatDate(to)}</Text>
             <Text style={styles.text}>-</Text>
             <Text style={styles.text}>
               {to.toLocaleTimeString([], {
