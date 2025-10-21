@@ -31,6 +31,7 @@ function mapMaintenance(api: AssignedMaintenanceApi): Maintenance {
     maintenanceImgName: "",
     maintenanceCategoryName: api.maintenance_category_name ?? "",
     kilometersFrequency: api.kilometersFrequency ?? 0,
+    daysFrequency: api.daysFrequency ?? null,
     recurrencePattern: recurrenceParts.join(" / "),
   };
 }

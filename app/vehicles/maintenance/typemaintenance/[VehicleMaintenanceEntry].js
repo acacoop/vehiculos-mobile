@@ -114,15 +114,26 @@ export default function VehicleMaintenanceEntry() {
       >
         <View style={styles.containerInfocar}>
           <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Tipo de Mantenimiento:</Text>
+            <Text style={styles.textTitle}>Tipo de Mantenimiento</Text>
             <Text style={styles.textInfo}>
               {maintenance.maintenanceCategoryName}
             </Text>
           </View>
           <View style={styles.rowOdd}>
-            <Text style={styles.textTitle}>Kilómetros del mantenimiento:</Text>
+            <Text style={styles.textTitle}>Frecuencia (km)</Text>
             <Text style={styles.textInfo}>
-              {maintenance.kilometersFrequency} km
+              {maintenance.kilometersFrequency ||
+              maintenance.kilometersFrequency === 0
+                ? `${maintenance.kilometersFrequency} km`
+                : "-"}
+            </Text>
+          </View>
+          <View style={styles.rowEven}>
+            <Text style={styles.textTitle}>Frecuencia (días)</Text>
+            <Text style={styles.textInfo}>
+              {maintenance.daysFrequency || maintenance.daysFrequency === 0
+                ? `${maintenance.daysFrequency} días`
+                : "-"}
             </Text>
           </View>
         </View>
@@ -194,6 +205,7 @@ export default function VehicleMaintenanceEntry() {
                 kilometersFrequency: String(
                   maintenance?.kilometersFrequency ?? ""
                 ),
+                daysFrequency: String(maintenance?.daysFrequency ?? ""),
               },
             })
           }

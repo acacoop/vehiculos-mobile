@@ -27,7 +27,7 @@ export default function LoginScreen() {
           resizeMode="contain"
         />
         <View style={styles.containerText}>
-          <Text style={styles.title}>Portal de vehículos ACA Coop</Text>
+          <Text style={styles.title}>Vehículos ACA</Text>
           <Text style={styles.subtitle}>
             Ingresá con tu cuenta corporativa de Microsoft para continuar.
           </Text>

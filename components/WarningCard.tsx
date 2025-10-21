@@ -5,7 +5,9 @@ const WarningCard = () => {
   return (
     <View style={styles.card}>
       <Text style={styles.warningText}>⚠️ Atención</Text>
-      <Text style={styles.cardText}>Este mantenimiento está vencido.</Text>
+      <Text style={styles.cardText}>
+        El mantenimiento de Cambio de aceite está próximo a vencer.
+      </Text>
     </View>
   );
 };
