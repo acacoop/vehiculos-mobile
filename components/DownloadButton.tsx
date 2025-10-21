@@ -17,7 +17,7 @@ export default function DownloadButton() {
         >
           <IconFile size={24} />
         </View>
-        <Text style={styles.text}>Titulo</Text>
+        <Text style={styles.text}>Documento.pdf</Text>
       </View>
       <IconArrowRigth size={20} />
     </Pressable>
