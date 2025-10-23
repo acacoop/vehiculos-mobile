@@ -15,6 +15,7 @@ import {
 } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { getMaintenanceRecordsByAssignedMaintenance } from "../../../../services/maintenanceRecords";
+import { Table } from "../../../../components/Table";
 
 export default function VehicleMaintenanceEntry() {
   const { VehicleMaintenanceEntry } = useLocalSearchParams();
@@ -92,31 +93,20 @@ export default function VehicleMaintenanceEntry() {
           paddingTop: 16,
         }}
       >
-        <View style={styles.containerInfocar}>
-          <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Tipo de Mantenimiento</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.maintenanceCategoryName}
-            </Text>
-          </View>
-          <View style={styles.rowOdd}>
-            <Text style={styles.textTitle}>Frecuencia (km)</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.kilometersFrequency ||
+        <Table
+          data={{
+            "Tipo de Mantenimiento": maintenance.maintenanceCategoryName,
+            "Frecuencia (km)":
+              maintenance.kilometersFrequency ||
               maintenance.kilometersFrequency === 0
                 ? `${maintenance.kilometersFrequency} km`
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Frecuencia (días)</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.daysFrequency || maintenance.daysFrequency === 0
+                : "-",
+            "Frecuencia (días)":
+              maintenance.daysFrequency || maintenance.daysFrequency === 0
                 ? `${maintenance.daysFrequency} días`
-                : "-"}
-            </Text>
-          </View>
-        </View>
+                : "-",
+          }}
+        />
 
         <View style={styles.historyContainer}>
           <Text style={styles.historyTitle}>Historial de Mantenimientos</Text>
