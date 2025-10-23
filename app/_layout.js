@@ -32,10 +32,13 @@ function RootNavigator() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: "#282D86" },
-        headerTintColor: "#ffffff",
-        headerTitleStyle: { fontWeight: "bold" },
-        headerTitle: "",
+        headerStyle: {
+          paddingBottom: 10,
+          backgroundColor: "#ffffff",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#282D86",
+        headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
       }}
     >
       <Stack.Screen name="login" options={{ headerShown: false }} />

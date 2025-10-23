@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
-import { IconClip, IconIdCard, IconArrowRigth } from "../../components/Icons";
+import { IconArrowRigth } from "../../components/Icons";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -58,9 +58,6 @@ export default function VehicleDetail() {
       <Stack.Screen
         options={{
           headerTitle: "Vehículos disponibles",
-          headerStyle: {
-            backgroundColor: "#282D86",
-          },
           headerTitleAlign: "center",
         }}
       />
@@ -86,9 +83,14 @@ export default function VehicleDetail() {
       />
       <View
         style={{
+          padding: 16,
+          backgroundColor: "#fff",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderColor: "#ddd",
+          borderWidth: 1,
+          zIndex: 10,
           alignItems: "center",
-          marginBottom: 20,
-          justifyContent: "center",
         }}
       >
         <Pressable
@@ -154,6 +156,15 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
         <Text style={styles.buttonText}>Documentación</Text>
         <IconArrowRigth size={20} />
       </Pressable>
+      <Pressable
+        style={styles.actionButton}
+        onPress={() => {
+          router.push(`/vehicles/documentation/${licensePlate}`);
+        }}
+      >
+        <Text style={styles.buttonText}>Control bimestral</Text>
+        <IconArrowRigth size={20} />
+      </Pressable>
     </View>
   );
 };
@@ -176,7 +187,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "stretch",
-    paddingHorizontal: 20,
+
     gap: 24,
     width: "100%",
   },
@@ -229,21 +240,17 @@ const styles = StyleSheet.create({
   },
   PressableReservar: {
     backgroundColor: "#fe9000",
+    padding: 15,
     borderRadius: 8,
-    justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-    width: "85%",
-    flexDirection: "row",
+    marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
+    alignSelf: "center",
   },
   textReserva: {
     color: "#FFFFFF",
-    fontSize: 20,
-    padding: 15,
+    fontSize: 18,
     textAlign: "center",
     fontWeight: "600",
   },

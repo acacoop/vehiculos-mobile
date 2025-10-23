@@ -79,31 +79,11 @@ export default function VehicleMaintenanceEntry() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          headerTitle: "Detalle del Mantenimiento",
+          headerTitle: maintenance.maintenanceName,
           headerTitleAlign: "center",
         }}
       />
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: "#fff",
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          shadowColor: "#00000070",
-          shadowOffset: {
-            width: 0,
-            height: 5,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 4,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          zIndex: 10,
-        }}
-      >
-        <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
-      </View>
+
       <ScrollView
         style={{
           flex: 1,
@@ -183,7 +163,6 @@ export default function VehicleMaintenanceEntry() {
           backgroundColor: "#fff",
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-
           borderColor: "#ddd",
           borderWidth: 1,
           zIndex: 10,

@@ -11,22 +11,19 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#282D86",
+          backgroundColor: "#ffffff",
           paddingTop: 10,
           paddingBottom: 5,
           height: 80,
         },
         tabBarActiveTintColor: "#FE9000",
-        tabBarInactiveTintColor: "#ffffff",
+        tabBarInactiveTintColor: "#282D86",
         headerStyle: {
           paddingBottom: 10,
-
-          backgroundColor: "#282D86",
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
+          backgroundColor: "#ffffff",
         },
         headerTitleAlign: "center",
-        headerTintColor: "#ffffff",
+        headerTintColor: "#282D86",
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
       }}
     >

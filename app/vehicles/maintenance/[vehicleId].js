@@ -97,24 +97,38 @@ export default function Maintenance() {
           </View>
         ))}
       </ScrollView>
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          router.push({
-            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-            params: {
-              assignedMaintenanceId: "",
-              maintenanceName: "Mantenimiento correctivo",
-              maintenanceCategoryName: "Correctivo",
-              kilometersFrequency: "",
-            },
-          })
-        }
+      <View
+        style={{
+          padding: 16,
+          backgroundColor: "#fff",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderColor: "#ddd",
+          borderWidth: 1,
+          zIndex: 10,
+          alignItems: "center",
+          width: "100%",
+        }}
       >
-        <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
-          + Mantenimiento correctivo
-        </Text>
-      </Pressable>
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+              params: {
+                assignedMaintenanceId: "",
+                maintenanceName: "Mantenimiento correctivo",
+                maintenanceCategoryName: "Correctivo",
+                kilometersFrequency: "",
+              },
+            })
+          }
+        >
+          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
+            + Mantenimiento correctivo
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -152,13 +166,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#fe9000",
-    width: "90%",
-    height: 60,
-    justifyContent: "center",
+    width: "100%",
+    padding: 15,
+    borderRadius: 8,
     alignItems: "center",
-    borderRadius: 10,
-    marginTop: 20,
-    marginBottom: 30,
+    marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
+    alignSelf: "center",
   },
   emptyText: {
     color: "#282D86",

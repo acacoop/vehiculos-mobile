@@ -268,23 +268,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 20,
   },
-  sectionMonth: {
-    marginBottom: 10,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingVertical: 20,
-    borderRadius: 10,
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
-    borderColor: "#ddd",
-    borderWidth: 1,
-  },
+
   loader: {
     flex: 1,
     justifyContent: "center",
