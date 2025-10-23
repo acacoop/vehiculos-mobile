@@ -7,17 +7,15 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Inicio" }} />
-      <View style={styles.ContainerImage}>
-        <ImageBackground
-          source={require("../../assets/logo_azul.webp")}
-          style={styles.background}
-          resizeMode="contain"
-        >
-          <View style={styles.overlay}>
-            <WarningCard />
-          </View>
-        </ImageBackground>
-      </View>
+      <ImageBackground
+        source={require("../../assets/logo_azul.webp")}
+        style={styles.imageBackground}
+        resizeMode="contain"
+      >
+        <View style={styles.overlay}>
+          <WarningCard />
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -28,15 +26,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-  },
-  ContainerImage: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     width: "100%",
   },
-  background: {
-    width: 300,
+  imageBackground: {
+    width: "90%",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

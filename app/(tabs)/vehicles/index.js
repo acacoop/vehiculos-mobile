@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingVertical: 20,
-    paddingHorizontal: 20,
+
     gap: 25,
     alignItems: "stretch",
   },
