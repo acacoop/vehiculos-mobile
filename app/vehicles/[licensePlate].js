@@ -159,7 +159,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
       <Pressable
         style={styles.actionButton}
         onPress={() => {
-          router.push(`/vehicles/documentation/${licensePlate}`);
+          router.push(`/vehicles/checklist/${licensePlate}`);
         }}
       >
         <Text style={styles.buttonText}>Control bimestral</Text>

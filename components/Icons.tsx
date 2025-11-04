@@ -1,3 +1,4 @@
+import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 type IconBaseProps = {
@@ -280,5 +281,60 @@ export const IconClock = (props: {
       color={props.pressed ? "white" : "#282D86"}
       style={props.style}
     />
+  );
+};
+
+export type IconRenderProps = {
+  size?: number;
+  color?: string;
+  style?: any;
+};
+
+type IconComponentType = (props: IconRenderProps) => React.ReactElement;
+
+export const IconChevronDown: IconComponentType = ({
+  size = 24,
+  color = "#282D86",
+  style,
+}) => <AntDesign name="down" size={size} color={color} style={style} />;
+
+export const IconChevronUp: IconComponentType = ({
+  size = 24,
+  color = "#282D86",
+  style,
+}) => <AntDesign name="up" size={size} color={color} style={style} />;
+
+export const IconShield: IconComponentType = ({
+  size = 24,
+  color = "#282D86",
+  style,
+}) => <AntDesign name="Safety" size={size} color={color} style={style} />;
+
+export const IconCheck: IconComponentType = ({
+  size = 20,
+  color = "#FFFFFF",
+  style,
+}) => <AntDesign name="check" size={size} color={color} style={style} />;
+
+export const IconCloseSmall: IconComponentType = ({
+  size = 20,
+  color = "#FFFFFF",
+  style,
+}) => <AntDesign name="close" size={size} color={color} style={style} />;
+
+const iconNameByKey: Record<string, keyof typeof AntDesign.glyphMap> = {
+  tool: "tool",
+  bulb1: "bulb1",
+  car: "car",
+  safety: "Safety",
+  shield: "Safety",
+  warning: "warning",
+  key: "key",
+};
+
+export const getIconByKey = (key: string): IconComponentType => {
+  const iconName = iconNameByKey[key] ?? "Safety";
+  return ({ size = 24, color = "#282D86", style }) => (
+    <AntDesign name={iconName} size={size} color={color} style={style} />
   );
 };
