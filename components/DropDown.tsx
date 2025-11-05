@@ -44,7 +44,7 @@ const buildInitialState = (categories: ChecklistCategory[]): ChecklistState => {
         itemAcc[item.id] = null;
         return itemAcc;
       },
-      {},
+      {}
     );
     return acc;
   }, {});
@@ -69,7 +69,7 @@ const ChecklistSection = ({
   const [renderBody, setRenderBody] = useState(isExpanded);
   const IconComponent = useMemo(
     () => getIconByKey(category.iconKey ?? "shield"),
-    [category.iconKey],
+    [category.iconKey]
   );
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation],
+    [animation]
   );
 
   const arrowAnimationStyle = useMemo(
@@ -119,7 +119,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation],
+    [animation]
   );
 
   return (
@@ -211,7 +211,7 @@ export function DropDown({
   });
 
   const [internalState, setInternalState] = useState<ChecklistState>(() =>
-    buildInitialState(categories),
+    buildInitialState(categories)
   );
 
   useEffect(() => {
@@ -227,7 +227,7 @@ export function DropDown({
       }
       setInternalState(next);
     },
-    [onChange],
+    [onChange]
   );
 
   const animateLayout = useCallback(() => {
@@ -235,8 +235,8 @@ export function DropDown({
       LayoutAnimation.create(
         180,
         LayoutAnimation.Types.easeInEaseOut,
-        LayoutAnimation.Properties.opacity,
-      ),
+        LayoutAnimation.Properties.opacity
+      )
     );
   }, []);
 
@@ -253,7 +253,7 @@ export function DropDown({
         return next;
       });
     },
-    [animateLayout],
+    [animateLayout]
   );
 
   const goToNextSection = useCallback(
@@ -269,7 +269,7 @@ export function DropDown({
       animateLayout();
       setExpandedSections(new Set([nextId]));
     },
-    [animateLayout, autoAdvance, categories],
+    [animateLayout, autoAdvance, categories]
   );
 
   const handleChoicePress = useCallback(
@@ -288,14 +288,14 @@ export function DropDown({
       emitChange(nextAnswers);
 
       const sectionCompleted = Object.values(updatedSection).every(
-        (value) => value === "yes" || value === "no",
+        (value) => value === "yes" || value === "no"
       );
 
       if (sectionCompleted) {
         goToNextSection(sectionId);
       }
     },
-    [answers, emitChange, goToNextSection],
+    [answers, emitChange, goToNextSection]
   );
 
   const resolvedCategories = useMemo(() => categories, [categories]);
