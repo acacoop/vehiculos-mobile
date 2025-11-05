@@ -37,7 +37,6 @@ export default function Reservations() {
   const params = useLocalSearchParams();
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
   const [reservationsError, setReservationsError] = useState(null);
@@ -68,7 +67,7 @@ export default function Reservations() {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && String(vehicle.id) === String(desiredId)) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate)
+        (desiredPlate && vehicle.licensePlate === desiredPlate),
     );
 
     if (found) {
@@ -100,13 +99,9 @@ export default function Reservations() {
   const [toDate, setToDate] = useState(initialTo);
 
   useEffect(() => {
-    getAllVehicles()
-      .then((data) => {
-        setVehicles(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    getAllVehicles().then((data) => {
+      setVehicles(data);
+    });
   }, []);
 
   useEffect(() => {
@@ -130,7 +125,7 @@ export default function Reservations() {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron obtener las reservas"
+          error?.message || "No se pudieron obtener las reservas",
         );
       })
       .finally(() => {
@@ -156,7 +151,7 @@ export default function Reservations() {
           .trim()
           .replace(/\s+/g, " "),
       })),
-    [reservations]
+    [reservations],
   );
 
   const filteredReservations = mappedReservations.filter((res) => {

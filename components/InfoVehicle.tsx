@@ -61,7 +61,7 @@ export function InfoVehicle({ sections, columns = 2 }: InfoVehicleProps) {
 
 function formatValue(
   value: InfoItem["value"],
-  fallback: InfoItem["fallback"]
+  fallback: InfoItem["fallback"],
 ): string {
   if (value === null || value === undefined || value === "") {
     return fallback ?? DEFAULT_FALLBACK;

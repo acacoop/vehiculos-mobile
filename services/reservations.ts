@@ -57,12 +57,12 @@ const mapReservation = (api: ReservationApiModel): Reservation => {
 };
 
 export async function getReservationsByVehicle(
-  vehicleId: string
+  vehicleId: string,
 ): Promise<Reservation[]> {
   if (!vehicleId) return [];
 
   const response = await apiClient.get<ReservationsResponse>(
-    `/reservations/vehicle/${vehicleId}`
+    `/reservations/vehicle/${vehicleId}`,
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];
@@ -70,12 +70,12 @@ export async function getReservationsByVehicle(
 }
 
 export async function getReservationsByUser(
-  userId: string
+  userId: string,
 ): Promise<Reservation[]> {
   if (!userId) return [];
 
   const response = await apiClient.get<ReservationsResponse>(
-    `/reservations/user/${userId}`
+    `/reservations/user/${userId}`,
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];
@@ -90,7 +90,7 @@ export interface CreateReservationInput {
 }
 
 export async function createReservation(
-  input: CreateReservationInput
+  input: CreateReservationInput,
 ): Promise<Reservation> {
   const payload = {
     vehicleId: input.vehicleId,
@@ -101,7 +101,7 @@ export async function createReservation(
 
   const response = await apiClient.post<ReservationResponse>(
     "/reservations",
-    payload
+    payload,
   );
 
   return mapReservation(response.data);

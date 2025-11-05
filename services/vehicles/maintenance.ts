@@ -37,12 +37,12 @@ function mapMaintenance(api: AssignedMaintenanceApi): Maintenance {
 }
 
 export async function getMaintenanceByVehicle(
-  vehicle_id: string
+  vehicle_id: string,
 ): Promise<Maintenance[]> {
   if (!vehicle_id) return [];
 
   const response = await apiClient.get<MaintenanceAssignmentsResponse>(
-    `/maintenance/assignments/${vehicle_id}`
+    `/maintenance/assignments/${vehicle_id}`,
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];

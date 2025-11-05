@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Maintenance } from "../interfaces/maintenance";
-import { IconArrowRigth } from "./Icons";
-import { IconTool } from "./Icons";
+import { Icon } from "./Icons";
 
 type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
@@ -10,12 +9,12 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
     <View style={styles.container}>
       <View style={styles.containerCard}>
         <View style={styles.containerImage}>
-          <IconTool size={40} />
+          <Icon name="tool" size={40} />
         </View>
         <View style={styles.containerText}>
           <Text style={styles.text}>{maintenance.maintenanceName}</Text>
         </View>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </View>
     </View>
   );

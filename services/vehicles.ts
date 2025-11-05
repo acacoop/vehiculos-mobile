@@ -60,7 +60,7 @@ export async function getAllVehicles(): Promise<Vehicle[]> {
 }
 
 export async function getVehicle(
-  licensePlate: string
+  licensePlate: string,
 ): Promise<Vehicle | null> {
   if (!licensePlate) return null;
 
@@ -79,7 +79,7 @@ export async function getVehicle(
 
   try {
     const detail = await apiClient.get<VehicleDetailResponse>(
-      `/vehicles/${first.id}`
+      `/vehicles/${first.id}`,
     );
 
     if (detail?.data) {

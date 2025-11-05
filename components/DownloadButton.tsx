@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Pressable, Text, View } from "react-native";
-import { IconArrowRigth, IconFile } from "./Icons";
+import { Icon } from "./Icons";
 
 export default function DownloadButton() {
   return (
@@ -15,11 +15,11 @@ export default function DownloadButton() {
             alignItems: "center",
           }}
         >
-          <IconFile size={24} />
+          <Icon name="filetext1" size={24} />
         </View>
         <Text style={styles.text}>Documento.pdf</Text>
       </View>
-      <IconArrowRigth size={20} />
+      <Icon name="right" size={20} />
     </Pressable>
   );
 }

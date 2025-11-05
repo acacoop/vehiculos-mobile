@@ -42,7 +42,7 @@ export default function VehicleMaintenanceEntry() {
       console.error("Error al cargar el historial de mantenimiento", error);
       setMaintenanceHistory([]);
       setHistoryError(
-        error?.message || "No se pudo obtener el historial de mantenimiento"
+        error?.message || "No se pudo obtener el historial de mantenimiento",
       );
     } finally {
       setLoadingHistory(false);
@@ -66,7 +66,7 @@ export default function VehicleMaintenanceEntry() {
     useCallback(() => {
       if (!assignedMaintenanceId) return;
       loadMaintenanceRecords(assignedMaintenanceId);
-    }, [assignedMaintenanceId, loadMaintenanceRecords])
+    }, [assignedMaintenanceId, loadMaintenanceRecords]),
   );
 
   const formattedHistory = useMemo(() => {
@@ -172,7 +172,7 @@ export default function VehicleMaintenanceEntry() {
                 maintenanceCategoryName:
                   maintenance?.maintenanceCategoryName ?? "",
                 kilometersFrequency: String(
-                  maintenance?.kilometersFrequency ?? ""
+                  maintenance?.kilometersFrequency ?? "",
                 ),
                 daysFrequency: String(maintenance?.daysFrequency ?? ""),
               },

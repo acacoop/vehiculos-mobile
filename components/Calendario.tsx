@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
-import { IconArrowLeft, IconArrowRigth, IconCalendar } from "./Icons";
+import { Icon } from "./Icons";
 
 const daysOfWeek = ["D", "L", "Ma", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
@@ -133,10 +133,11 @@ export const Calendario = ({
             Hoy
           </Text>
         </TouchableOpacity>
-        <IconArrowLeft
+        <Icon
+          name="left"
           onPress={goToPreviousMonth}
           size={24}
-          style={{ color: "#282D86" }}
+          color="#282D86"
         />
 
         <View
@@ -154,11 +155,7 @@ export const Calendario = ({
           </Text>
         </View>
 
-        <IconArrowRigth
-          onPress={goToNextMonth}
-          size={24}
-          style={{ color: "#282D86" }}
-        />
+        <Icon name="right" onPress={goToNextMonth} size={24} color="#282D86" />
       </View>
 
       <View style={styles.gridContainer}>

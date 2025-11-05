@@ -84,7 +84,7 @@ export default function Checklist() {
         ],
       },
     ],
-    []
+    [],
   );
 
   const initialResponses = useMemo(() => {
@@ -137,15 +137,21 @@ export default function Checklist() {
       >
         <View style={styles.header}>
           <Text style={styles.licensePlateTitle}>
-            Patente: {vehicleDetail?.licensePlate || checklist}
+            Dominio: {vehicleDetail?.licensePlate || checklist}
           </Text>
-          <Text style={styles.subtitle}>Checklist Pre-viaje | 24/07/2024</Text>
+          <Text style={styles.subtitle}>
+            {vehicleDetail?.brand && vehicleDetail?.model
+              ? `${vehicleDetail.brand} ${vehicleDetail.model}`
+              : "Marca y modelo desconocidos"}
+          </Text>
         </View>
-        <DropDown
-          categories={categories}
-          value={responses}
-          onChange={handleResponsesChange}
-        />
+        <View style={{ width: "90%", alignItems: "center", paddingBottom: 20 }}>
+          <DropDown
+            categories={categories}
+            value={responses}
+            onChange={handleResponsesChange}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -155,8 +161,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    padding: 20,
-    backgroundColor: "#F6F7FB",
+    gap: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -172,6 +177,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
   header: {
+    width: "90%",
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 20,
@@ -181,6 +187,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 3,
+    marginTop: 20,
   },
   licensePlateTitle: {
     fontSize: 16,
@@ -188,11 +195,15 @@ const styles = StyleSheet.create({
     color: "#282D86",
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 16,
     color: "#7A80A6",
   },
   scrollContent: {
+    flex: 1,
+    width: "100%",
     gap: 24,
     paddingBottom: 60,
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
 });

@@ -1,11 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Linking, Platform, Text } from "react-native";
-import {
-  IconUser,
-  IconWallet,
-  IconLogout,
-  IconQuestion,
-} from "../../components/Icons";
+import { Icon } from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
 import { PressableButton } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
@@ -35,17 +30,17 @@ export default function Configuration() {
         await Linking.openURL(appUrl);
       } else {
         await Linking.openURL(
-          Platform.OS === "ios" ? appStoreUrl : playStoreUrl
+          Platform.OS === "ios" ? appStoreUrl : playStoreUrl,
         );
       }
-    } catch (e) {
+    } catch (_error) {
       await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
     }
   };
 
   const openSupportPortal = async () => {
     await Linking.openURL(
-      "https://acacoop.atlassian.net/servicedesk/customer/portals"
+      "https://acacoop.atlassian.net/servicedesk/customer/portals",
     );
   };
 
@@ -63,13 +58,13 @@ export default function Configuration() {
         <CardConfig
           title="Información de la cuenta"
           description="Gestionar Información de la cuenta"
-          icon={<IconUser />}
+          icon={<Icon name="user" size={24} />}
           onPress={() => configButtons({ user: "user" })}
         />
         <CardConfig
           title="Credenciales"
           description="Consulta con MiArgentina los documentos disponibles"
-          icon={<IconWallet />}
+          icon={<Icon name="wallet" size={24} />}
           onPress={openMiArgentina}
         />
         <View style={{ textAlign: "start", width: "90%", marginTop: 20 }}>
@@ -78,7 +73,7 @@ export default function Configuration() {
         <CardConfig
           title="Contacto"
           description="Contáctanos para soporte o sugerencias"
-          icon={<IconQuestion />}
+          icon={<Icon name="question" size={24} />}
           onPress={openSupportPortal}
         />
       </View>
@@ -92,7 +87,9 @@ export default function Configuration() {
       >
         <PressableButton
           text="Cerrar sesión"
-          icon={({ pressed }) => <IconLogout pressed={pressed} />}
+          icon={({ pressed }) => (
+            <Icon name="logout" pressed={pressed} size={20} />
+          )}
           onPress={handleSignOut}
         />
       </View>

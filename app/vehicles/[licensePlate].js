@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
-import { IconArrowRigth } from "../../components/Icons";
+import { Icon } from "../../components/Icons";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -136,7 +136,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
         }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </Pressable>
       <Pressable
         style={styles.actionButton}
@@ -145,7 +145,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
         }}
       >
         <Text style={styles.buttonText}>Ficha técnica</Text>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </Pressable>
       <Pressable
         style={styles.actionButton}
@@ -154,7 +154,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
         }}
       >
         <Text style={styles.buttonText}>Documentación</Text>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </Pressable>
       <Pressable
         style={styles.actionButton}
@@ -162,8 +162,8 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
           router.push(`/vehicles/checklist/${licensePlate}`);
         }}
       >
-        <Text style={styles.buttonText}>Control bimestral</Text>
-        <IconArrowRigth size={20} />
+        <Text style={styles.buttonText}>Control trimestral</Text>
+        <Icon name="right" size={20} />
       </Pressable>
     </View>
   );
@@ -236,7 +236,6 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: "center",
     fontWeight: "600",
-    color: "#282D86",
   },
   PressableReservar: {
     backgroundColor: "#fe9000",

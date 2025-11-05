@@ -77,7 +77,7 @@ const ADDITIONAL_SCOPES = RAW_SCOPES.split(/[ ,]+/)
   .map((scope: string) => scope.trim())
   .filter(Boolean);
 const REQUESTED_SCOPES = Array.from(
-  new Set([...DEFAULT_SCOPES, ...ADDITIONAL_SCOPES])
+  new Set([...DEFAULT_SCOPES, ...ADDITIONAL_SCOPES]),
 );
 
 const REDIRECT_URI = AuthSession.makeRedirectUri({
@@ -106,7 +106,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 function ensureConfig() {
   if (!CLIENT_ID || !TENANT_ID) {
     throw new Error(
-      "Faltan variables de entorno EXPO_PUBLIC_ENTRA_CLIENT_ID y/o EXPO_PUBLIC_ENTRA_TENANT_ID"
+      "Faltan variables de entorno EXPO_PUBLIC_ENTRA_CLIENT_ID y/o EXPO_PUBLIC_ENTRA_TENANT_ID",
     );
   }
 }
@@ -167,7 +167,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       scopes: REQUESTED_SCOPES,
       usePKCE: true,
     },
-    discovery
+    discovery,
   );
 
   const persistToken = useCallback(async (state: TokenState | null) => {
@@ -183,7 +183,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setTokenState(state);
       await persistToken(state);
     },
-    [persistToken]
+    [persistToken],
   );
 
   const handleTokenExchange = useCallback(
@@ -204,7 +204,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
               code_verifier: request.codeVerifier || "",
             },
           },
-          discovery
+          discovery,
         );
         const expiresIn = tokenResponse.expiresIn ?? 3600;
         const newState: TokenState = {
@@ -217,14 +217,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } catch (err) {
         console.error("Token exchange failed", err);
         setError(
-          "No se pudo completar el inicio de sesión. Intenta nuevamente."
+          "No se pudo completar el inicio de sesión. Intenta nuevamente.",
         );
         await updateTokenState(null);
       } finally {
         setIsLoading(false);
       }
     },
-    [request, updateTokenState, discovery]
+    [request, updateTokenState, discovery],
   );
 
   const refreshAccessToken = useCallback(
@@ -241,7 +241,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             refreshToken,
             scopes: REQUESTED_SCOPES,
           },
-          discovery
+          discovery,
         );
         const expiresIn = refreshed.expiresIn ?? 3600;
         const newState: TokenState = {
@@ -257,14 +257,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return null;
       }
     },
-    [updateTokenState, discovery]
+    [updateTokenState, discovery],
   );
 
   const restoreSession = useCallback(async () => {
     if (!configReady) {
       setIsLoading(false);
       setError(
-        "Configura las variables EXPO_PUBLIC_ENTRA_CLIENT_ID y EXPO_PUBLIC_ENTRA_TENANT_ID en tu .env"
+        "Configura las variables EXPO_PUBLIC_ENTRA_CLIENT_ID y EXPO_PUBLIC_ENTRA_TENANT_ID en tu .env",
       );
       return;
     }
@@ -299,7 +299,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       handleTokenExchange(response.params.code as string);
     } else if (response.type === "error") {
       setError(
-        response.error?.message || "Proceso de inicio de sesión cancelado"
+        response.error?.message || "Proceso de inicio de sesión cancelado",
       );
       setIsLoading(false);
     } else if (response.type === "dismiss" || response.type === "cancel") {
@@ -323,7 +323,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signIn = useCallback(async () => {
     if (!configReady) {
       setError(
-        "Configura las variables EXPO_PUBLIC_ENTRA_CLIENT_ID y EXPO_PUBLIC_ENTRA_TENANT_ID en tu .env"
+        "Configura las variables EXPO_PUBLIC_ENTRA_CLIENT_ID y EXPO_PUBLIC_ENTRA_TENANT_ID en tu .env",
       );
       return;
     }
@@ -368,7 +368,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       getAccessToken,
       error,
     }),
-    [isLoading, tokenState, signIn, signOut, getAccessToken, error]
+    [isLoading, tokenState, signIn, signOut, getAccessToken, error],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

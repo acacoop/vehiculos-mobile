@@ -1,10 +1,5 @@
 import { Tabs } from "expo-router";
-import {
-  IconCar,
-  IconSetting,
-  IconHome,
-  IconCalendar,
-} from "../../components/Icons";
+import { Icon } from "../../components/Icons";
 
 export default function TabLayout() {
   return (
@@ -31,7 +26,9 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarLabel: "Inicio",
-          tabBarIcon: ({ color }) => <IconHome color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="home" color={color} size={24} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -39,14 +36,18 @@ export default function TabLayout() {
         options={{
           tabBarLabel: "Vehículos",
           headerTitle: "Vehículos",
-          tabBarIcon: ({ color }) => <IconCar color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="car" color={color} size={24} />
+          ),
         }}
       />
       <Tabs.Screen
         name="calendar"
         options={{
           tabBarLabel: "Calendario",
-          tabBarIcon: ({ color }) => <IconCalendar color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="calendar" color={color} size={24} />
+          ),
         }}
       />
 
@@ -54,7 +55,9 @@ export default function TabLayout() {
         name="configuration"
         options={{
           tabBarLabel: "Configuración",
-          tabBarIcon: ({ color }) => <IconSetting color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="setting" color={color} size={24} />
+          ),
         }}
       />
     </Tabs>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { IconCalendar, IconCar, IconUser } from "./Icons";
+import { Icon } from "./Icons";
 import { getCurrentUser } from "../services/me";
 
 interface ScheduleProps {
@@ -17,15 +17,8 @@ export function Schedule({
   vehicleLabel,
   requesterName,
 }: ScheduleProps) {
-  const formatDateToText = (date: Date) =>
-    date.toLocaleDateString("es-ES", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
-    requesterName ?? null
+    requesterName ?? null,
   );
   const [loadingRequester, setLoadingRequester] = useState(!requesterName);
 
@@ -102,7 +95,7 @@ export function Schedule({
       >
         <Text style={styles.title}>Detalles de la Reserva</Text>
         <View style={styles.containerImage}>
-          <IconCar size={25} color="#fe9000" />
+          <Icon name="car" size={25} color="#fe9000" />
         </View>
       </View>
       {vehicleLabel ? (
@@ -114,7 +107,7 @@ export function Schedule({
       ) : null}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <IconCalendar color="#282D86" />
+          <Icon name="calendar" color="#282D86" />
         </View>
 
         <View style={styles.itemContainer}>
@@ -133,7 +126,7 @@ export function Schedule({
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <IconCalendar color="#282D86" />
+          <Icon name="calendar" color="#282D86" />
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Fin de la reserva</Text>
@@ -151,7 +144,7 @@ export function Schedule({
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
         <View style={styles.containerImage}>
-          <IconUser />
+          <Icon name="user" />
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Solicitante</Text>

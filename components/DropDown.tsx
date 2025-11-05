@@ -20,12 +20,7 @@ import {
   ChecklistChoice,
   ChecklistState,
 } from "../interfaces/checklists/types";
-import {
-  IconCheck,
-  IconChevronDown,
-  IconCloseSmall,
-  getIconByKey,
-} from "./Icons";
+import { Icon, getIconByKey } from "./Icons";
 
 if (
   Platform.OS === "android" &&
@@ -49,7 +44,7 @@ const buildInitialState = (categories: ChecklistCategory[]): ChecklistState => {
         itemAcc[item.id] = null;
         return itemAcc;
       },
-      {}
+      {},
     );
     return acc;
   }, {});
@@ -74,7 +69,7 @@ const ChecklistSection = ({
   const [renderBody, setRenderBody] = useState(isExpanded);
   const IconComponent = useMemo(
     () => getIconByKey(category.iconKey ?? "shield"),
-    [category.iconKey]
+    [category.iconKey],
   );
 
   useEffect(() => {
@@ -110,7 +105,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   const arrowAnimationStyle = useMemo(
@@ -124,7 +119,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   return (
@@ -143,7 +138,7 @@ const ChecklistSection = ({
           <Text style={styles.sectionTitle}>{category.title}</Text>
         </View>
         <Animated.View style={arrowAnimationStyle}>
-          <IconChevronDown size={18} color="#282D86" />
+          <Icon name="down" size={18} color="#282D86" />
         </Animated.View>
       </Pressable>
       <Animated.View
@@ -175,7 +170,7 @@ const ChecklistSection = ({
                       ]}
                     >
                       {answer === "yes" && (
-                        <IconCheck size={14} color="#ffffff" />
+                        <Icon name="check" size={14} color="#ffffff" />
                       )}
                     </Pressable>
                     <Pressable
@@ -187,7 +182,7 @@ const ChecklistSection = ({
                       ]}
                     >
                       {answer === "no" && (
-                        <IconCloseSmall size={14} color="#ffffff" />
+                        <Icon name="close" size={14} color="#ffffff" />
                       )}
                     </Pressable>
                   </View>
@@ -216,7 +211,7 @@ export function DropDown({
   });
 
   const [internalState, setInternalState] = useState<ChecklistState>(() =>
-    buildInitialState(categories)
+    buildInitialState(categories),
   );
 
   useEffect(() => {
@@ -232,7 +227,7 @@ export function DropDown({
       }
       setInternalState(next);
     },
-    [onChange]
+    [onChange],
   );
 
   const animateLayout = useCallback(() => {
@@ -240,8 +235,8 @@ export function DropDown({
       LayoutAnimation.create(
         180,
         LayoutAnimation.Types.easeInEaseOut,
-        LayoutAnimation.Properties.opacity
-      )
+        LayoutAnimation.Properties.opacity,
+      ),
     );
   }, []);
 
@@ -258,7 +253,7 @@ export function DropDown({
         return next;
       });
     },
-    [animateLayout]
+    [animateLayout],
   );
 
   const goToNextSection = useCallback(
@@ -274,7 +269,7 @@ export function DropDown({
       animateLayout();
       setExpandedSections(new Set([nextId]));
     },
-    [animateLayout, autoAdvance, categories]
+    [animateLayout, autoAdvance, categories],
   );
 
   const handleChoicePress = useCallback(
@@ -293,14 +288,14 @@ export function DropDown({
       emitChange(nextAnswers);
 
       const sectionCompleted = Object.values(updatedSection).every(
-        (value) => value === "yes" || value === "no"
+        (value) => value === "yes" || value === "no",
       );
 
       if (sectionCompleted) {
         goToNextSection(sectionId);
       }
     },
-    [answers, emitChange, goToNextSection]
+    [answers, emitChange, goToNextSection],
   );
 
   const resolvedCategories = useMemo(() => categories, [categories]);

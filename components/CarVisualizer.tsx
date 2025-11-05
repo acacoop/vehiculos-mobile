@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
-import { IconArrowLeft, IconArrowRigth } from "./Icons";
+import { Icon } from "./Icons";
 
 type CarVisualizerProps = {
   vehicles: Vehicle[];
@@ -21,7 +21,7 @@ export function CarVisualizer({
   useEffect(() => {
     if (initialVehicleId == null) return;
     const targetIndex = vehicles.findIndex(
-      (vehicle) => String(vehicle.id) === String(initialVehicleId)
+      (vehicle) => String(vehicle.id) === String(initialVehicleId),
     );
     if (targetIndex >= 0) {
       setIndex((current) => (current === targetIndex ? current : targetIndex));
@@ -57,11 +57,7 @@ export function CarVisualizer({
   return (
     <View style={[styles.container, { width: containerWidth as any }]}>
       <View style={styles.vehicleInfo}>
-        <IconArrowLeft
-          onPress={goPrevious}
-          size={24}
-          style={{ color: "#282D86" }}
-        />
+        <Icon name="left" onPress={goPrevious} size={24} color="#282D86" />
 
         <View
           style={{
@@ -101,11 +97,7 @@ export function CarVisualizer({
             </Text>
           </View>
         </View>
-        <IconArrowRigth
-          onPress={goNext}
-          size={24}
-          style={{ color: "#282D86" }}
-        />
+        <Icon name="right" onPress={goNext} size={24} color="#282D86" />
       </View>
     </View>
   );

@@ -2,12 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Stack } from "expo-router";
 import { View, StyleSheet, Text, Pressable, Modal, Image } from "react-native";
 import { DniModal } from "../../components/DniModal";
-import { IconUser, IconArrowRigth } from "../../components/Icons";
+import { Icon } from "../../components/Icons";
 import { getCurrentUser } from "../../services/me";
 
 export default function UserConfig() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalType, setModalType] = useState("dni");
+  const [activeModal, setActiveModal] = useState(null);
   const [dniFrente, setDniFrente] = useState(null);
   const [dniDorso, setDniDorso] = useState(null);
   const [carnetFrente, setCarnetFrente] = useState(null);
@@ -17,14 +16,8 @@ export default function UserConfig() {
   const [loadingUser, setLoadingUser] = useState(true);
   const [userError, setUserError] = useState(null);
 
-  const openModal = (type) => {
-    setModalType(type);
-    setModalVisible(true);
-  };
-
   const closeModal = () => {
-    setModalVisible(false);
-    setModalType("dni");
+    setActiveModal(null);
   };
 
   function removeImage(side, tipo) {
@@ -98,7 +91,7 @@ export default function UserConfig() {
       />
       <View style={styles.pressable}>
         <View style={styles.avatar}>
-          <IconUser size={20} />
+          <Icon name="user" size={20} />
         </View>
         <Text style={styles.text}>{renderUserName()}</Text>
       </View>
@@ -108,26 +101,25 @@ export default function UserConfig() {
       <Pressable
         style={styles.pressable}
         onPress={() => {
-          setModalType("dni");
-          setModalVisible("dni");
+          setActiveModal("dni");
         }}
       >
-        <Text style={styles.text}>DNI</Text> <IconArrowRigth size={20} />
+        <Text style={styles.text}>DNI</Text>
+        <Icon name="right" size={20} />
       </Pressable>
       <Pressable
         style={styles.pressable}
         onPress={() => {
-          setModalType("carnet");
-          setModalVisible("carnet");
+          setActiveModal("carnet");
         }}
       >
-        <Text style={styles.text}>Carnet de conducir</Text>{" "}
-        <IconArrowRigth size={20} />
+        <Text style={styles.text}>Carnet de conducir</Text>
+        <Icon name="right" size={20} />
       </Pressable>
 
       {/* Modal para DNI */}
       <DniModal
-        visible={modalVisible === "dni"}
+        visible={activeModal === "dni"}
         onClose={closeModal}
         type="dni"
         frente={dniFrente}
@@ -139,7 +131,7 @@ export default function UserConfig() {
       />
       {/* Modal para Carnet */}
       <DniModal
-        visible={modalVisible === "carnet"}
+        visible={activeModal === "carnet"}
         onClose={closeModal}
         type="carnet"
         frente={carnetFrente}
@@ -167,7 +159,7 @@ export default function UserConfig() {
                   console.warn(
                     "No se pudo cargar la imagen:",
                     imageToView,
-                    e.nativeEvent
+                    e.nativeEvent,
                   );
                 }}
               />

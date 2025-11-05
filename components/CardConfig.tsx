@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { IconArrowRigth } from "./Icons";
+import { Icon } from "./Icons";
 
 type CardConfigProps = {
   title: string;
@@ -41,7 +41,7 @@ export function CardConfig({
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </Pressable>
     );
   }
@@ -64,7 +64,7 @@ export function CardConfig({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
-      <IconArrowRigth size={20} />
+      <Icon name="right" size={20} />
     </View>
   );
 }

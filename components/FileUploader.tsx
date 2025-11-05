@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  Image,
-  Platform,
-  Alert,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Pressable, Image, Alert, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 type PickedImage = {
@@ -85,7 +77,7 @@ export const FileUploader = ({
       if (status !== "granted") {
         Alert.alert(
           "Permiso requerido",
-          "Se necesita acceso a la galería de imágenes."
+          "Se necesita acceso a la galería de imágenes.",
         );
         return;
       }

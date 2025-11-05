@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { Vehicle } from "../interfaces/vehicle";
 import { Text, View, StyleSheet, Pressable } from "react-native";
-import { IconCar } from "./Icons";
+import { Icon } from "./Icons";
 
 type VehicleCardProps = { vehicle: Vehicle };
 export function VehicleCard({ vehicle }: VehicleCardProps) {
@@ -10,7 +10,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
       <Pressable style={styles.touchable}>
         <View style={styles.card}>
           <View style={styles.containerImage}>
-            <IconCar size={40} />
+            <Icon name="car" size={40} />
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text1}>

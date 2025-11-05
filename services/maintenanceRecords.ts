@@ -21,7 +21,7 @@ interface MaintenanceRecordResponse {
 }
 
 function mapMaintenanceRecord(
-  api: MaintenanceRecordApiModel
+  api: MaintenanceRecordApiModel,
 ): MaintenanceRecord {
   return {
     id: api.id,
@@ -34,7 +34,7 @@ function mapMaintenanceRecord(
 }
 
 export async function getMaintenanceRecordsByAssignedMaintenance(
-  assignedMaintenanceId: string
+  assignedMaintenanceId: string,
 ): Promise<MaintenanceRecord[]> {
   if (!assignedMaintenanceId) return [];
 
@@ -46,7 +46,7 @@ export async function getMaintenanceRecordsByAssignedMaintenance(
         limit: 100,
         page: 1,
       },
-    }
+    },
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];
@@ -62,7 +62,7 @@ export interface CreateMaintenanceRecordInput {
 }
 
 export async function createMaintenanceRecord(
-  input: CreateMaintenanceRecordInput
+  input: CreateMaintenanceRecordInput,
 ): Promise<MaintenanceRecord> {
   const payload = {
     assignedMaintenanceId: input.assignedMaintenanceId,
@@ -74,7 +74,7 @@ export async function createMaintenanceRecord(
 
   const response = await apiClient.post<MaintenanceRecordResponse>(
     "/maintenance/records",
-    payload
+    payload,
   );
 
   return mapMaintenanceRecord(response.data);
