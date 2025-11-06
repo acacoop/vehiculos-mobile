@@ -84,7 +84,7 @@ export default function Checklist() {
         ],
       },
     ],
-    [],
+    []
   );
 
   const initialResponses = useMemo(() => {
@@ -97,14 +97,33 @@ export default function Checklist() {
     }, {});
   }, [categories]);
 
+  const initialObservations = useMemo(() => {
+    return categories.reduce((acc, category) => {
+      acc[category.id] = category.items.reduce((itemAcc, item) => {
+        itemAcc[item.id] = "";
+        return itemAcc;
+      }, {});
+      return acc;
+    }, {});
+  }, [categories]);
+
   const [responses, setResponses] = useState(initialResponses);
+  const [observations, setObservations] = useState(initialObservations);
 
   useEffect(() => {
     setResponses(initialResponses);
   }, [initialResponses]);
 
+  useEffect(() => {
+    setObservations(initialObservations);
+  }, [initialObservations]);
+
   const handleResponsesChange = (next) => {
     setResponses(next);
+  };
+
+  const handleObservationsChange = (next) => {
+    setObservations(next);
   };
 
   if (loading) {
@@ -150,6 +169,8 @@ export default function Checklist() {
             categories={categories}
             value={responses}
             onChange={handleResponsesChange}
+            observations={observations}
+            onObservationsChange={handleObservationsChange}
           />
         </View>
       </ScrollView>

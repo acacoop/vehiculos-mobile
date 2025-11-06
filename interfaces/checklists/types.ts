@@ -13,3 +13,5 @@ export type ChecklistCategory = {
 };
 
 export type ChecklistState = Record<string, Record<string, ChecklistChoice>>;
+
+export type ChecklistObservations = Record<string, Record<string, string>>;

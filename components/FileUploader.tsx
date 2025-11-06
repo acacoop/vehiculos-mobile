@@ -77,7 +77,7 @@ export const FileUploader = ({
       if (status !== "granted") {
         Alert.alert(
           "Permiso requerido",
-          "Se necesita acceso a la galería de imágenes."
+          "Se necesita acceso a la galería de imágenes.",
         );
         return;
       }

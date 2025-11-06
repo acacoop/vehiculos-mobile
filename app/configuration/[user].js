@@ -159,7 +159,7 @@ export default function UserConfig() {
                   console.warn(
                     "No se pudo cargar la imagen:",
                     imageToView,
-                    e.nativeEvent
+                    e.nativeEvent,
                   );
                 }}
               />

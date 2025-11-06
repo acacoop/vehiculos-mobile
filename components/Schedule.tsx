@@ -18,7 +18,7 @@ export function Schedule({
   requesterName,
 }: ScheduleProps) {
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
-    requesterName ?? null
+    requesterName ?? null,
   );
   const [loadingRequester, setLoadingRequester] = useState(!requesterName);
 

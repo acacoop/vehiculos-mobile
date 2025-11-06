@@ -21,7 +21,7 @@ export function CarVisualizer({
   useEffect(() => {
     if (initialVehicleId == null) return;
     const targetIndex = vehicles.findIndex(
-      (vehicle) => String(vehicle.id) === String(initialVehicleId)
+      (vehicle) => String(vehicle.id) === String(initialVehicleId),
     );
     if (targetIndex >= 0) {
       setIndex((current) => (current === targetIndex ? current : targetIndex));

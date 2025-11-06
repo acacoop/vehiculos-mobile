@@ -9,7 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import { FileUploader } from "./FileUploader";
-import { IconClose } from "./Icons";
+import { Icon } from "./Icons";
 
 export interface DniImage {
   uri: string;
@@ -65,7 +65,7 @@ export const DniModal: React.FC<DniModalProps> = ({
                   style={styles.closeIcon}
                   onPress={() => removeImage("frente")}
                 >
-                  <IconClose size={24} />
+                  <Icon name="close" size={16} color="#ffffff" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.imageTouchable}
@@ -96,7 +96,7 @@ export const DniModal: React.FC<DniModalProps> = ({
                   style={styles.closeIcon}
                   onPress={() => removeImage("dorso")}
                 >
-                  <IconClose size={24} />
+                  <Icon name="close" size={16} color="#ffffff" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.imageTouchable}

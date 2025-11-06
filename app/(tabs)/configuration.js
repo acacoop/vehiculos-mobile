@@ -30,7 +30,7 @@ export default function Configuration() {
         await Linking.openURL(appUrl);
       } else {
         await Linking.openURL(
-          Platform.OS === "ios" ? appStoreUrl : playStoreUrl
+          Platform.OS === "ios" ? appStoreUrl : playStoreUrl,
         );
       }
     } catch (_error) {
@@ -40,7 +40,7 @@ export default function Configuration() {
 
   const openSupportPortal = async () => {
     await Linking.openURL(
-      "https://acacoop.atlassian.net/servicedesk/customer/portals"
+      "https://acacoop.atlassian.net/servicedesk/customer/portals",
     );
   };
 

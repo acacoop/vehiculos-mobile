@@ -67,7 +67,7 @@ export default function Reservations() {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && String(vehicle.id) === String(desiredId)) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate)
+        (desiredPlate && vehicle.licensePlate === desiredPlate),
     );
 
     if (found) {
@@ -125,7 +125,7 @@ export default function Reservations() {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron obtener las reservas"
+          error?.message || "No se pudieron obtener las reservas",
         );
       })
       .finally(() => {
@@ -151,7 +151,7 @@ export default function Reservations() {
           .trim()
           .replace(/\s+/g, " "),
       })),
-    [reservations]
+    [reservations],
   );
 
   const filteredReservations = mappedReservations.filter((res) => {

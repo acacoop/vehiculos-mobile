@@ -52,7 +52,7 @@ const pickColor = (
   color: string | undefined,
   pressed: boolean | undefined,
   defaultColor: string,
-  pressedColor?: string
+  pressedColor?: string,
 ) => {
   if (color) {
     return color;
@@ -86,7 +86,7 @@ export const Icon: React.FC<IconProps> = ({
     color,
     pressed,
     resolvedDefault,
-    resolvedPressed
+    resolvedPressed,
   );
 
   return (
