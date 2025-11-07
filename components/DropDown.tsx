@@ -185,9 +185,6 @@ const ChecklistSection = ({
                 <View key={item.id} style={styles.itemRow}>
                   <View style={styles.itemLabelContainer}>
                     <Text style={styles.itemLabel}>{item.label}</Text>
-                    {answer === "no" && note ? (
-                      <Text style={styles.observationText}>{note}</Text>
-                    ) : null}
                   </View>
                   <View style={styles.choiceGroup}>
                     <Pressable
@@ -562,8 +559,8 @@ const styles = StyleSheet.create({
   choiceHeader: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    gap: 36,
-    paddingLeft: 80,
+    gap: 30,
+    paddingRight: 7,
   },
   choiceHeaderText: {
     fontSize: 12,

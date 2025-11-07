@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
+    alignSelf: "center",
     fontSize: 20,
     fontWeight: "700",
     color: "#282D86",
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     gap: 12,
   },
   button: {
@@ -179,10 +180,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   cancelButton: {
-    backgroundColor: "#EEF1FE",
+    backgroundColor: "#FE9000",
   },
   cancelLabel: {
-    color: "#282D86",
+    color: "#FFFF",
   },
   confirmButton: {
     backgroundColor: "#282D86",
