@@ -36,24 +36,26 @@ export default function Documentation() {
         showsHorizontalScrollIndicator={false}
         bounces={false}
       >
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Autorización de manejo </Text>
-          <View style={styles.view}>
-            <DownloadButton />
+        <View style={styles.contentContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Autorización de manejo </Text>
+            <View style={styles.view}>
+              <DownloadButton />
+            </View>
           </View>
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Seguro</Text>
-          <View style={styles.view}>
-            <DownloadButton />
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Seguro</Text>
+            <View style={styles.view}>
+              <DownloadButton />
+            </View>
           </View>
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Otros </Text>
-          <View style={styles.view}>
-            <DownloadButton />
-            <DownloadButton />
-            <DownloadButton />
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Otros </Text>
+            <View style={styles.view}>
+              <DownloadButton />
+              <DownloadButton />
+              <DownloadButton />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -71,12 +73,19 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     width: "100%",
   },
+  contentContainer: {
+    alignItems: "center",
+    gap: 30,
+    paddingBottom: 20,
+    width: "100%",
+  },
+
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#282D86",
     marginTop: 30,
-    textAlign: "start",
+    alignSelf: "flex-start",
   },
   view: {
     width: "100%",
@@ -95,9 +104,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   titleContainer: {
-    width: "100%",
+    width: "90%",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
-    marginTop: 20,
+    alignItems: "center",
   },
 });
