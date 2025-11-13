@@ -84,7 +84,7 @@ export default function Checklist() {
         ],
       },
     ],
-    []
+    [],
   );
 
   const initialResponses = useMemo(() => {

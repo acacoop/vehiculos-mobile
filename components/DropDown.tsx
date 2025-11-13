@@ -48,14 +48,14 @@ const buildInitialState = (categories: ChecklistCategory[]): ChecklistState => {
         itemAcc[item.id] = null;
         return itemAcc;
       },
-      {}
+      {},
     );
     return acc;
   }, {});
 };
 
 const buildInitialObservations = (
-  categories: ChecklistCategory[]
+  categories: ChecklistCategory[],
 ): ChecklistObservations => {
   return categories.reduce<ChecklistObservations>((acc, category) => {
     acc[category.id] = category.items.reduce<Record<string, string>>(
@@ -63,7 +63,7 @@ const buildInitialObservations = (
         itemAcc[item.id] = "";
         return itemAcc;
       },
-      {}
+      {},
     );
     return acc;
   }, {});
@@ -92,7 +92,7 @@ const ChecklistSection = ({
   const [renderBody, setRenderBody] = useState(isExpanded);
   const IconComponent = useMemo(
     () => getIconByKey(category.iconKey ?? "shield"),
-    [category.iconKey]
+    [category.iconKey],
   );
 
   useEffect(() => {
@@ -128,7 +128,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   const arrowAnimationStyle = useMemo(
@@ -142,7 +142,7 @@ const ChecklistSection = ({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   return (
@@ -180,7 +180,7 @@ const ChecklistSection = ({
             </View>
             {category.items.map((item) => {
               const answer = answers?.[item.id] ?? null;
-              const note = observations?.[item.id] ?? "";
+              // const note = observations?.[item.id] ?? "";
               return (
                 <View key={item.id} style={styles.itemRow}>
                   <View style={styles.itemLabelContainer}>
@@ -239,7 +239,7 @@ export function DropDown({
   });
 
   const [internalState, setInternalState] = useState<ChecklistState>(() =>
-    buildInitialState(categories)
+    buildInitialState(categories),
   );
 
   const [internalObservations, setInternalObservations] =
@@ -263,7 +263,7 @@ export function DropDown({
       }
       setInternalState(next);
     },
-    [onChange]
+    [onChange],
   );
 
   const emitObservationsChange = useCallback(
@@ -273,7 +273,7 @@ export function DropDown({
       }
       setInternalObservations(next);
     },
-    [onObservationsChange]
+    [onObservationsChange],
   );
 
   const animateLayout = useCallback(() => {
@@ -281,8 +281,8 @@ export function DropDown({
       LayoutAnimation.create(
         180,
         LayoutAnimation.Types.easeInEaseOut,
-        LayoutAnimation.Properties.opacity
-      )
+        LayoutAnimation.Properties.opacity,
+      ),
     );
   }, []);
 
@@ -299,7 +299,7 @@ export function DropDown({
         return next;
       });
     },
-    [animateLayout]
+    [animateLayout],
   );
 
   const goToNextSection = useCallback(
@@ -315,7 +315,7 @@ export function DropDown({
       animateLayout();
       setExpandedSections(new Set([nextId]));
     },
-    [animateLayout, autoAdvance, categories]
+    [animateLayout, autoAdvance, categories],
   );
 
   const handleChoicePress = useCallback(
@@ -323,7 +323,7 @@ export function DropDown({
       sectionId: string,
       itemId: string,
       choice: ChecklistChoice,
-      options?: { note?: string; forceChoice?: boolean }
+      options?: { note?: string; forceChoice?: boolean },
     ) => {
       const currentSection = answers[sectionId] ?? {};
       const currentValue = currentSection[itemId] ?? null;
@@ -366,7 +366,7 @@ export function DropDown({
       emitObservationsChange(nextObservationState);
 
       const sectionCompleted = Object.values(updatedSection).every(
-        (value) => value === "yes" || value === "no"
+        (value) => value === "yes" || value === "no",
       );
 
       if (sectionCompleted) {
@@ -379,7 +379,7 @@ export function DropDown({
       emitChange,
       emitObservationsChange,
       goToNextSection,
-    ]
+    ],
   );
 
   const [observationModalTarget, setObservationModalTarget] = useState<{
@@ -399,7 +399,7 @@ export function DropDown({
       setObservationDraft(existingNote);
       setObservationModalTarget({ sectionId, itemId });
     },
-    [observationState]
+    [observationState],
   );
 
   const confirmObservation = useCallback(() => {
@@ -413,7 +413,7 @@ export function DropDown({
       {
         note: observationDraft.trim(),
         forceChoice: true,
-      }
+      },
     );
     closeObservationModal();
   }, [

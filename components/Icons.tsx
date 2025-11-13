@@ -30,21 +30,21 @@ const iconPalette: IconPalette = {
   left: { default: "#282D86", pressed: "white" },
   right: { default: "#282D86", pressed: "white" },
   tool: { default: "#282D86", pressed: "white" },
-  paperclip: { default: "#282D86", pressed: "white" },
+  "paper-clip": { default: "#282D86", pressed: "white" },
   idcard: { default: "#282D86", pressed: "white" },
   download: { default: "white", pressed: "#282D86" },
   edit: { default: "#282D86", pressed: "white" },
-  closecircleo: { default: "white", pressed: "white" },
-  filetext1: { default: "#282D86", pressed: "white" },
+  "close-circle": { default: "white", pressed: "white" },
+  "file-text": { default: "#282D86", pressed: "white" },
   question: { default: "#282D86", pressed: "white" },
-  clockcircleo: { default: "#282D86", pressed: "white" },
+  "clock-circle": { default: "#282D86", pressed: "white" },
   down: { default: "#282D86" },
   up: { default: "#282D86" },
-  Safety: { default: "#282D86" },
+  safety: { default: "#282D86" },
   check: { default: "#FFFFFF" },
   close: { default: "#FFFFFF" },
   key: { default: "#282D86" },
-  bulb1: { default: "#282D86" },
+  bulb: { default: "#282D86" },
   warning: { default: "#FE9000" },
 };
 
@@ -112,16 +112,17 @@ type IconComponentType = React.FC<IconRenderProps>;
 
 const iconNameByKey: Record<string, IconName> = {
   tool: "tool",
-  bulb1: "bulb1",
+  bulb1: "bulb",
+  bulb: "bulb",
   car: "car",
-  safety: "Safety",
-  shield: "Safety",
+  safety: "safety",
+  shield: "safety",
   warning: "warning",
   key: "key",
 };
 
 export const getIconByKey = (key: string): IconComponentType => {
-  const iconName = iconNameByKey[key] ?? "Safety";
+  const iconName = iconNameByKey[key] ?? "safety";
   const IconByKey: IconComponentType = ({ size = 24, color, style }) => (
     <Icon name={iconName} size={size} color={color} style={style} />
   );
