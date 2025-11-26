@@ -124,7 +124,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId, licensePlate }) => {
+const VehicleButtons = ({ vehicleId, licensePlate, historyChecklist }) => {
   const router = useRouter();
 
   return (
@@ -159,7 +159,10 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
       <Pressable
         style={styles.actionButton}
         onPress={() => {
-          router.push(`/vehicles/checklist/${licensePlate}`);
+          router.push({
+            pathname: "/vehicles/checklist/history",
+            params: { licensePlate },
+          });
         }}
       >
         <Text style={styles.buttonText}>Control trimestral</Text>
