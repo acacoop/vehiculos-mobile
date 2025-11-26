@@ -147,7 +147,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
         <Text style={styles.buttonText}>Ficha técnica</Text>
         <Icon name="right" size={20} />
       </Pressable>
-      <Pressable
+      {/* <Pressable
         style={styles.actionButton}
         onPress={() => {
           router.push(`/vehicles/documentation/${licensePlate}`);
@@ -155,7 +155,7 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
       >
         <Text style={styles.buttonText}>Documentación</Text>
         <Icon name="right" size={20} />
-      </Pressable>
+      </Pressable> */}
       <Pressable
         style={styles.actionButton}
         onPress={() => {

@@ -1,14 +1,14 @@
 import React from "react";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-type IconName = keyof typeof AntDesign.glyphMap;
+export type IconName = keyof typeof Ionicons.glyphMap;
 
 type IconColorSet = {
   default: string;
   pressed?: string;
 };
 
-type IconPalette = Partial<Record<IconName, IconColorSet>>;
+type IconPalette = Partial<Record<string, IconColorSet>>;
 
 type BaseIconProps = {
   color?: string;
@@ -18,6 +18,7 @@ type BaseIconProps = {
   pressed?: boolean;
 };
 
+// Mapping for specific colors per icon type
 const iconPalette: IconPalette = {
   car: { default: "#282D86", pressed: "#FE9000" },
   calendar: { default: "black", pressed: "#FE9000" },
@@ -48,23 +49,58 @@ const iconPalette: IconPalette = {
   warning: { default: "#FE9000" },
 };
 
+// Mapping from the old keys (or logical keys) to Ionicons names
+// We use outline variants to avoid the "filled" issue
+const iconNameMapping: Record<string, IconName> = {
+  car: "car-outline",
+  calendar: "calendar-outline",
+  setting: "settings-outline",
+  home: "home-outline",
+  user: "person-outline",
+  wallet: "wallet-outline",
+  lock: "lock-closed-outline",
+  logout: "log-out-outline",
+  left: "chevron-back-outline",
+  right: "chevron-forward-outline",
+  tool: "construct-outline",
+  "paper-clip": "attach-outline",
+  idcard: "card-outline",
+  download: "download-outline",
+  edit: "create-outline",
+  "close-circle": "close-circle-outline",
+  "file-text": "document-text-outline",
+  question: "help-circle-outline",
+  "clock-circle": "time-outline",
+  down: "chevron-down-outline",
+  up: "chevron-up-outline",
+  safety: "shield-checkmark-outline",
+  check: "checkmark-outline",
+  close: "close-outline",
+  key: "key-outline",
+  bulb: "bulb-outline",
+  warning: "warning-outline",
+  // Mappings from iconNameByKey in original file
+  bulb1: "bulb-outline",
+  shield: "shield-checkmark-outline",
+  // Backward compatibility and new requests
+  Safety: "shield-checkmark-outline",
+  alerttriangle: "warning-outline",
+  emergency: "medkit-outline",
+};
+
 const pickColor = (
   color: string | undefined,
   pressed: boolean | undefined,
   defaultColor: string,
   pressedColor?: string
 ) => {
-  if (color) {
-    return color;
-  }
-  if (pressed && pressedColor) {
-    return pressedColor;
-  }
+  if (color) return color;
+  if (pressed && pressedColor) return pressedColor;
   return defaultColor;
 };
 
 export type IconProps = BaseIconProps & {
-  name: IconName;
+  name: string; // We accept string to allow the logical names (e.g. 'car', 'home')
   defaultColor?: string;
   pressedColor?: string;
 };
@@ -79,7 +115,12 @@ export const Icon: React.FC<IconProps> = ({
   defaultColor,
   pressedColor,
 }) => {
+  // Get the actual Ionicon name or fallback to help-circle if not found
+  const ioniconName = iconNameMapping[name] || (name as IconName);
+
+  // Check if we have a palette for the logical name
   const palette = iconPalette[name] ?? { default: "#282D86" };
+
   const resolvedDefault = defaultColor ?? palette.default;
   const resolvedPressed = pressedColor ?? palette.pressed;
   const resolvedColor = pickColor(
@@ -90,8 +131,8 @@ export const Icon: React.FC<IconProps> = ({
   );
 
   return (
-    <AntDesign
-      name={name}
+    <Ionicons
+      name={ioniconName as IconName}
       size={size}
       color={resolvedColor}
       onPress={onPress}
@@ -110,22 +151,11 @@ export type IconRenderProps = {
 
 type IconComponentType = React.FC<IconRenderProps>;
 
-const iconNameByKey: Record<string, IconName> = {
-  tool: "tool",
-  bulb1: "bulb",
-  bulb: "bulb",
-  car: "car",
-  safety: "safety",
-  shield: "safety",
-  warning: "warning",
-  key: "key",
-};
-
+// Kept for backward compatibility if used elsewhere
 export const getIconByKey = (key: string): IconComponentType => {
-  const iconName = iconNameByKey[key] ?? "safety";
   const IconByKey: IconComponentType = ({ size = 24, color, style }) => (
-    <Icon name={iconName} size={size} color={color} style={style} />
+    <Icon name={key} size={size} color={color} style={style} />
   );
-  IconByKey.displayName = `Icon(${iconName})`;
+  IconByKey.displayName = `Icon(${key})`;
   return IconByKey;
 };

@@ -14,10 +14,11 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 
 type DatePickerProps = {
-  label: string;
+  label?: string;
   value: Date;
   onChange: (date: Date) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  children?: React.ReactNode;
 };
 
 export const DatePicker = ({
@@ -25,24 +26,53 @@ export const DatePicker = ({
   onChange,
   label,
   containerStyle,
+  children,
 }: DatePickerProps) => {
   const [visible, setVisible] = useState(false);
 
   if (Platform.OS === "web") {
     return (
-      <View style={[styles.container, containerStyle]}>
-        <Text style={styles.label}>{label}</Text>
-        <input
-          type="date"
-          value={value.toISOString().slice(0, 10)}
-          onChange={(e) => {
-            const newDate = new Date(value);
-            const [year, month, day] = e.target.value.split("-");
-            newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
-            onChange(newDate);
-          }}
-          style={webInputStyle}
-        />
+      <View style={[styles.container, containerStyle, children ? styles.childrenContainer : null]}>
+        {children ? (
+          <View style={{ width: '100%', position: 'relative' }}>
+            {children}
+            <input
+              type="date"
+              value={value.toISOString().slice(0, 10)}
+              onChange={(e) => {
+                const newDate = new Date(value);
+                const [year, month, day] = e.target.value.split("-");
+                newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
+                onChange(newDate);
+              }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                opacity: 0,
+                cursor: 'pointer',
+                zIndex: 10,
+              }}
+            />
+          </View>
+        ) : (
+          <>
+            <Text style={styles.label}>{label}</Text>
+            <input
+              type="date"
+              value={value.toISOString().slice(0, 10)}
+              onChange={(e) => {
+                const newDate = new Date(value);
+                const [year, month, day] = e.target.value.split("-");
+                newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
+                onChange(newDate);
+              }}
+              style={webInputStyle}
+            />
+          </>
+        )}
       </View>
     );
   }
@@ -64,12 +94,18 @@ export const DatePicker = ({
   return (
     <>
       <TouchableOpacity
-        style={[styles.container, containerStyle]}
+        style={[styles.container, containerStyle, children ? styles.childrenContainer : null]}
         onPress={() => setVisible(true)}
         activeOpacity={0.8}
       >
-        <Text style={styles.label}>{label}</Text>
-        <Text style={styles.value}>{value.toLocaleDateString()}</Text>
+        {children ? (
+          children
+        ) : (
+          <>
+            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.value}>{value.toLocaleDateString()}</Text>
+          </>
+        )}
       </TouchableOpacity>
       {visible &&
         (Platform.OS === "ios" ? (
@@ -101,6 +137,12 @@ const styles = StyleSheet.create({
     width: "50%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  childrenContainer: {
+    backgroundColor: "transparent",
+    padding: 0,
+    width: "100%",
+    borderRadius: 0,
   },
   label: {
     fontWeight: "bold",

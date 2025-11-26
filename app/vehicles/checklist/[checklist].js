@@ -74,7 +74,7 @@ export default function Checklist() {
       {
         id: "seguridad",
         title: "Seguridad y Emergencia",
-        iconKey: "Safety",
+        iconKey: "alerttriangle",
         items: [
           { id: "cinturones", label: "Cinturones de seguridad" },
           { id: "apoyacabezas", label: "Apoyacabezas" },
