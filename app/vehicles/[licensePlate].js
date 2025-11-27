@@ -82,18 +82,7 @@ export default function VehicleDetail() {
         )}
         contentContainerStyle={styles.flatListContainer}
       />
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: colors.white,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderColor: colors.border,
-          borderWidth: 1,
-          zIndex: 10,
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.containerReservar}>
         <Pressable
           style={styles.PressableReservar}
           onPress={() => {
@@ -215,6 +204,16 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "stretch",
     gap: 20,
+  },
+  containerReservar: {
+    padding: 16,
+    backgroundColor: colors.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: colors.border,
+    borderWidth: 1,
+    zIndex: 10,
+    alignItems: "center",
   },
   actionButton: {
     flexDirection: "row",

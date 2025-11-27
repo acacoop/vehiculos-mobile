@@ -18,9 +18,10 @@ import {
 import {
   ChecklistCategory,
   ChecklistChoice,
+  ChecklistItem,
   ChecklistObservations,
   ChecklistState,
-} from "../interfaces/checklists/types";
+} from "../interfaces/checklists";
 import { Icon, getIconByKey } from "./Icons";
 import Modal from "./Modal";
 
@@ -44,7 +45,7 @@ type DropDownProps = {
 const buildInitialState = (categories: ChecklistCategory[]): ChecklistState => {
   return categories.reduce<ChecklistState>((acc, category) => {
     acc[category.id] = category.items.reduce<Record<string, ChecklistChoice>>(
-      (itemAcc, item) => {
+      (itemAcc: Record<string, ChecklistChoice>, item: ChecklistItem) => {
         itemAcc[item.id] = null;
         return itemAcc;
       },
@@ -59,7 +60,7 @@ const buildInitialObservations = (
 ): ChecklistObservations => {
   return categories.reduce<ChecklistObservations>((acc, category) => {
     acc[category.id] = category.items.reduce<Record<string, string>>(
-      (itemAcc, item) => {
+      (itemAcc: Record<string, string>, item: ChecklistItem) => {
         itemAcc[item.id] = "";
         return itemAcc;
       },
@@ -178,9 +179,8 @@ const ChecklistSection = ({
               <Text style={styles.choiceHeaderText}>Sí</Text>
               <Text style={styles.choiceHeaderText}>No</Text>
             </View>
-            {category.items.map((item) => {
+            {category.items.map((item: ChecklistItem) => {
               const answer = answers?.[item.id] ?? null;
-              // const note = observations?.[item.id] ?? "";
               return (
                 <View key={item.id} style={styles.itemRow}>
                   <View style={styles.itemLabelContainer}>

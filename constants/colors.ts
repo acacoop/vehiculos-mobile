@@ -6,10 +6,10 @@ export const colors = {
   secondary: "#fe9000",
 
   // Status colors
-  success: "#10b981",
-  error: "#ef4444",
-  warning: "#f59e0b",
-  info: "#3b82f6",
+  success: "#43A047",
+  error: "#E53935",
+  warning: "#FB8C00",
+  info: "#039BE5",
 
   // Text colors
   textPrimary: "#1f2937",

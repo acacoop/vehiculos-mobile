@@ -1,5 +1,5 @@
+// Re-export types from types.ts
 export * from "./types";
-export * from "./payloads";
 
 // Backend checklist item status enum values
 export const CHECKLIST_ITEM_STATUS = {

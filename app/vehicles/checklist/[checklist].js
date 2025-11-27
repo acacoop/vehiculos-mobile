@@ -165,12 +165,8 @@ export default function Checklist() {
 
       await updateChecklistItems(checklistId, { items: itemsPayload });
 
-      Alert.alert("Éxito", "Checklist guardado correctamente", [
-        {
-          text: "OK",
-          onPress: () => router.back(),
-        },
-      ]);
+      // Volver automáticamente a la página anterior
+      router.back();
     } catch (err) {
       console.error("Error submitting checklist", err);
       Alert.alert(
@@ -245,8 +241,8 @@ export default function Checklist() {
             onObservationsChange={handleObservationsChange}
           />
         </View>
-
-        {/* Submit Button */}
+      </ScrollView>
+      <View style={styles.containerChecklistButton}>
         <Pressable
           style={[
             styles.submitButton,
@@ -259,7 +255,7 @@ export default function Checklist() {
             {submitting ? "Guardando..." : "Guardar Checklist"}
           </Text>
         </Pressable>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -279,7 +275,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    gap: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -334,7 +329,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 12,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
     marginBottom: 20,
     shadowColor: "#00000040",
@@ -343,6 +338,18 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+  containerChecklistButton: {
+    width: "100%",
+    padding: 16,
+    backgroundColor: colors.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: colors.border,
+    borderWidth: 1,
+    zIndex: 10,
+    alignItems: "center",
+  },
+
   submitButtonDisabled: {
     backgroundColor: "#D0D4EB",
     shadowOpacity: 0,
