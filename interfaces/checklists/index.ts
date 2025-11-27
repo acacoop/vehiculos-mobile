@@ -1,4 +1,3 @@
-// Re-export all checklist types
 export * from "./types";
 export * from "./payloads";
 
