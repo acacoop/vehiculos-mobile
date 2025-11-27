@@ -7,36 +7,11 @@ import {
   FlatList,
 } from "react-native";
 import { getVehicle } from "../../../services/vehicles";
+import { getChecklistHistoryByVehicle } from "../../../services/maintenanceChecklists";
 import { useEffect, useState } from "react";
 import { HistoryCard } from "../../../components/HistoryCard";
 
-// Mock data for history - In a real app this would come from an API
-const MOCK_HISTORY = [
-  {
-    id: "1",
-    licensePlate: "BC-FG-34",
-    date: "2024-07-24T08:15:00",
-    status: "Aprobado",
-    description: "Checklist Pre-viaje. Todos los ítems OK.",
-  },
-  {
-    id: "2",
-    licensePlate: "BC-FG-34",
-    date: "2024-04-20T14:30:00",
-    status: "Rechazado",
-    description: "Falla en luces de freno traseras.",
-  },
-  {
-    id: "3",
-    licensePlate: "BC-FG-34",
-    date: "2024-01-15T09:00:00",
-    status: "Aprobado",
-    description: "Control trimestral regular.",
-  },
-];
-
 export default function ChecklistHistory() {
-  // Updated to use licensePlate query param
   const { licensePlate } = useLocalSearchParams();
 
   const [vehicleDetail, setVehicleDetail] = useState(null);
@@ -45,29 +20,35 @@ export default function ChecklistHistory() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    // Fetch vehicle details
-    getVehicle(licensePlate)
-      .then((v) => {
-        setVehicleDetail(v);
-        // In a real implementation, we would also fetch the history here
-        // setHistory(await getChecklistHistory(licensePlate));
+    async function fetchData() {
+      setLoading(true);
+      try {
+        // First fetch the vehicle to get the vehicleId
+        const vehicle = await getVehicle(licensePlate);
+        if (!vehicle) {
+          setError("Vehículo no encontrado");
+          setVehicleDetail(null);
+          setHistory([]);
+          return;
+        }
 
-        // Using mock data for now, filtering by license plate if needed,
-        // or just assigning the mock list
-        const vehicleHistory = MOCK_HISTORY.map((item) => ({
-          ...item,
-          licensePlate: v?.licensePlate || licensePlate,
-        }));
-        setHistory(vehicleHistory);
+        setVehicleDetail(vehicle);
+
+        // Then fetch the checklist history using the vehicleId
+        const checklistHistory = await getChecklistHistoryByVehicle(vehicle.id);
+        setHistory(checklistHistory);
         setError(null);
-      })
-      .catch((err) => {
-        console.error("Error fetching vehicle", err);
-        setError(err.message || "No se pudo cargar el vehículo");
+      } catch (err) {
+        console.error("Error fetching data", err);
+        setError(err.message || "No se pudo cargar el historial");
         setVehicleDetail(null);
-      })
-      .finally(() => setLoading(false));
+        setHistory([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, [licensePlate]);
 
   if (loading) {
@@ -108,7 +89,7 @@ export default function ChecklistHistory() {
         </View>
 
         <FlatList
-          style={{ width: "90%" }}
+          style={{ width: "90%", gap: 12 }}
           data={history}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <HistoryCard item={item} />}

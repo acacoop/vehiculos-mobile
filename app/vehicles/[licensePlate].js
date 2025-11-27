@@ -12,6 +12,7 @@ import {
 import { Table } from "../../components/Table";
 import { Stack } from "expo-router";
 import { Icon } from "../../components/Icons";
+import { colors } from "../../constants/colors";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -38,7 +39,7 @@ export default function VehicleDetail() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#282D86" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -84,10 +85,10 @@ export default function VehicleDetail() {
       <View
         style={{
           padding: 16,
-          backgroundColor: "#fff",
+          backgroundColor: colors.white,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          borderColor: "#ddd",
+          borderColor: colors.border,
           borderWidth: 1,
           zIndex: 10,
           alignItems: "center",
@@ -124,7 +125,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId, licensePlate, historyChecklist }) => {
+const VehicleButtons = ({ vehicleId, licensePlate }) => {
   const router = useRouter();
 
   return (
@@ -201,10 +202,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
   },
   errorText: {
-    color: "#282D86",
+    color: colors.primary,
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 32,
@@ -219,9 +220,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: colors.gray[500],
     shadowOffset: {
       width: 0,
       height: 2,
@@ -234,14 +235,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   buttonText: {
-    color: "#282D86",
+    color: colors.primary,
     fontSize: 20,
     padding: 10,
     textAlign: "center",
     fontWeight: "600",
   },
   PressableReservar: {
-    backgroundColor: "#fe9000",
+    backgroundColor: colors.secondary,
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   textReserva: {
-    color: "#FFFFFF",
+    color: colors.white,
     fontSize: 18,
     textAlign: "center",
     fontWeight: "600",
