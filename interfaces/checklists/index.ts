@@ -82,8 +82,8 @@ export interface ChecklistHistoryItem {
   licensePlate: string;
   quarter: number;
   year: number;
-  filledBy: string | null; // User full name
-  filledAt: string | null; // Exact date
+  filledBy: string | null;
+  filledAt: string | null;
   status: ChecklistStatus;
   description: string;
 }
