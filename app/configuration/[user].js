@@ -114,7 +114,6 @@ export default function UserConfig() {
           icon={<Icon name="car" size={24} />}
           onPress={undefined} // Let DatePicker handle press
         />
-
       </View>
     </View>
   );
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 10,
     width: "100%",
-    paddingTop: 20,
+    paddingTop: 10,
   },
   sectionHeader: {
     textAlign: "left",
