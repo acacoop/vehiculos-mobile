@@ -9,18 +9,24 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
 import React, { useEffect, useState } from "react";
-import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance";
+import { getMaintenanceByVehicleModel } from "../../../services/vehicles/maintenance";
 
 export default function Maintenance() {
-  const { vehicleId } = useLocalSearchParams();
+  const { vehicleId, modelId } = useLocalSearchParams();
   const [groupedMaintenances, setGroupedMaintenances] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (!modelId) {
+      setError("No se pudo obtener el modelo del vehículo");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    getMaintenanceByVehicle(vehicleId)
+    getMaintenanceByVehicleModel(modelId)
       .then((data) => {
         const grouped = (data || []).reduce((acc, maintenance) => {
           if (!acc[maintenance.maintenanceCategoryName]) {
@@ -38,7 +44,7 @@ export default function Maintenance() {
         setGroupedMaintenances({});
       })
       .finally(() => setLoading(false));
-  }, [vehicleId]);
+  }, [modelId]);
 
   if (loading) {
     return (

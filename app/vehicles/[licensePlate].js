@@ -76,6 +76,7 @@ export default function VehicleDetail() {
               <VehicleButtons
                 vehicleId={item.id}
                 licensePlate={item.licensePlate}
+                modelId={item.modelId}
               />
             </View>
           </View>
@@ -114,7 +115,7 @@ const VehicleTable = ({ data }) => (
   />
 );
 
-const VehicleButtons = ({ vehicleId, licensePlate }) => {
+const VehicleButtons = ({ vehicleId, licensePlate, modelId }) => {
   const router = useRouter();
 
   return (
@@ -122,7 +123,10 @@ const VehicleButtons = ({ vehicleId, licensePlate }) => {
       <Pressable
         style={styles.actionButton}
         onPress={() => {
-          router.push(`/vehicles/maintenance/${vehicleId}`);
+          router.push({
+            pathname: `/vehicles/maintenance/${vehicleId}`,
+            params: { modelId },
+          });
         }}
       >
         <Text style={styles.buttonText}>Mantenimiento</Text>

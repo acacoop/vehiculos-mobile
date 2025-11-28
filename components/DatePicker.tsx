@@ -32,9 +32,15 @@ export const DatePicker = ({
 
   if (Platform.OS === "web") {
     return (
-      <View style={[styles.container, containerStyle, children ? styles.childrenContainer : null]}>
+      <View
+        style={[
+          styles.container,
+          containerStyle,
+          children ? styles.childrenContainer : null,
+        ]}
+      >
         {children ? (
-          <View style={{ width: '100%', position: 'relative' }}>
+          <View style={{ width: "100%", position: "relative" }}>
             {children}
             <input
               type="date"
@@ -42,17 +48,21 @@ export const DatePicker = ({
               onChange={(e) => {
                 const newDate = new Date(value);
                 const [year, month, day] = e.target.value.split("-");
-                newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
+                newDate.setFullYear(
+                  Number(year),
+                  Number(month) - 1,
+                  Number(day)
+                );
                 onChange(newDate);
               }}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 0,
                 left: 0,
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 opacity: 0,
-                cursor: 'pointer',
+                cursor: "pointer",
                 zIndex: 10,
               }}
             />
@@ -66,7 +76,11 @@ export const DatePicker = ({
               onChange={(e) => {
                 const newDate = new Date(value);
                 const [year, month, day] = e.target.value.split("-");
-                newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
+                newDate.setFullYear(
+                  Number(year),
+                  Number(month) - 1,
+                  Number(day)
+                );
                 onChange(newDate);
               }}
               style={webInputStyle}
@@ -79,7 +93,16 @@ export const DatePicker = ({
 
   const handleChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     setVisible(false);
-    if (selectedDate) onChange(selectedDate);
+    if (selectedDate) {
+      const newDate = new Date(selectedDate);
+      newDate.setHours(
+        value.getHours(),
+        value.getMinutes(),
+        value.getSeconds(),
+        value.getMilliseconds()
+      );
+      onChange(newDate);
+    }
   };
 
   const picker = (
@@ -94,7 +117,11 @@ export const DatePicker = ({
   return (
     <>
       <TouchableOpacity
-        style={[styles.container, containerStyle, children ? styles.childrenContainer : null]}
+        style={[
+          styles.container,
+          containerStyle,
+          children ? styles.childrenContainer : null,
+        ]}
         onPress={() => setVisible(true)}
         activeOpacity={0.8}
       >

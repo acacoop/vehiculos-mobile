@@ -70,6 +70,7 @@ function mapVehicle(api: VehicleApiModel): Vehicle {
     licensePlate: api.licensePlate,
     brand: brandName,
     model: modelName,
+    modelId: api.model?.id,
     year: api.year,
     imgUrl: "",
     engineNumber: api.engineNumber ?? undefined,
@@ -121,6 +122,7 @@ export async function getMyVehicles(): Promise<Vehicle[]> {
       licensePlate: v.licensePlate,
       brand: v.model?.brand?.name ?? "",
       model: v.model?.name ?? "",
+      modelId: v.model?.id,
       year: v.year,
       imgUrl: "",
     };

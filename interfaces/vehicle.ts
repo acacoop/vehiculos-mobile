@@ -3,6 +3,7 @@ export interface Vehicle {
   licensePlate: string;
   brand: string;
   model: string;
+  modelId?: string;
   year: number;
   imgUrl: string;
   color?: string;

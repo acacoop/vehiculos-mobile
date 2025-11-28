@@ -1,4 +1,3 @@
-// filepath: c:\Users\mmiguez\Documents\Proyectos\vehiculos-mobile\components\TimePicker.tsx
 import React, { useState } from "react";
 import { Platform, Modal, View, TouchableOpacity, Text } from "react-native";
 import DateTimePicker, {
@@ -53,7 +52,17 @@ export const TimePicker = ({ value, onChange, label }: TimePickerProps) => {
 
   const handleChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     setVisible(false);
-    if (selectedDate) onChange(selectedDate);
+    if (selectedDate) {
+      // Preserve the date from the original value when changing just the time
+      const newDate = new Date(value);
+      newDate.setHours(
+        selectedDate.getHours(),
+        selectedDate.getMinutes(),
+        selectedDate.getSeconds(),
+        selectedDate.getMilliseconds()
+      );
+      onChange(newDate);
+    }
   };
 
   const picker = (

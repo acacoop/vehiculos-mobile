@@ -11,7 +11,7 @@ import {
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { getAllVehicles } from "../../services/vehicles";
+import { getMyVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
 import {
   createReservation,
@@ -48,7 +48,7 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    getAllVehicles()
+    getMyVehicles()
       .then((data) => {
         setVehicles(data);
         setLoading(false);
@@ -91,7 +91,7 @@ const Calendar = () => {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && vehicle.id === desiredId) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate),
+        (desiredPlate && vehicle.licensePlate === desiredPlate)
     );
 
     if (found) {
@@ -127,7 +127,7 @@ const Calendar = () => {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron cargar las reservas",
+          error?.message || "No se pudieron cargar las reservas"
         );
       })
       .finally(() => {
@@ -143,7 +143,7 @@ const Calendar = () => {
     if (!selectedVehicle?.id) {
       Alert.alert(
         "Selecciona un vehículo",
-        "Debes elegir un vehículo antes de crear la reserva.",
+        "Debes elegir un vehículo antes de crear la reserva."
       );
       return;
     }
@@ -151,7 +151,7 @@ const Calendar = () => {
     if (!currentUser?.id) {
       Alert.alert(
         "Sesión no disponible",
-        "No se pudo identificar al usuario actual. Inicia sesión nuevamente.",
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
       );
       return;
     }
@@ -170,7 +170,7 @@ const Calendar = () => {
       console.error("No se pudo crear la reserva", error);
       Alert.alert(
         "Error",
-        error?.message || "No se pudo crear la reserva. Intenta nuevamente.",
+        error?.message || "No se pudo crear la reserva. Intenta nuevamente."
       );
     } finally {
       setIsSubmittingReservation(false);
@@ -186,7 +186,7 @@ const Calendar = () => {
         vehicleId: reservation.vehicleId,
         licensePlate: reservation.licensePlate,
       })),
-    [reservations],
+    [reservations]
   );
 
   return (

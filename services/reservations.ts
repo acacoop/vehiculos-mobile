@@ -57,12 +57,12 @@ const mapReservation = (api: ReservationApiModel): Reservation => {
 };
 
 export async function getReservationsByVehicle(
-  vehicleId: string,
+  vehicleId: string
 ): Promise<Reservation[]> {
   if (!vehicleId) return [];
 
   const response = await apiClient.get<ReservationsResponse>(
-    `/reservations/vehicle/${vehicleId}`,
+    `/reservations/vehicle/${vehicleId}`
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];
@@ -70,12 +70,12 @@ export async function getReservationsByVehicle(
 }
 
 export async function getReservationsByUser(
-  userId: string,
+  userId: string
 ): Promise<Reservation[]> {
   if (!userId) return [];
 
   const response = await apiClient.get<ReservationsResponse>(
-    `/reservations/user/${userId}`,
+    `/reservations/user/${userId}`
   );
 
   const list = Array.isArray(response?.data) ? response.data : [];
@@ -89,19 +89,42 @@ export interface CreateReservationInput {
   endDate: Date;
 }
 
+/**
+ * Format a Date to ISO date string in local timezone (YYYY-MM-DD)
+ * This avoids timezone conversion issues with toISOString()
+ */
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Format a Date to ISO datetime string in local timezone
+ * This avoids timezone conversion issues with toISOString()
+ */
+function formatLocalDateTime(date: Date): string {
+  const datePart = formatLocalDate(date);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  return `${datePart}T${hours}:${minutes}:${seconds}`;
+}
+
 export async function createReservation(
-  input: CreateReservationInput,
+  input: CreateReservationInput
 ): Promise<Reservation> {
   const payload = {
     vehicleId: input.vehicleId,
     userId: input.userId,
-    startDate: input.startDate.toISOString(),
-    endDate: input.endDate.toISOString(),
+    startDate: formatLocalDateTime(input.startDate),
+    endDate: formatLocalDateTime(input.endDate),
   };
 
   const response = await apiClient.post<ReservationResponse>(
     "/reservations",
-    payload,
+    payload
   );
 
   return mapReservation(response.data);

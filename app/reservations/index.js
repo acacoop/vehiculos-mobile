@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Schedule } from "../../components/Schedule";
-import { getAllVehicles } from "../../services/vehicles";
+import { getMyVehicles } from "../../services/vehicles";
 import { DatePicker } from "../../components/DatePicker";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { getReservationsByVehicle } from "../../services/reservations";
@@ -67,7 +67,7 @@ export default function Reservations() {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && String(vehicle.id) === String(desiredId)) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate),
+        (desiredPlate && vehicle.licensePlate === desiredPlate)
     );
 
     if (found) {
@@ -99,7 +99,7 @@ export default function Reservations() {
   const [toDate, setToDate] = useState(initialTo);
 
   useEffect(() => {
-    getAllVehicles().then((data) => {
+    getMyVehicles().then((data) => {
       setVehicles(data);
     });
   }, []);
@@ -125,7 +125,7 @@ export default function Reservations() {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron obtener las reservas",
+          error?.message || "No se pudieron obtener las reservas"
         );
       })
       .finally(() => {
@@ -151,7 +151,7 @@ export default function Reservations() {
           .trim()
           .replace(/\s+/g, " "),
       })),
-    [reservations],
+    [reservations]
   );
 
   const filteredReservations = mappedReservations.filter((res) => {
