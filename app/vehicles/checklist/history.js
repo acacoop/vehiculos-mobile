@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useFocusEffect } from "expo-router";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { getVehicle } from "../../../services/vehicles";
 import { getChecklistHistoryByVehicle } from "../../../services/maintenanceChecklists";
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { HistoryCard } from "../../../components/HistoryCard";
 
 export default function ChecklistHistory() {
@@ -19,37 +19,40 @@ export default function ChecklistHistory() {
   const [error, setError] = useState(null);
   const [history, setHistory] = useState([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        // First fetch the vehicle to get the vehicleId
-        const vehicle = await getVehicle(licensePlate);
-        if (!vehicle) {
-          setError("Vehículo no encontrado");
-          setVehicleDetail(null);
-          setHistory([]);
-          return;
-        }
-
-        setVehicleDetail(vehicle);
-
-        // Then fetch the checklist history using the vehicleId
-        const checklistHistory = await getChecklistHistoryByVehicle(vehicle.id);
-        setHistory(checklistHistory);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching data", err);
-        setError(err.message || "No se pudo cargar el historial");
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      // First fetch the vehicle to get the vehicleId
+      const vehicle = await getVehicle(licensePlate);
+      if (!vehicle) {
+        setError("Vehículo no encontrado");
         setVehicleDetail(null);
         setHistory([]);
-      } finally {
-        setLoading(false);
+        return;
       }
-    }
 
-    fetchData();
+      setVehicleDetail(vehicle);
+
+      // Then fetch the checklist history using the vehicleId
+      const checklistHistory = await getChecklistHistoryByVehicle(vehicle.id);
+      setHistory(checklistHistory);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching data", err);
+      setError(err.message || "No se pudo cargar el historial");
+      setVehicleDetail(null);
+      setHistory([]);
+    } finally {
+      setLoading(false);
+    }
   }, [licensePlate]);
+
+  // Refetch data every time the screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [fetchData])
+  );
 
   if (loading) {
     return (

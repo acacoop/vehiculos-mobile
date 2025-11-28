@@ -1,5 +1,6 @@
 import { Vehicle } from "../interfaces/vehicle";
 import { apiClient } from "./apiClient";
+import { getCurrentUser } from "./me";
 
 type VehicleApiModel = {
   id: string;
@@ -32,6 +33,35 @@ type VehicleDetailResponse = {
   data: VehicleApiModel;
 };
 
+// Assignment response types
+type AssignmentVehicle = {
+  id: string;
+  licensePlate: string;
+  year: number;
+  model: {
+    id: string;
+    name: string;
+    brand: { id: string; name: string };
+  };
+};
+
+type Assignment = {
+  id: string;
+  startDate: string;
+  endDate?: string;
+  vehicle: AssignmentVehicle;
+};
+
+type AssignmentsResponse = {
+  status: "success";
+  data: Assignment[];
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+};
+
 function mapVehicle(api: VehicleApiModel): Vehicle {
   const brandName = api.model?.brand?.name ?? "";
   const modelName = api.model?.name ?? "";
@@ -59,8 +89,46 @@ export async function getAllVehicles(): Promise<Vehicle[]> {
   return list.map(mapVehicle);
 }
 
+/**
+ * Get vehicles assigned to the current logged-in user
+ * Uses /assignments endpoint filtered by userId
+ */
+export async function getMyVehicles(): Promise<Vehicle[]> {
+  // Get current user to obtain userId
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("No se pudo obtener el usuario actual");
+  }
+
+  // Get assignments filtered by userId and current date
+  const today = new Date().toISOString().split("T")[0];
+  const response = await apiClient.get<AssignmentsResponse>("/assignments", {
+    query: {
+      userId: currentUser.id,
+      date: today,
+      limit: 100,
+      page: 1,
+    },
+  });
+
+  const assignments = Array.isArray(response?.data) ? response.data : [];
+
+  // Extract vehicles from assignments and map to Vehicle type
+  return assignments.map((assignment) => {
+    const v = assignment.vehicle;
+    return {
+      id: v.id,
+      licensePlate: v.licensePlate,
+      brand: v.model?.brand?.name ?? "",
+      model: v.model?.name ?? "",
+      year: v.year,
+      imgUrl: "",
+    };
+  });
+}
+
 export async function getVehicle(
-  licensePlate: string,
+  licensePlate: string
 ): Promise<Vehicle | null> {
   if (!licensePlate) return null;
 
@@ -79,7 +147,7 @@ export async function getVehicle(
 
   try {
     const detail = await apiClient.get<VehicleDetailResponse>(
-      `/vehicles/${first.id}`,
+      `/vehicles/${first.id}`
     );
 
     if (detail?.data) {

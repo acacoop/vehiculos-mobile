@@ -42,7 +42,7 @@ function calculateChecklistStatus(
 function getStatusDescription(status: ChecklistStatus): string {
   switch (status) {
     case "Rechazado":
-      return "Con errores";
+      return "Con observaciones";
     case "Aprobado":
       return "Sin fallas";
     case "Pendiente":

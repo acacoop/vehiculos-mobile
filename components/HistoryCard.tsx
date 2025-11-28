@@ -50,6 +50,15 @@ export function HistoryCard({ item }: HistoryCardProps) {
     }
   };
 
+  const getStatusDisplayText = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "rechazado":
+        return "Con observaciones";
+      default:
+        return status;
+    }
+  };
+
   return (
     <Pressable
       style={styles.container}
@@ -67,7 +76,7 @@ export function HistoryCard({ item }: HistoryCardProps) {
           <Text
             style={[styles.statusText, { color: getStatusColor(item.status) }]}
           >
-            {item.status}
+            {getStatusDisplayText(item.status)}
           </Text>
         </View>
       </View>

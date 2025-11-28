@@ -82,27 +82,49 @@ export default function Checklist() {
 
   // Initialize responses state from backend items
   const initialResponses = useMemo(() => {
-    if (!categories.length) return {};
+    if (!categories.length || !checklistData?.items) return {};
+
+    // Create a map of item id to backend status
+    const backendItemsMap = {};
+    checklistData.items.forEach((item) => {
+      backendItemsMap[item.id] = item.status;
+    });
+
     return categories.reduce((acc, category) => {
       acc[category.id] = category.items.reduce((itemAcc, item) => {
-        // Initialize as null (not yet answered)
-        itemAcc[item.id] = null;
+        // Map backend status to frontend choice
+        const backendStatus = backendItemsMap[item.id];
+        if (backendStatus === "APROBADO") {
+          itemAcc[item.id] = "yes";
+        } else if (backendStatus === "RECHAZADO") {
+          itemAcc[item.id] = "no";
+        } else {
+          itemAcc[item.id] = null;
+        }
         return itemAcc;
       }, {});
       return acc;
     }, {});
-  }, [categories]);
+  }, [categories, checklistData]);
 
   const initialObservations = useMemo(() => {
-    if (!categories.length) return {};
+    if (!categories.length || !checklistData?.items) return {};
+
+    // Create a map of item id to backend observations
+    const backendItemsMap = {};
+    checklistData.items.forEach((item) => {
+      backendItemsMap[item.id] = item.observations || "";
+    });
+
     return categories.reduce((acc, category) => {
       acc[category.id] = category.items.reduce((itemAcc, item) => {
-        itemAcc[item.id] = "";
+        // Load observation from backend
+        itemAcc[item.id] = backendItemsMap[item.id] || "";
         return itemAcc;
       }, {});
       return acc;
     }, {});
-  }, [categories]);
+  }, [categories, checklistData]);
 
   const [responses, setResponses] = useState({});
   const [observations, setObservations] = useState({});
@@ -138,9 +160,9 @@ export default function Checklist() {
     });
   }, [categories, responses]);
 
-  // Handle submit
+  // Handle submit (allows partial submissions)
   const handleSubmit = useCallback(async () => {
-    if (!allItemsCompleted || !checklistData) return;
+    if (!checklistData) return;
 
     setSubmitting(true);
     try {
@@ -156,9 +178,19 @@ export default function Checklist() {
           ? observations[categoryId]?.[item.id] || ""
           : "";
 
+        // Map answer to status: yes=APROBADO, no=RECHAZADO, null=PENDIENTE
+        let status;
+        if (answer === "yes") {
+          status = "APROBADO";
+        } else if (answer === "no") {
+          status = "RECHAZADO";
+        } else {
+          status = "PENDIENTE";
+        }
+
         return {
           id: item.id,
-          status: answer === "yes" ? "APROBADO" : "RECHAZADO",
+          status,
           observations: observation,
         };
       });
@@ -176,15 +208,7 @@ export default function Checklist() {
     } finally {
       setSubmitting(false);
     }
-  }, [
-    allItemsCompleted,
-    checklistData,
-    checklistId,
-    categories,
-    responses,
-    observations,
-    router,
-  ]);
+  }, [checklistData, checklistId, categories, responses, observations, router]);
 
   if (loading) {
     return (
@@ -246,10 +270,10 @@ export default function Checklist() {
         <Pressable
           style={[
             styles.submitButton,
-            (!allItemsCompleted || submitting) && styles.submitButtonDisabled,
+            submitting && styles.submitButtonDisabled,
           ]}
           onPress={handleSubmit}
-          disabled={!allItemsCompleted || submitting}
+          disabled={submitting}
         >
           <Text style={styles.submitButtonText}>
             {submitting ? "Guardando..." : "Guardar Checklist"}
