@@ -219,6 +219,7 @@ export default function Reservations() {
           )}
           renderItem={({ item }) => (
             <Schedule
+              id={item.id}
               from={item.from}
               to={item.to}
               licensePlate={item.licensePlate}

@@ -129,3 +129,29 @@ export async function createReservation(
 
   return mapReservation(response.data);
 }
+
+export interface UpdateReservationInput {
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export async function updateReservation(
+  reservationId: string,
+  input: UpdateReservationInput
+): Promise<Reservation> {
+  const payload: Record<string, string> = {};
+
+  if (input.startDate) {
+    payload.startDate = formatLocalDateTime(input.startDate);
+  }
+  if (input.endDate) {
+    payload.endDate = formatLocalDateTime(input.endDate);
+  }
+
+  const response = await apiClient.patch<ReservationResponse>(
+    `/reservations/${reservationId}`,
+    payload
+  );
+
+  return mapReservation(response.data);
+}
