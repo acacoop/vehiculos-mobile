@@ -12,9 +12,12 @@ import {
   getMaintenanceChecklistById,
   updateChecklistItems,
 } from "../../../services/maintenanceChecklists";
+import { createKilometersLog } from "../../../services/vehicleKilometersLogs";
+import { getCurrentUser } from "../../../services/me";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { DropDown } from "../../../components/DropDown";
 import { colors } from "../../../constants/colors";
+import Modal from "../../../components/Modal";
 
 // Quarter labels for display
 const QUARTER_LABELS = {
@@ -31,6 +34,11 @@ export default function Checklist() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Modal state for kilometers input
+  const [showKilometersModal, setShowKilometersModal] = useState(false);
+  const [kilometersInput, setKilometersInput] = useState("");
 
   useEffect(() => {
     async function fetchChecklist() {
@@ -57,6 +65,15 @@ export default function Checklist() {
       fetchChecklist();
     }
   }, [checklistId]);
+
+  useEffect(() => {
+    getCurrentUser()
+      .then((user) => setCurrentUser(user))
+      .catch((err) => {
+        console.error("Error fetching current user", err);
+        setCurrentUser(null);
+      });
+  }, []);
 
   const categories = useMemo(() => {
     if (!checklistData?.items) return [];
@@ -160,55 +177,109 @@ export default function Checklist() {
     });
   }, [categories, responses]);
 
-  // Handle submit (allows partial submissions)
-  const handleSubmit = useCallback(async () => {
+  // Handle submit - opens kilometers modal first
+  const handleSubmit = useCallback(() => {
     if (!checklistData) return;
+    setKilometersInput("");
+    setShowKilometersModal(true);
+  }, [checklistData]);
+
+  // Build checklist payload for submission
+  const buildChecklistPayload = useCallback(() => {
+    if (!checklistData) return [];
+
+    return checklistData.items.map((item) => {
+      const category = categories.find((cat) =>
+        cat.items.some((i) => i.id === item.id)
+      );
+      const categoryId = category?.id;
+      const answer = categoryId ? responses[categoryId]?.[item.id] : null;
+      const observation = categoryId
+        ? observations[categoryId]?.[item.id] || ""
+        : "";
+
+      let status;
+      if (answer === "yes") {
+        status = "APROBADO";
+      } else if (answer === "no") {
+        status = "RECHAZADO";
+      } else {
+        status = "PENDIENTE";
+      }
+
+      return {
+        id: item.id,
+        status,
+        observations: observation,
+      };
+    });
+  }, [checklistData, categories, responses, observations]);
+
+  // Handle kilometers modal confirm
+  const handleKilometersConfirm = useCallback(async () => {
+    const vehicleId = checklistData?.vehicle?.id;
+    const parsedKilometers = parseInt(
+      kilometersInput.replace(/[^0-9]/g, ""),
+      10
+    );
+
+    if (!vehicleId) {
+      Alert.alert("Error", "No se pudo identificar el vehículo.");
+      return;
+    }
+
+    if (!currentUser?.id) {
+      Alert.alert(
+        "Error",
+        "No se pudo identificar al usuario. Inicia sesión nuevamente."
+      );
+      return;
+    }
+
+    if (isNaN(parsedKilometers) || parsedKilometers <= 0) {
+      Alert.alert("Error", "Ingresa un kilometraje válido mayor a cero.");
+      return;
+    }
 
     setSubmitting(true);
+    setShowKilometersModal(false);
+
     try {
-      // Build payload for PATCH request
-      const itemsPayload = checklistData.items.map((item) => {
-        // Find the category for this item
-        const category = categories.find((cat) =>
-          cat.items.some((i) => i.id === item.id)
-        );
-        const categoryId = category?.id;
-        const answer = categoryId ? responses[categoryId]?.[item.id] : null;
-        const observation = categoryId
-          ? observations[categoryId]?.[item.id] || ""
-          : "";
-
-        // Map answer to status: yes=APROBADO, no=RECHAZADO, null=PENDIENTE
-        let status;
-        if (answer === "yes") {
-          status = "APROBADO";
-        } else if (answer === "no") {
-          status = "RECHAZADO";
-        } else {
-          status = "PENDIENTE";
-        }
-
-        return {
-          id: item.id,
-          status,
-          observations: observation,
-        };
+      // First, register the kilometers log
+      await createKilometersLog({
+        vehicleId,
+        userId: currentUser.id,
+        date: new Date(),
+        kilometers: parsedKilometers,
       });
 
+      // Then, submit the checklist
+      const itemsPayload = buildChecklistPayload();
       await updateChecklistItems(checklistId, { items: itemsPayload });
 
-      // Volver automáticamente a la página anterior
       router.back();
     } catch (err) {
       console.error("Error submitting checklist", err);
       Alert.alert(
         "Error",
-        err.message || "No se pudo guardar el checklist. Intenta nuevamente."
+        err.message || "No se pudo guardar. Intenta nuevamente."
       );
     } finally {
       setSubmitting(false);
     }
-  }, [checklistData, checklistId, categories, responses, observations, router]);
+  }, [
+    checklistData,
+    kilometersInput,
+    currentUser,
+    checklistId,
+    buildChecklistPayload,
+    router,
+  ]);
+
+  const handleKilometersCancel = useCallback(() => {
+    setShowKilometersModal(false);
+    setKilometersInput("");
+  }, []);
 
   if (loading) {
     return (
@@ -292,6 +363,21 @@ export default function Checklist() {
           </Text>
         </Pressable>
       </View>
+
+      <Modal
+        visible={showKilometersModal}
+        title="Ingresá el kilometraje actual"
+        value={kilometersInput}
+        onChangeText={setKilometersInput}
+        onConfirm={handleKilometersConfirm}
+        onCancel={handleKilometersCancel}
+        confirmLabel="Confirmar"
+        cancelLabel="Cancelar"
+        placeholder="Ej: 45000"
+        confirmDisabled={!kilometersInput.trim()}
+        keyboardType="numeric"
+        multiline={false}
+      />
     </View>
   );
 }

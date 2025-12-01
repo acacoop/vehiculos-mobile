@@ -21,6 +21,8 @@ export type ModalProps = {
   cancelLabel?: string;
   placeholder?: string;
   confirmDisabled?: boolean;
+  keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
+  multiline?: boolean;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -34,6 +36,8 @@ const Modal: React.FC<ModalProps> = ({
   cancelLabel = "Cancelar",
   placeholder = "Agrega una observación",
   confirmDisabled = false,
+  keyboardType = "default",
+  multiline = true,
 }) => {
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(24)).current;
@@ -92,10 +96,11 @@ const Modal: React.FC<ModalProps> = ({
             onChangeText={onChangeText}
             placeholder={placeholder}
             placeholderTextColor="#9CA0C5"
-            style={styles.textInput}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
+            style={[styles.textInput, !multiline && styles.textInputSingleLine]}
+            multiline={multiline}
+            numberOfLines={multiline ? 4 : 1}
+            textAlignVertical={multiline ? "top" : "center"}
+            keyboardType={keyboardType}
           />
           <View style={styles.actions}>
             <Pressable
@@ -162,6 +167,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#424242",
     backgroundColor: "#F8F9FF",
+  },
+  textInputSingleLine: {
+    minHeight: 50,
+    textAlign: "center",
+    fontSize: 18,
   },
   actions: {
     flexDirection: "row",
