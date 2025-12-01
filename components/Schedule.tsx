@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: "#282D86",
   },

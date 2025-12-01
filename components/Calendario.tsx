@@ -136,7 +136,7 @@ export const Calendario = ({
         <Icon
           name="left"
           onPress={goToPreviousMonth}
-          size={24}
+          size={20}
           color="#282D86"
         />
 
@@ -155,7 +155,7 @@ export const Calendario = ({
           </Text>
         </View>
 
-        <Icon name="right" onPress={goToNextMonth} size={24} color="#282D86" />
+        <Icon name="right" onPress={goToNextMonth} size={20} color="#282D86" />
       </View>
 
       <View style={styles.gridContainer}>
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   monthTitle: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#282D86",
     textAlign: "center",
     fontWeight: "bold",

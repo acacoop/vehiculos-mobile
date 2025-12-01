@@ -21,7 +21,7 @@ export function CarVisualizer({
   useEffect(() => {
     if (initialVehicleId == null) return;
     const targetIndex = vehicles.findIndex(
-      (vehicle) => String(vehicle.id) === String(initialVehicleId),
+      (vehicle) => String(vehicle.id) === String(initialVehicleId)
     );
     if (targetIndex >= 0) {
       setIndex((current) => (current === targetIndex ? current : targetIndex));
@@ -57,7 +57,7 @@ export function CarVisualizer({
   return (
     <View style={[styles.container, { width: containerWidth as any }]}>
       <View style={styles.vehicleInfo}>
-        <Icon name="left" onPress={goPrevious} size={24} color="#282D86" />
+        <Icon name="left" onPress={goPrevious} size={20} color="#282D86" />
 
         <View
           style={{
@@ -97,7 +97,7 @@ export function CarVisualizer({
             </Text>
           </View>
         </View>
-        <Icon name="right" onPress={goNext} size={24} color="#282D86" />
+        <Icon name="right" onPress={goNext} size={20} color="#282D86" />
       </View>
     </View>
   );
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 25,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#282D86",
     textAlign: "center",
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     color: "#282D86",
   },
   dot: {
-    width: 30,
-    height: 30,
+    width: 10,
+    height: 10,
     backgroundColor: "#282D86",
     borderRadius: 3,
     borderWidth: 1,
