@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   iconBadgeCompleted: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#6d6f99ff",
   },
   sectionTitle: {
     fontSize: 16,
