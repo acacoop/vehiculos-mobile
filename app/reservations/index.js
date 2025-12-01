@@ -174,6 +174,14 @@ export default function Reservations() {
     setSelectedVehicle(vehicle);
   }, []);
 
+  const handleReservationUpdate = useCallback(({ id, from, to }) => {
+    setReservations((prev) =>
+      prev.map((res) =>
+        res.id === id ? { ...res, startDate: from, endDate: to } : res
+      )
+    );
+  }, []);
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -225,6 +233,7 @@ export default function Reservations() {
               licensePlate={item.licensePlate}
               vehicleLabel={item.vehicleLabel}
               requesterName={item.requesterName}
+              onUpdate={handleReservationUpdate}
             />
           )}
         />
