@@ -9,7 +9,7 @@ export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
     <View style={styles.container}>
       <View style={styles.containerCard}>
         <View style={styles.containerImage}>
-          <Icon name="tool" size={40} />
+          <Icon name="tool" size={30} />
         </View>
         <View style={styles.containerText}>
           <Text style={styles.text}>{maintenance.maintenanceName}</Text>

@@ -163,15 +163,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   scrollContainer: {
-    width: "100%",
+    width: "90%",
     alignItems: "stretch",
-    paddingHorizontal: "5%",
+    alignSelf: "center",
   },
 
   categoryTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 10,
+
     color: "#282D86",
   },
   loadingContainer: {
