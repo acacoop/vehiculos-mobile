@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 18,
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: "bold",
   },
   flatListContainer: {
     flexGrow: 1,

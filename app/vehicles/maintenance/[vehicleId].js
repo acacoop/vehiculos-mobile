@@ -143,7 +143,7 @@ export default function Maintenance() {
           }
         >
           <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
-            + Mantenimiento correctivo
+            Mantenimiento correctivo
           </Text>
         </Pressable>
       </View>
