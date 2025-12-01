@@ -17,15 +17,25 @@ export const TimePicker = ({ value, onChange, label }: TimePickerProps) => {
     return (
       <View
         style={{
-          backgroundColor: "#eee",
+          backgroundColor: "#ffff",
           padding: 12,
           borderRadius: 8,
           width: "48%",
           alignItems: "center",
           justifyContent: "center",
+          shadowColor: "#00000070",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 2,
+          borderColor: "#ddd",
+          borderWidth: 1,
         }}
       >
-        <Text style={{ fontWeight: "bold" }}>{label}</Text>
+        <Text style={{ fontWeight: "bold", color: "#282D86" }}>{label}</Text>
         <input
           type="time"
           value={value.toTimeString().slice(0, 5)}

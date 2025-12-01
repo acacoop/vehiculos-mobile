@@ -158,12 +158,22 @@ export const DatePicker = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#eee",
+    backgroundColor: "#ffff",
     padding: 12,
     borderRadius: 8,
-    width: "50%",
+    width: "48%",
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   childrenContainer: {
     backgroundColor: "transparent",

@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     textAlign: "center",
+    color: "#282D86",
   },
   row: {
     flexDirection: "row",
