@@ -101,15 +101,27 @@ function formatLocalDate(date: Date): string {
 }
 
 /**
- * Format a Date to ISO datetime string in local timezone
- * This avoids timezone conversion issues with toISOString()
+ * Get timezone offset string in format +HH:MM or -HH:MM
+ */
+function getTimezoneOffset(date: Date): string {
+  const offset = -date.getTimezoneOffset();
+  const sign = offset >= 0 ? "+" : "-";
+  const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, "0");
+  const minutes = String(Math.abs(offset) % 60).padStart(2, "0");
+  return `${sign}${hours}:${minutes}`;
+}
+
+/**
+ * Format a Date to ISO datetime string with timezone offset
+ * Example: 2025-12-01T10:00:00-03:00
  */
 function formatLocalDateTime(date: Date): string {
   const datePart = formatLocalDate(date);
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
-  return `${datePart}T${hours}:${minutes}:${seconds}`;
+  const offset = getTimezoneOffset(date);
+  return `${datePart}T${hours}:${minutes}:${seconds}${offset}`;
 }
 
 export async function createReservation(
