@@ -174,13 +174,27 @@ export default function Reservations() {
     setSelectedVehicle(vehicle);
   }, []);
 
-  const handleReservationUpdate = useCallback(({ id, from, to }) => {
-    setReservations((prev) =>
-      prev.map((res) =>
-        res.id === id ? { ...res, startDate: from, endDate: to } : res
-      )
-    );
-  }, []);
+  const fetchReservations = useCallback(() => {
+    if (!selectedVehicle?.id) return;
+
+    setReservationsLoading(true);
+    setReservationsError(null);
+
+    getReservationsByVehicle(selectedVehicle.id)
+      .then((data) => setReservations(data))
+      .catch((error) => {
+        console.error("Error al cargar las reservas", error);
+        setReservations([]);
+        setReservationsError(
+          error?.message || "No se pudieron obtener las reservas"
+        );
+      })
+      .finally(() => setReservationsLoading(false));
+  }, [selectedVehicle?.id]);
+
+  const handleReservationUpdate = useCallback(() => {
+    fetchReservations();
+  }, [fetchReservations]);
 
   return (
     <View style={styles.container}>
