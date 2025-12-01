@@ -49,6 +49,12 @@ export default function Maintenance() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Mantenimiento del vehículo",
+            headerTitleAlign: "center",
+          }}
+        />
         <ActivityIndicator size="large" color="#282D86" />
       </View>
     );
@@ -57,6 +63,12 @@ export default function Maintenance() {
   if (!groupedMaintenances || Object.keys(groupedMaintenances).length === 0) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Mantenimiento del vehículo",
+            headerTitleAlign: "center",
+          }}
+        />
         <Text style={styles.emptyText}>
           {error || "No hay mantenimientos asignados a este vehículo"}
         </Text>

@@ -261,7 +261,7 @@ const Calendar = () => {
           style={styles.buttonReserve}
           onPress={() => setShowReserveModal(true)}
         >
-          <Text style={styles.buttonTextReserve}> + Reservar vehículo</Text>
+          <Text style={styles.buttonTextReserve}>Reservar vehículo</Text>
         </Pressable>
       </View>
 

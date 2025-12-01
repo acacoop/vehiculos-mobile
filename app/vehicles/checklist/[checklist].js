@@ -213,6 +213,12 @@ export default function Checklist() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Checklist Vehicular",
+            headerTitleAlign: "center",
+          }}
+        />
         <ActivityIndicator size="large" color="#282D86" />
       </View>
     );
@@ -221,6 +227,12 @@ export default function Checklist() {
   if (error) {
     return (
       <View style={styles.errorContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Checklist Vehicular",
+            headerTitleAlign: "center",
+          }}
+        />
         <Text style={styles.errorText}>{error}</Text>
       </View>
     );

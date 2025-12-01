@@ -57,6 +57,12 @@ export default function ChecklistHistory() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Historial de Control",
+            headerTitleAlign: "center",
+          }}
+        />
         <ActivityIndicator size="large" color="#282D86" />
       </View>
     );
@@ -65,6 +71,12 @@ export default function ChecklistHistory() {
   if (error) {
     return (
       <View style={styles.errorContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Historial de Control",
+            headerTitleAlign: "center",
+          }}
+        />
         <Text style={styles.errorText}>{error}</Text>
       </View>
     );

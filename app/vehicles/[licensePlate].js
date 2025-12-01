@@ -39,6 +39,12 @@ export default function VehicleDetail() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Vehículos disponibles",
+            headerTitleAlign: "center",
+          }}
+        />
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
@@ -47,6 +53,12 @@ export default function VehicleDetail() {
   if (!vehicleDetail) {
     return (
       <View style={styles.loadingContainer}>
+        <Stack.Screen
+          options={{
+            headerTitle: "Vehículos disponibles",
+            headerTitleAlign: "center",
+          }}
+        />
         <Text style={styles.errorText}>
           {error || "Vehículo no encontrado"}
         </Text>
@@ -96,7 +108,7 @@ export default function VehicleDetail() {
             });
           }}
         >
-          <Text style={styles.textReserva}>+ Reservar</Text>
+          <Text style={styles.textReserva}>Reservar</Text>
         </Pressable>
       </View>
     </View>
