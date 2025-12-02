@@ -15,7 +15,7 @@ import {
 import { createKilometersLog } from "../../../services/vehicleKilometersLogs";
 import { getCurrentUser } from "../../../services/me";
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { DropDown } from "../../../components/DropDown";
+import { DropDown } from "../../../components/checklist/DropDown";
 import { colors } from "../../../constants/colors";
 import Modal from "../../../components/Modal";
 

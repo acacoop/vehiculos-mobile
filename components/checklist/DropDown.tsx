@@ -4,9 +4,9 @@ import {
   ChecklistCategory,
   ChecklistObservations,
   ChecklistState,
-} from "../interfaces/checklists";
-import Modal from "./Modal";
-import { ChecklistSection, useChecklistLogic } from "./checklist";
+} from "../../interfaces/checklists";
+import Modal from "../Modal";
+import { ChecklistSection, useChecklistLogic } from ".";
 
 // Enable LayoutAnimation on Android
 if (
