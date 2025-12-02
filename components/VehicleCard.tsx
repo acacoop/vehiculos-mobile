@@ -13,11 +13,9 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
             <Icon name="car" size={40} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.text1}>
-              {vehicle.brand} {vehicle.model}
-            </Text>
+            <Text style={styles.text1}>{vehicle.brand}</Text>
+            <Text style={styles.text1}>{vehicle.model}</Text>
             <Text style={styles.text2}>{vehicle.licensePlate}</Text>
-            <Text style={styles.text3}>{vehicle.fuelType}</Text>
           </View>
         </View>
       </Pressable>
@@ -28,17 +26,18 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
 const styles = StyleSheet.create({
   touchable: {
     width: "100%",
-    alignItems: "stretch",
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 50,
+    gap: 20,
     width: "90%",
     alignSelf: "center",
-    height: 120,
+    minHeight: 120,
     backgroundColor: "#fff",
-    padding: 10,
+    padding: 15,
     borderRadius: 15,
     shadowColor: "#0000009d",
     shadowOffset: {
@@ -51,14 +50,13 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    flexDirection: "column",
-    color: "#000",
+    justifyContent: "center",
+    gap: 5,
   },
   text1: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#333",
-    marginBottom: 5,
   },
   text2: {
     fontSize: 16,
