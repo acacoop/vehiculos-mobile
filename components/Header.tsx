@@ -5,8 +5,8 @@ const Header = () => {
   return (
     <View style={styles.headerContainer}>
       <StatusBar
-        backgroundColor="#ffffff"
-        barStyle="light-content"
+        backgroundColor="#000"
+        barStyle="dark-content"
         translucent={true}
       />
     </View>

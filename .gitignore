@@ -36,3 +36,9 @@ yarn-error.*
 # vscode
 *.env
 .env
+
+# IDE
+.idea/
+
+# APK de desarrollo
+*.apk

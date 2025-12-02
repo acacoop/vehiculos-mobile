@@ -13,6 +13,10 @@ function RootNavigator() {
 
     const currentRoot = Array.isArray(segments) ? segments[0] : undefined;
     const isLoginRoute = currentRoot === "login";
+    const isRedirectRoute = currentRoot === "redirect";
+
+    // No redirigir si estamos en la ruta de redirect (OAuth callback)
+    if (isRedirectRoute) return;
 
     if (!isAuthenticated && !isLoginRoute) {
       router.replace("/login");
@@ -42,6 +46,7 @@ function RootNavigator() {
       }}
     >
       <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="redirect" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
