@@ -1,18 +1,17 @@
 # ============================================
-# Makefile FINAL - Vehiculos Mobile
-# Entorno: WSL2 + Android SDK + iOS + Web
+# Makefile - Vehiculos Mobile
+# Soporte: WSL2, Mac, Linux
 # ============================================
 
 .PHONY: help install \
-        start start-tunnel start-clear dev-web \
-        dev-android-qr dev-android-tunnel dev-android-emu \
-        dev-ios \
+        dev-qr dev-tunnel dev-emu dev-ios dev-web \
         adb-connect adb-check \
-        dev-build-android dev-build-ios \
-        build-android build-ios \
-        submit-android submit-ios submit-all \
+        build-dev-android build-dev-ios \
+        build-preview-android build-preview-ios \
+        build-prod-android build-prod-ios \
+        submit-android submit-ios \
         update-prod update-preview \
-        clean doctor prebuild
+        clean doctor secrets
 
 # ============================================
 # Variables
@@ -21,36 +20,41 @@ EXPO = npx expo
 EAS = npx eas-cli
 
 # ============================================
-# Ayuda (Menú Principal)
+# 🆘 AYUDA
 # ============================================
 help:
 	@echo ""
 	@echo "📱 DESARROLLO (RUN)"
-	@echo "   make dev-android-qr     : Android en Celular Físico (WiFi Local)"
-	@echo "   make dev-android-tunnel : Android en Celular (Si falla WiFi/WSL)"
-	@echo "   make dev-android-emu    : Android en Emulador (Incluye fix de conexión)"
-	@echo "   make dev-ios            : iOS en iPhone Físico (QR)"
-	@echo "   make dev-web            : Levantar versión Web"
-	@echo "   make start              : Expo Go Standard (sin código nativo)"
+	@echo "   make dev-qr             : Android en Celular Físico (WiFi Local - Rápido)"
+	@echo "   make dev-tunnel         : Android en Celular (Vía Tunnel - Si WiFi falla)"
+	@echo "   make dev-emu            : Android en Emulador (Intenta conectar ADB primero)"
+	@echo "   make dev-ios            : iOS en iPhone Físico"
+	@echo "   make dev-web            : Versión Web"
 	@echo ""
-	@echo "🔧 UTILIDADES WSL"
-	@echo "   make adb-connect        : Conectar WSL al Emulador de Windows"
+	@echo "🔧 UTILIDADES (WSL/Android)"
+	@echo "   make adb-connect        : Conectar WSL al Host Windows (Fix 'No device')"
 	@echo "   make adb-check          : Ver dispositivos conectados"
 	@echo ""
-	@echo "🏗️ BUILDS (Compilar)"
-	@echo "   make dev-build-android  : Crear APK de desarrollo (Debug)"
-	@echo "   make dev-build-ios      : Crear App de desarrollo iOS"
-	@echo "   make build-android      : Crear AAB Producción (Play Store)"
-	@echo "   make build-ios          : Crear IPA Producción (App Store)"
+	@echo "🏗️ BUILDS (COMPILAR)"
+	@echo "   --- Development (Debug) ---"
+	@echo "   make build-dev-android  : APK Desarrollo (Para instalar en tu cel/emu)"
+	@echo "   make build-dev-ios      : Build Desarrollo iOS"
 	@echo ""
-	@echo "🚀 DEPLOY & UPDATES"
-	@echo "   make submit-android     : Subir a Google Play"
-	@echo "   make submit-ios         : Subir a App Store"
+	@echo "   --- Preview (Testing/QA) ---"
+	@echo "   make build-preview-android : APK para Testers (Variables de Test)"
+	@echo ""
+	@echo "   --- Production (Store) ---"
+	@echo "   make build-prod-android    : AAB para Google Play (Variables de Prod)"
+	@echo "   make build-prod-ios        : IPA para App Store"
+	@echo ""
+	@echo "🚀 PUBLICAR"
+	@echo "   make submit-android     : Subir AAB a Google Play Console"
+	@echo "   make submit-ios         : Subir IPA a App Store"
 	@echo "   make update-prod        : Enviar OTA Update a Producción"
 	@echo ""
 
 # ============================================
-# 1. Configuración & WSL Tools
+# 1. Configuración
 # ============================================
 install:
 	npm install
@@ -58,74 +62,72 @@ install:
 doctor:
 	$(EXPO) doctor
 
-# Fix para conectar WSL al Emulador de Windows automáticamente
+secrets:
+	$(EAS) secret:list
+
+# ============================================
+# 2. Utilidades ADB (WSL Fixes)
+# ============================================
+# Intenta conectar ADB a la IP del host (Windows) dinámicamente
 adb-connect:
-	@echo "🔌 Conectando al Emulador en Windows..."
+	@echo "🔌 Buscando enlace con host..."
 	adb disconnect
-	adb connect $$(grep nameserver /etc/resolv.conf | awk '{print $$2}'):5555
+	adb connect $$(grep nameserver /etc/resolv.conf | awk '{print $$2}'):5555 || echo "⚠️  No se pudo conectar automático. Prueba manual si usas emulador."
 	adb devices
 
 adb-check:
 	adb devices
 
 # ============================================
-# 2. Development Client (Tu App Nativa)
+# 3. Correr la App (Development Client)
 # ============================================
 
 # --- Android ---
-# Opción A: Celular en la misma red (Rápido)
-dev-android-qr:
+dev-qr:
 	$(EXPO) start --dev-client
 
-# Opción B: Celular via Tunnel (Si la red local falla en WSL)
-dev-android-tunnel:
+dev-tunnel:
 	$(EXPO) start --dev-client --tunnel
 
-# Opción C: Emulador (Ejecuta el fix de conexión antes de arrancar)
-dev-android-emu: adb-connect
+# Ejecuta el fix de ADB antes de lanzar Expo
+dev-emu: adb-connect
 	$(EXPO) start --dev-client --android
 
-# --- iOS ---
+# --- iOS & Web ---
 dev-ios:
 	$(EXPO) start --dev-client --ios
 
-# --- Web ---
 dev-web:
 	$(EXPO) start --web
 
-# ============================================
-# 3. Expo Go (Legacy / JS Only)
-# ============================================
+# --- Expo Go (Legacy) ---
 start:
 	$(EXPO) start
-
-start-clear:
-	$(EXPO) start --clear
-
-start-tunnel:
-	$(EXPO) start --tunnel
 
 # ============================================
 # 4. Generación de Builds (EAS)
 # ============================================
 
-# --- Development Builds (Para probar) ---
-dev-build-android:
+# A. DEVELOPMENT (Debug / Features Nativas)
+build-dev-android:
 	$(EAS) build --profile development --platform android
 
-dev-build-ios:
+build-dev-ios:
 	$(EAS) build --profile development --platform ios
 
-# --- Production Builds (Para tienda) ---
-build-android:
+# B. PREVIEW (APK Instalable / Test Env)
+build-preview-android:
+	$(EAS) build --profile preview --platform android
+
+build-preview-ios:
+	$(EAS) build --profile preview --platform ios
+
+# C. PRODUCTION (AAB Store / Prod Env)
+build-prod-android:
 	$(EAS) build --profile production --platform android
 
-build-ios:
+build-prod-ios:
 	$(EAS) build --profile production --platform ios
-
-# --- Builds Locales (Si tienes entorno Java/Xcode nativo) ---
-build-local-android:
-	$(EAS) build --profile production --platform android --local
 
 # ============================================
 # 5. Publicación (Submit)
@@ -135,9 +137,6 @@ submit-android:
 
 submit-ios:
 	$(EAS) submit --platform ios
-
-submit-all:
-	$(EAS) submit --platform all
 
 # ============================================
 # 6. OTA Updates
