@@ -1,12 +1,17 @@
 # ============================================
-# Makefile para vehiculos-aca (Expo)
+# Makefile FINAL - Vehiculos Mobile
+# Entorno: WSL2 + Android SDK + iOS + Web
 # ============================================
 
-.PHONY: help install start start-clear start-tunnel start-lan \
-        dev-android dev-ios dev-build-android dev-build-ios \
-        build-android build-ios build-preview-android build-preview-ios \
+.PHONY: help install \
+        start start-tunnel start-clear dev-web \
+        dev-android-qr dev-android-tunnel dev-android-emu \
+        dev-ios \
+        adb-connect adb-check \
+        dev-build-android dev-build-ios \
+        build-android build-ios \
         submit-android submit-ios submit-all \
-        update-production update-preview \
+        update-prod update-preview \
         clean doctor prebuild
 
 # ============================================
@@ -16,54 +21,36 @@ EXPO = npx expo
 EAS = npx eas-cli
 
 # ============================================
-# Ayuda
+# Ayuda (Menú Principal)
 # ============================================
 help:
 	@echo ""
-	@echo "==============================================="
-	@echo "       Comandos disponibles - Expo App        "
-	@echo "==============================================="
+	@echo "📱 DESARROLLO (RUN)"
+	@echo "   make dev-android-qr     : Android en Celular Físico (WiFi Local)"
+	@echo "   make dev-android-tunnel : Android en Celular (Si falla WiFi/WSL)"
+	@echo "   make dev-android-emu    : Android en Emulador (Incluye fix de conexión)"
+	@echo "   make dev-ios            : iOS en iPhone Físico (QR)"
+	@echo "   make dev-web            : Levantar versión Web"
+	@echo "   make start              : Expo Go Standard (sin código nativo)"
 	@echo ""
-	@echo "--- Instalación y Setup ---"
-	@echo "  make install          Instalar dependencias"
-	@echo "  make doctor           Verificar configuración de Expo"
-	@echo "  make eas-login        Login en EAS (Expo Application Services)"
-	@echo "  make eas-init         Inicializar proyecto en EAS"
+	@echo "🔧 UTILIDADES WSL"
+	@echo "   make adb-connect        : Conectar WSL al Emulador de Windows"
+	@echo "   make adb-check          : Ver dispositivos conectados"
 	@echo ""
-	@echo "--- Desarrollo con Expo Go ---"
-	@echo "  make start            Iniciar servidor de desarrollo"
-	@echo "  make start-clear      Iniciar con cache limpio"
-	@echo "  make start-tunnel     Iniciar con tunnel (para redes restringidas)"
-	@echo "  make start-lan        Iniciar en modo LAN"
+	@echo "🏗️ BUILDS (Compilar)"
+	@echo "   make dev-build-android  : Crear APK de desarrollo (Debug)"
+	@echo "   make dev-build-ios      : Crear App de desarrollo iOS"
+	@echo "   make build-android      : Crear AAB Producción (Play Store)"
+	@echo "   make build-ios          : Crear IPA Producción (App Store)"
 	@echo ""
-	@echo "--- Development Build (para probar features nativas) ---"
-	@echo "  make dev-android      Ejecutar development build en Android"
-	@echo "  make dev-ios          Ejecutar development build en iOS"
-	@echo "  make dev-build-android Crear development build para Android"
-	@echo "  make dev-build-ios    Crear development build para iOS"
-	@echo ""
-	@echo "--- Builds de Producción ---"
-	@echo "  make build-android    Build de producción para Android (AAB)"
-	@echo "  make build-ios        Build de producción para iOS (IPA)"
-	@echo "  make build-preview-android  Build preview para Android (APK)"
-	@echo "  make build-preview-ios      Build preview para iOS"
-	@echo ""
-	@echo "--- Publicación en Stores ---"
-	@echo "  make submit-android   Publicar en Google Play Store"
-	@echo "  make submit-ios       Publicar en App Store"
-	@echo "  make submit-all       Publicar en ambas stores"
-	@echo ""
-	@echo "--- Updates OTA (Over-the-Air) ---"
-	@echo "  make update-production  Publicar update OTA a producción"
-	@echo "  make update-preview     Publicar update OTA a preview"
-	@echo ""
-	@echo "--- Limpieza y Utilidades ---"
-	@echo "  make clean            Limpiar cache y node_modules"
-	@echo "  make prebuild         Generar proyectos nativos (android/ios)"
+	@echo "🚀 DEPLOY & UPDATES"
+	@echo "   make submit-android     : Subir a Google Play"
+	@echo "   make submit-ios         : Subir a App Store"
+	@echo "   make update-prod        : Enviar OTA Update a Producción"
 	@echo ""
 
 # ============================================
-# Instalación y Setup
+# 1. Configuración & WSL Tools
 # ============================================
 install:
 	npm install
@@ -71,14 +58,43 @@ install:
 doctor:
 	$(EXPO) doctor
 
-eas-login:
-	$(EAS) login
+# Fix para conectar WSL al Emulador de Windows automáticamente
+adb-connect:
+	@echo "🔌 Conectando al Emulador en Windows..."
+	adb disconnect
+	adb connect $$(grep nameserver /etc/resolv.conf | awk '{print $$2}'):5555
+	adb devices
 
-eas-init:
-	$(EAS) init
+adb-check:
+	adb devices
 
 # ============================================
-# Desarrollo con Expo Go
+# 2. Development Client (Tu App Nativa)
+# ============================================
+
+# --- Android ---
+# Opción A: Celular en la misma red (Rápido)
+dev-android-qr:
+	$(EXPO) start --dev-client
+
+# Opción B: Celular via Tunnel (Si la red local falla en WSL)
+dev-android-tunnel:
+	$(EXPO) start --dev-client --tunnel
+
+# Opción C: Emulador (Ejecuta el fix de conexión antes de arrancar)
+dev-android-emu: adb-connect
+	$(EXPO) start --dev-client --android
+
+# --- iOS ---
+dev-ios:
+	$(EXPO) start --dev-client --ios
+
+# --- Web ---
+dev-web:
+	$(EXPO) start --web
+
+# ============================================
+# 3. Expo Go (Legacy / JS Only)
 # ============================================
 start:
 	$(EXPO) start
@@ -89,57 +105,30 @@ start-clear:
 start-tunnel:
 	$(EXPO) start --tunnel
 
-start-lan:
-	$(EXPO) start --lan
-
 # ============================================
-# Development Build (para probar en producción)
+# 4. Generación de Builds (EAS)
 # ============================================
-dev-android:
-	$(EXPO) start --dev-client --android
 
-dev-ios:
-	$(EXPO) start --dev-client --ios
-
+# --- Development Builds (Para probar) ---
 dev-build-android:
 	$(EAS) build --profile development --platform android
 
 dev-build-ios:
 	$(EAS) build --profile development --platform ios
 
-dev-build-all:
-	$(EAS) build --profile development --platform all
-
-# ============================================
-# Builds de Producción
-# ============================================
+# --- Production Builds (Para tienda) ---
 build-android:
 	$(EAS) build --profile production --platform android
 
 build-ios:
 	$(EAS) build --profile production --platform ios
 
-build-all:
-	$(EAS) build --profile production --platform all
-
-build-preview-android:
-	$(EAS) build --profile preview --platform android
-
-build-preview-ios:
-	$(EAS) build --profile preview --platform ios
-
-build-preview-all:
-	$(EAS) build --profile preview --platform all
-
-# Build local (sin usar servidores de EAS)
+# --- Builds Locales (Si tienes entorno Java/Xcode nativo) ---
 build-local-android:
 	$(EAS) build --profile production --platform android --local
 
-build-local-ios:
-	$(EAS) build --profile production --platform ios --local
-
 # ============================================
-# Publicación en Stores
+# 5. Publicación (Submit)
 # ============================================
 submit-android:
 	$(EAS) submit --platform android
@@ -150,61 +139,21 @@ submit-ios:
 submit-all:
 	$(EAS) submit --platform all
 
-# Build y submit en un solo paso
-build-submit-android:
-	$(EAS) build --profile production --platform android --auto-submit
-
-build-submit-ios:
-	$(EAS) build --profile production --platform ios --auto-submit
-
 # ============================================
-# Updates OTA (Over-the-Air)
+# 6. OTA Updates
 # ============================================
-update-production:
+update-prod:
 	$(EAS) update --branch production --message "Production update"
 
 update-preview:
 	$(EAS) update --branch preview --message "Preview update"
 
-update-message:
-	@read -p "Mensaje del update: " msg; \
-	$(EAS) update --branch production --message "$$msg"
-
 # ============================================
-# Limpieza y Utilidades
+# 7. Limpieza
 # ============================================
 clean:
-	rm -rf node_modules
-	rm -rf .expo
-	rm -rf android
-	rm -rf ios
+	rm -rf node_modules .expo android ios
 	npm cache clean --force
-
-clean-cache:
-	rm -rf .expo
-	$(EXPO) start --clear
 
 prebuild:
 	$(EXPO) prebuild
-
-prebuild-clean:
-	$(EXPO) prebuild --clean
-
-# Regenerar proyectos nativos
-prebuild-android:
-	$(EXPO) prebuild --platform android
-
-prebuild-ios:
-	$(EXPO) prebuild --platform ios
-
-# ============================================
-# Configuración EAS (primera vez)
-# ============================================
-eas-configure:
-	$(EAS) build:configure
-
-eas-credentials-android:
-	$(EAS) credentials --platform android
-
-eas-credentials-ios:
-	$(EAS) credentials --platform ios
