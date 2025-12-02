@@ -43,3 +43,4 @@ yarn-error.*
 # APK de desarrollo
 *.apk
 play-store-credentials.json
+google_service_account.json
