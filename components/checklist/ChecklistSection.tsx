@@ -7,6 +7,7 @@ import {
 } from "../../interfaces/checklists";
 import { Icon, getIconByKey } from "../Icons";
 import { useSectionAnimation } from "./useSectionAnimation";
+import { colors } from "../../constants/colors";
 
 export type ChecklistSectionProps = {
   category: ChecklistCategory;
@@ -25,6 +26,7 @@ export function ChecklistSection({
   onToggle,
   onChoice,
   onOpenObservation,
+  observations,
 }: ChecklistSectionProps) {
   const { renderBody, bodyAnimationStyle, arrowAnimationStyle } =
     useSectionAnimation(isExpanded);
@@ -34,14 +36,45 @@ export function ChecklistSection({
     [category.iconKey]
   );
 
-  // Check if all items in this category have been answered
-  const isCompleted = useMemo(() => {
-    if (!category.items.length) return false;
-    return category.items.every((item) => {
+  // Check section status: pending, completed (all yes), or hasErrors (at least one no)
+  const sectionStatus = useMemo(() => {
+    if (!category.items.length) return "pending";
+
+    const allAnswered = category.items.every((item) => {
       const answer = answers?.[item.id];
       return answer === "yes" || answer === "no";
     });
+
+    const hasErrors = category.items.some(
+      (item) => answers?.[item.id] === "no"
+    );
+
+    if (!allAnswered) return "pending";
+    if (hasErrors) return "error";
+    return "success";
   }, [category.items, answers]);
+
+  const iconBadgeStyle = useMemo(() => {
+    switch (sectionStatus) {
+      case "success":
+        return styles.iconBadgeSuccess;
+      case "error":
+        return styles.iconBadgeError;
+      default:
+        return null;
+    }
+  }, [sectionStatus]);
+
+  const iconColor = useMemo(() => {
+    switch (sectionStatus) {
+      case "success":
+        return colors.success;
+      case "error":
+        return colors.error;
+      default:
+        return colors.primary;
+    }
+  }, [sectionStatus]);
 
   return (
     <View style={styles.section}>
@@ -53,14 +86,8 @@ export function ChecklistSection({
         onPress={() => onToggle(category.id)}
       >
         <View style={styles.headerLeft}>
-          <View
-            style={[styles.iconBadge, isCompleted && styles.iconBadgeCompleted]}
-          >
-            {isCompleted ? (
-              <Icon name="check" size={20} color="#FFFFFF" />
-            ) : (
-              <IconComponent size={20} color="#282D86" />
-            )}
+          <View style={[styles.iconBadge, iconBadgeStyle]}>
+            <IconComponent size={20} color={iconColor} />
           </View>
           <Text style={styles.sectionTitle}>{category.title}</Text>
         </View>
@@ -80,6 +107,7 @@ export function ChecklistSection({
           <View style={styles.sectionBody}>
             {category.items.map((item: ChecklistItem) => {
               const answer = answers?.[item.id] ?? null;
+              const hasObservation = !!observations?.[item.id]?.trim();
               return (
                 <View key={item.id} style={styles.itemRow}>
                   <View style={styles.itemLabelContainer}>
@@ -94,21 +122,45 @@ export function ChecklistSection({
                         pressed && styles.choiceCirclePressed,
                       ]}
                     >
-                      {answer === "yes" && (
-                        <Icon name="check" size={14} color="#ffffff" />
-                      )}
+                      <Icon
+                        name="check"
+                        size={14}
+                        color={answer === "yes" ? "#ffffff" : "#D0D4EB"}
+                      />
                     </Pressable>
                     <Pressable
-                      onPress={() => onOpenObservation(item.id)}
+                      onPress={() => {
+                        onChoice(item.id, "no");
+                        // Solo abrir modal si no estaba ya seleccionado "no"
+                        if (answer !== "no") {
+                          onOpenObservation(item.id);
+                        }
+                      }}
                       style={({ pressed }) => [
                         styles.choiceCircle,
                         answer === "no" && styles.choiceCircleInactive,
                         pressed && styles.choiceCirclePressed,
                       ]}
                     >
-                      {answer === "no" && (
-                        <Icon name="close" size={14} color="#ffffff" />
-                      )}
+                      <Icon
+                        name="close"
+                        size={14}
+                        color={answer === "no" ? "#ffffff" : "#D0D4EB"}
+                      />
+                    </Pressable>
+                    <Pressable
+                      onPress={() => onOpenObservation(item.id)}
+                      style={({ pressed }) => [
+                        styles.choiceCircle,
+                        hasObservation && styles.choiceCircleObservation,
+                        pressed && styles.choiceCirclePressed,
+                      ]}
+                    >
+                      <Icon
+                        name="information"
+                        size={14}
+                        color={hasObservation ? "#ffffff" : "#D0D4EB"}
+                      />
                     </Pressable>
                   </View>
                 </View>
@@ -156,8 +208,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconBadgeCompleted: {
-    backgroundColor: "#FE9000",
+  iconBadgeSuccess: {
+    backgroundColor: "#E8F5E9",
+  },
+  iconBadgeError: {
+    backgroundColor: "#FFEBEE",
   },
   sectionTitle: {
     fontSize: 16,
@@ -206,14 +261,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   choiceCircleActive: {
-    backgroundColor: "#FE9000",
-    borderColor: "#FE9000",
+    backgroundColor: colors.success,
+    borderColor: colors.success,
   },
   choiceCircleInactive: {
-    backgroundColor: "#282D86",
-    borderColor: "#282D86",
+    backgroundColor: colors.error,
+    borderColor: colors.error,
+  },
+  choiceCircleObservation: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   choiceCirclePressed: {
     opacity: 0.8,
+  },
+  observationButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

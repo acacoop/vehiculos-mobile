@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Animated,
   Easing,
+  TextInput as RNTextInput,
 } from "react-native";
 
 export type ModalProps = {
@@ -41,6 +42,7 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(24)).current;
+  const inputRef = useRef<RNTextInput>(null);
 
   useEffect(() => {
     if (visible) {
@@ -76,6 +78,15 @@ const Modal: React.FC<ModalProps> = ({
     }
   }, [backdropOpacity, translateY, visible]);
 
+  // Focus input when modal opens
+  useEffect(() => {
+    if (visible && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [visible]);
+
   return (
     <RNModal
       transparent
@@ -92,6 +103,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           <Text style={styles.title}>{title}</Text>
           <TextInput
+            ref={inputRef}
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
@@ -101,6 +113,7 @@ const Modal: React.FC<ModalProps> = ({
             numberOfLines={multiline ? 4 : 1}
             textAlignVertical={multiline ? "top" : "center"}
             keyboardType={keyboardType}
+            selection={{ start: value.length, end: value.length }}
           />
           <View style={styles.actions}>
             <Pressable

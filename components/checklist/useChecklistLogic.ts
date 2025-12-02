@@ -64,8 +64,7 @@ export type UseChecklistLogicResult = {
   handleChoicePress: (
     sectionId: string,
     itemId: string,
-    choice: ChecklistChoice,
-    options?: { note?: string; forceChoice?: boolean }
+    choice: ChecklistChoice
   ) => void;
   openObservationModal: (sectionId: string, itemId: string) => void;
   closeObservationModal: () => void;
@@ -184,23 +183,13 @@ export function useChecklistLogic({
 
   // Handle choice selection (yes/no)
   const handleChoicePress = useCallback(
-    (
-      sectionId: string,
-      itemId: string,
-      choice: ChecklistChoice,
-      options?: { note?: string; forceChoice?: boolean }
-    ) => {
+    (sectionId: string, itemId: string, choice: ChecklistChoice) => {
       const currentSection = answers[sectionId] ?? {};
       const currentValue = currentSection[itemId] ?? null;
-      let nextValue: ChecklistChoice;
 
-      if (options?.forceChoice) {
-        nextValue = choice;
-      } else if (currentValue === choice) {
-        nextValue = null;
-      } else {
-        nextValue = choice;
-      }
+      // Toggle: si ya está seleccionado, lo deselecciona
+      const nextValue: ChecklistChoice =
+        currentValue === choice ? null : choice;
 
       const updatedSection: Record<string, ChecklistChoice> = {
         ...currentSection,
@@ -214,23 +203,6 @@ export function useChecklistLogic({
 
       emitChange(nextAnswers);
 
-      // Update observations
-      const currentObservationSection = observationState[sectionId] ?? {};
-      const nextObservationSection: Record<string, string> = {
-        ...currentObservationSection,
-        [itemId]:
-          nextValue === "no"
-            ? (options?.note ?? currentObservationSection[itemId] ?? "")
-            : "",
-      };
-
-      const nextObservationState: ChecklistObservations = {
-        ...observationState,
-        [sectionId]: nextObservationSection,
-      };
-
-      emitObservationsChange(nextObservationState);
-
       // Check if section is completed and auto-advance
       const sectionCompleted = Object.values(updatedSection).every(
         (value) => value === "yes" || value === "no"
@@ -240,13 +212,7 @@ export function useChecklistLogic({
         goToNextSection(sectionId);
       }
     },
-    [
-      answers,
-      observationState,
-      emitChange,
-      emitObservationsChange,
-      goToNextSection,
-    ]
+    [answers, emitChange, goToNextSection]
   );
 
   // Observation modal handlers
@@ -268,20 +234,27 @@ export function useChecklistLogic({
     if (!observationModalTarget) {
       return;
     }
-    handleChoicePress(
-      observationModalTarget.sectionId,
-      observationModalTarget.itemId,
-      "no",
-      {
-        note: observationDraft.trim(),
-        forceChoice: true,
-      }
-    );
+
+    // Only save the observation, don't change the check state
+    const { sectionId, itemId } = observationModalTarget;
+    const currentObservationSection = observationState[sectionId] ?? {};
+    const nextObservationSection: Record<string, string> = {
+      ...currentObservationSection,
+      [itemId]: observationDraft.trim(),
+    };
+
+    const nextObservationState: ChecklistObservations = {
+      ...observationState,
+      [sectionId]: nextObservationSection,
+    };
+
+    emitObservationsChange(nextObservationState);
     closeObservationModal();
   }, [
-    handleChoicePress,
+    observationState,
     observationDraft,
     observationModalTarget,
+    emitObservationsChange,
     closeObservationModal,
   ]);
 

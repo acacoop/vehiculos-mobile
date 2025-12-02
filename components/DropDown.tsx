@@ -84,7 +84,6 @@ export function DropDown({
         onChangeText={setObservationDraft}
         onCancel={closeObservationModal}
         onConfirm={confirmObservation}
-        confirmDisabled={observationDraft.trim().length === 0}
       />
     </View>
   );
