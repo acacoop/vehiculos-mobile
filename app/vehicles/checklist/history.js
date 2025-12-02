@@ -1,15 +1,10 @@
-import { Stack, useLocalSearchParams, useFocusEffect } from "expo-router";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import { useLocalSearchParams, useFocusEffect } from "expo-router";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { getVehicle } from "../../../services/vehicles";
 import { getChecklistHistoryByVehicle } from "../../../services/maintenanceChecklists";
 import { useState, useCallback } from "react";
 import { HistoryCard } from "../../../components/HistoryCard";
+import { ScreenLayout } from "../../../components/ScreenLayout";
 
 export default function ChecklistHistory() {
   const { licensePlate } = useLocalSearchParams();
@@ -54,43 +49,8 @@ export default function ChecklistHistory() {
     }, [fetchData])
   );
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Historial de Control",
-            headerTitleAlign: "center",
-          }}
-        />
-        <ActivityIndicator size="large" color="#282D86" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.errorContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Historial de Control",
-            headerTitleAlign: "center",
-          }}
-        />
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Historial de Control",
-          headerTitleAlign: "center",
-        }}
-      />
-
+    <ScreenLayout title="Historial de Control" loading={loading} error={error}>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.licensePlateTitle}>
@@ -117,34 +77,15 @@ export default function ChecklistHistory() {
           }
         />
       </View>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "#f5f5f5",
-  },
   content: {
     flex: 1,
     alignItems: "center",
     width: "100%",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 16,
   },
   header: {
     width: "90%",

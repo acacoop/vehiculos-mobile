@@ -1,15 +1,9 @@
-import {
-  ScrollView,
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  Pressable,
-} from "react-native";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { ScrollView, View, StyleSheet, Text, Pressable } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
 import React, { useEffect, useState } from "react";
 import { getMaintenanceByVehicleModel } from "../../../services/vehicles/maintenance";
+import { ScreenLayout } from "../../../components/ScreenLayout";
 
 export default function Maintenance() {
   const { vehicleId, modelId } = useLocalSearchParams();
@@ -46,45 +40,19 @@ export default function Maintenance() {
       .finally(() => setLoading(false));
   }, [modelId]);
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Mantenimiento del vehículo",
-            headerTitleAlign: "center",
-          }}
-        />
-        <ActivityIndicator size="large" color="#282D86" />
-      </View>
-    );
-  }
-
-  if (!groupedMaintenances || Object.keys(groupedMaintenances).length === 0) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Mantenimiento del vehículo",
-            headerTitleAlign: "center",
-          }}
-        />
-        <Text style={styles.emptyText}>
-          {error || "No hay mantenimientos asignados a este vehículo"}
-        </Text>
-      </View>
-    );
-  }
+  const isEmpty =
+    !groupedMaintenances || Object.keys(groupedMaintenances).length === 0;
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Mantenimiento del vehículo",
-          headerTitleAlign: "center",
-        }}
-      />
-
+    <ScreenLayout
+      title="Mantenimiento del vehículo"
+      loading={loading}
+      error={
+        isEmpty
+          ? error || "No hay mantenimientos asignados a este vehículo"
+          : null
+      }
+    >
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContainer}
@@ -147,18 +115,11 @@ export default function Maintenance() {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
   scroll: {
     width: "100%",
   },
@@ -174,14 +135,6 @@ const styles = StyleSheet.create({
 
     color: "#282D86",
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#ffffff",
-  },
   button: {
     backgroundColor: "#fe9000",
     width: "100%",
@@ -191,12 +144,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     alignSelf: "center",
-  },
-  emptyText: {
-    color: "#282D86",
-    fontSize: 16,
-    textAlign: "center",
-    paddingHorizontal: 32,
   },
   maintenanceWrapper: {
     width: "100%",

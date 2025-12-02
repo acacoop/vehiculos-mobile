@@ -1,13 +1,13 @@
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   View,
   Text,
-  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Pressable,
   Alert,
 } from "react-native";
+import { ScreenLayout } from "../../../components/ScreenLayout";
 import {
   getMaintenanceChecklistById,
   updateChecklistItems,
@@ -281,46 +281,12 @@ export default function Checklist() {
     setKilometersInput("");
   }, []);
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Checklist Vehicular",
-            headerTitleAlign: "center",
-          }}
-        />
-        <ActivityIndicator size="large" color="#282D86" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.errorContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Checklist Vehicular",
-            headerTitleAlign: "center",
-          }}
-        />
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
-
   const vehicleInfo = checklistData?.vehicle;
   const brandName = vehicleInfo?.model?.brand?.name || "";
   const modelName = vehicleInfo?.model?.name || "";
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Checklist Vehicular",
-          headerTitleAlign: "center",
-        }}
-      />
+    <ScreenLayout title="Checklist Vehicular" loading={loading} error={error}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -378,7 +344,7 @@ export default function Checklist() {
         keyboardType="numeric"
         multiline={false}
       />
-    </View>
+    </ScreenLayout>
   );
 }
 
@@ -394,23 +360,6 @@ function getCategoryIcon(category) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorText: {
-    color: "red",
-  },
   header: {
     width: "90%",
     backgroundColor: "#FFFFFF",

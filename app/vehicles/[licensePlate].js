@@ -1,17 +1,10 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { getVehicle } from "../../services/vehicles";
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-  Text,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet, Pressable, FlatList, Text } from "react-native";
 import { Table } from "../../components/Table";
-import { Stack } from "expo-router";
 import { Icon } from "../../components/Icons";
+import { ScreenLayout } from "../../components/ScreenLayout";
 import { colors } from "../../constants/colors";
 
 export default function VehicleDetail() {
@@ -36,44 +29,12 @@ export default function VehicleDetail() {
       .finally(() => setLoading(false));
   }, [licensePlate]);
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Vehículos disponibles",
-            headerTitleAlign: "center",
-          }}
-        />
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
-
-  if (!vehicleDetail) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Vehículos disponibles",
-            headerTitleAlign: "center",
-          }}
-        />
-        <Text style={styles.errorText}>
-          {error || "Vehículo no encontrado"}
-        </Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Vehículos disponibles",
-          headerTitleAlign: "center",
-        }}
-      />
+    <ScreenLayout
+      title="Vehículos disponibles"
+      loading={loading}
+      error={!vehicleDetail ? error || "Vehículo no encontrado" : null}
+    >
       <FlatList
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -111,7 +72,7 @@ export default function VehicleDetail() {
           <Text style={styles.textReserva}>Reservar</Text>
         </Pressable>
       </View>
-    </View>
+    </ScreenLayout>
   );
 }
 
@@ -179,11 +140,6 @@ const VehicleButtons = ({ vehicleId, licensePlate, modelId }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-  },
-
   containerInfocar: {
     flex: 1,
     justifyContent: "flex-start",
@@ -199,21 +155,6 @@ const styles = StyleSheet.create({
 
     gap: 24,
     width: "100%",
-  },
-
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    backgroundColor: colors.white,
-  },
-  errorText: {
-    color: colors.primary,
-    fontSize: 16,
-    textAlign: "center",
-    paddingHorizontal: 32,
   },
   containerButton: {
     width: "100%",
