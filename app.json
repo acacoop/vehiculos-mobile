@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "vehiculos-aca",
+    "name": "Vehículos ACA",
     "slug": "vehiculos-aca",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.acacoop.vehiculos"
+      "bundleIdentifier": "com.acacoop.vehiculos",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "package": "com.acacoop.vehiculos",
@@ -30,8 +31,7 @@
           "data": [
             {
               "scheme": "vehiculos-aca",
-              "host": "*",
-              "pathPrefix": "/redirect"
+              "host": "redirect"
             }
           ],
           "category": [
