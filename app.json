@@ -34,7 +34,10 @@
               "pathPrefix": "/redirect"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -51,7 +54,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "bd046fe5-4517-4d67-a752-98d222cd0e54"
+        "projectId": "5a86acb5-f11a-49dc-9ea8-9a03ae1c6193"
       }
     }
   }
