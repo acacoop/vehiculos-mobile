@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 import { colors } from "../constants/colors";
-import type { ChecklistHistoryItem } from "../interfaces/checklists";
+import type { QuarterlyControlHistoryItem } from "../interfaces/quarterlyControls";
 
 type HistoryCardProps = {
-  item: ChecklistHistoryItem;
+  item: QuarterlyControlHistoryItem;
 };
 
 // Quarter labels for display
@@ -62,7 +62,7 @@ export function HistoryCard({ item }: HistoryCardProps) {
   return (
     <Pressable
       style={styles.container}
-      onPress={() => router.push(`/vehicles/checklist/${item.id}`)}
+      onPress={() => router.push(`/vehicles/quarterly-control/${item.id}`)}
     >
       <View style={styles.header}>
         <Text style={styles.statusLabel}>Estado</Text>
