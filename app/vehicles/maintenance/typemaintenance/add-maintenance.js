@@ -26,7 +26,7 @@ export default function AddMaintenance() {
   const maintenanceName = coerceParam(params.maintenanceName, "");
   const maintenanceCategoryName = coerceParam(
     params.maintenanceCategoryName,
-    "",
+    ""
   );
   const kilometersFrequency = coerceParam(params.kilometersFrequency, "");
 
@@ -57,7 +57,7 @@ export default function AddMaintenance() {
   useEffect(() => {
     if (!assignedMaintenanceId) {
       setFormError(
-        "No se pudo identificar el mantenimiento seleccionado. Vuelve atrás e inténtalo nuevamente.",
+        "No se pudo identificar el mantenimiento seleccionado. Vuelve atrás e inténtalo nuevamente."
       );
     } else {
       setFormError(null);
@@ -81,13 +81,13 @@ export default function AddMaintenance() {
   const handleSubmit = async () => {
     const trimmedDescription = description.trim();
     const parsedKilometers = Number.parseFloat(
-      kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, "."),
+      kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, ".")
     );
 
     if (!assignedMaintenanceId) {
       Alert.alert(
         "Mantenimiento no disponible",
-        "No se puede registrar el mantenimiento porque falta el identificador.",
+        "No se puede registrar el mantenimiento porque falta el identificador."
       );
       return;
     }
@@ -95,7 +95,7 @@ export default function AddMaintenance() {
     if (!userId) {
       Alert.alert(
         "Sesión expirada",
-        "No se pudo identificar al usuario actual. Inicia sesión nuevamente.",
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
       );
       return;
     }
@@ -103,7 +103,7 @@ export default function AddMaintenance() {
     if (!trimmedDescription || Number.isNaN(parsedKilometers)) {
       Alert.alert(
         "Datos incompletos",
-        "Por favor completa todos los campos obligatorios.",
+        "Por favor completa todos los campos obligatorios."
       );
       return;
     }
@@ -111,7 +111,7 @@ export default function AddMaintenance() {
     if (parsedKilometers <= 0) {
       Alert.alert(
         "Kilómetros inválidos",
-        "Los kilómetros deben ser mayores a cero.",
+        "Los kilómetros deben ser mayores a cero."
       );
       return;
     }
@@ -133,7 +133,7 @@ export default function AddMaintenance() {
       console.error("Error al crear el mantenimiento", error);
       Alert.alert(
         "Error",
-        "No se pudo guardar el mantenimiento. Intenta nuevamente.",
+        "No se pudo guardar el mantenimiento. Intenta nuevamente."
       );
     } finally {
       setIsSubmitting(false);
@@ -202,7 +202,7 @@ export default function AddMaintenance() {
             disabled={isSubmitting}
           >
             <Text style={styles.saveText}>
-              {isSubmitting ? "Guardando..." : "Guardar"}
+              {isSubmitting ? "Guardando" : "Guardar"}
             </Text>
           </Pressable>
         </View>

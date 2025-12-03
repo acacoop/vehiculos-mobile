@@ -325,7 +325,7 @@ export default function Checklist() {
           disabled={submitting}
         >
           <Text style={styles.submitButtonText}>
-            {submitting ? "Guardando..." : "Guardar Checklist"}
+            {submitting ? "Guardando" : "Guardar Checklist"}
           </Text>
         </Pressable>
       </View>
