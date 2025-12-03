@@ -1,49 +1,50 @@
 import { useState, useEffect, useCallback } from "react";
 import { LayoutAnimation } from "react-native";
 import {
-  ChecklistCategory,
-  ChecklistChoice,
-  ChecklistObservations,
-  ChecklistState,
-} from "../../interfaces/checklists";
+  QuarterlyControlCategory,
+  QuarterlyControlChoice,
+  QuarterlyControlObservations,
+  QuarterlyControlState,
+} from "../../interfaces/quarterlyControls";
 
 // Helper functions for initializing state
-const buildInitialState = (categories: ChecklistCategory[]): ChecklistState => {
-  return categories.reduce<ChecklistState>((acc, category) => {
-    acc[category.id] = category.items.reduce<Record<string, ChecklistChoice>>(
-      (itemAcc, item) => {
-        itemAcc[item.id] = null;
-        return itemAcc;
-      },
-      {}
-    );
+const buildInitialState = (
+  categories: QuarterlyControlCategory[],
+): QuarterlyControlState => {
+  return categories.reduce<QuarterlyControlState>((acc, category) => {
+    acc[category.id] = category.items.reduce<
+      Record<string, QuarterlyControlChoice>
+    >((itemAcc, item) => {
+      itemAcc[item.id] = null;
+      return itemAcc;
+    }, {});
     return acc;
   }, {});
 };
 
 const buildInitialObservations = (
-  categories: ChecklistCategory[]
-): ChecklistObservations => {
-  return categories.reduce<ChecklistObservations>((acc, category) => {
+  categories: QuarterlyControlCategory[],
+): QuarterlyControlObservations => {
+  return categories.reduce<QuarterlyControlObservations>((acc, category) => {
     acc[category.id] = category.items.reduce<Record<string, string>>(
       (itemAcc, item) => {
         itemAcc[item.id] = "";
         return itemAcc;
       },
-      {}
+      {},
     );
     return acc;
   }, {});
 };
 
-export type UseChecklistLogicOptions = {
-  categories: ChecklistCategory[];
-  value?: ChecklistState;
-  onChange?: (next: ChecklistState) => void;
+export type UseQuarterlyControlLogicOptions = {
+  categories: QuarterlyControlCategory[];
+  value?: QuarterlyControlState;
+  onChange?: (next: QuarterlyControlState) => void;
   defaultExpanded?: string[];
   autoAdvance?: boolean;
-  observations?: ChecklistObservations;
-  onObservationsChange?: (next: ChecklistObservations) => void;
+  observations?: QuarterlyControlObservations;
+  onObservationsChange?: (next: QuarterlyControlObservations) => void;
 };
 
 export type ObservationModalTarget = {
@@ -51,11 +52,11 @@ export type ObservationModalTarget = {
   itemId: string;
 } | null;
 
-export type UseChecklistLogicResult = {
+export type UseQuarterlyControlLogicResult = {
   // State
   expandedSections: Set<string>;
-  answers: ChecklistState;
-  observationState: ChecklistObservations;
+  answers: QuarterlyControlState;
+  observationState: QuarterlyControlObservations;
   observationModalTarget: ObservationModalTarget;
   observationDraft: string;
 
@@ -64,7 +65,7 @@ export type UseChecklistLogicResult = {
   handleChoicePress: (
     sectionId: string,
     itemId: string,
-    choice: ChecklistChoice
+    choice: QuarterlyControlChoice,
   ) => void;
   openObservationModal: (sectionId: string, itemId: string) => void;
   closeObservationModal: () => void;
@@ -72,7 +73,7 @@ export type UseChecklistLogicResult = {
   setObservationDraft: (value: string) => void;
 };
 
-export function useChecklistLogic({
+export function useQuarterlyControlLogic({
   categories,
   value,
   onChange,
@@ -80,7 +81,7 @@ export function useChecklistLogic({
   autoAdvance = true,
   observations,
   onObservationsChange,
-}: UseChecklistLogicOptions): UseChecklistLogicResult {
+}: UseQuarterlyControlLogicOptions): UseQuarterlyControlLogicResult {
   // Expanded sections state
   const [expandedSections, setExpandedSections] = useState(() => {
     if (defaultExpanded && defaultExpanded.length > 0) {
@@ -90,12 +91,14 @@ export function useChecklistLogic({
   });
 
   // Internal state for controlled/uncontrolled pattern
-  const [internalState, setInternalState] = useState<ChecklistState>(() =>
-    buildInitialState(categories)
+  const [internalState, setInternalState] = useState<QuarterlyControlState>(
+    () => buildInitialState(categories),
   );
 
   const [internalObservations, setInternalObservations] =
-    useState<ChecklistObservations>(() => buildInitialObservations(categories));
+    useState<QuarterlyControlObservations>(() =>
+      buildInitialObservations(categories),
+    );
 
   // Observation modal state
   const [observationModalTarget, setObservationModalTarget] =
@@ -117,23 +120,23 @@ export function useChecklistLogic({
 
   // Emit changes to parent (if controlled) and update internal state
   const emitChange = useCallback(
-    (next: ChecklistState) => {
+    (next: QuarterlyControlState) => {
       if (onChange) {
         onChange(next);
       }
       setInternalState(next);
     },
-    [onChange]
+    [onChange],
   );
 
   const emitObservationsChange = useCallback(
-    (next: ChecklistObservations) => {
+    (next: QuarterlyControlObservations) => {
       if (onObservationsChange) {
         onObservationsChange(next);
       }
       setInternalObservations(next);
     },
-    [onObservationsChange]
+    [onObservationsChange],
   );
 
   // Layout animation helper
@@ -142,8 +145,8 @@ export function useChecklistLogic({
       LayoutAnimation.create(
         180,
         LayoutAnimation.Types.easeInEaseOut,
-        LayoutAnimation.Properties.opacity
-      )
+        LayoutAnimation.Properties.opacity,
+      ),
     );
   }, []);
 
@@ -161,7 +164,7 @@ export function useChecklistLogic({
         return next;
       });
     },
-    [animateLayout]
+    [animateLayout],
   );
 
   // Auto-advance to next section
@@ -178,25 +181,25 @@ export function useChecklistLogic({
       animateLayout();
       setExpandedSections(new Set([nextId]));
     },
-    [animateLayout, autoAdvance, categories]
+    [animateLayout, autoAdvance, categories],
   );
 
   // Handle choice selection (yes/no)
   const handleChoicePress = useCallback(
-    (sectionId: string, itemId: string, choice: ChecklistChoice) => {
+    (sectionId: string, itemId: string, choice: QuarterlyControlChoice) => {
       const currentSection = answers[sectionId] ?? {};
       const currentValue = currentSection[itemId] ?? null;
 
       // Toggle: si ya está seleccionado, lo deselecciona
-      const nextValue: ChecklistChoice =
+      const nextValue: QuarterlyControlChoice =
         currentValue === choice ? null : choice;
 
-      const updatedSection: Record<string, ChecklistChoice> = {
+      const updatedSection: Record<string, QuarterlyControlChoice> = {
         ...currentSection,
         [itemId]: nextValue,
       };
 
-      const nextAnswers: ChecklistState = {
+      const nextAnswers: QuarterlyControlState = {
         ...answers,
         [sectionId]: updatedSection,
       };
@@ -205,14 +208,14 @@ export function useChecklistLogic({
 
       // Check if section is completed and auto-advance
       const sectionCompleted = Object.values(updatedSection).every(
-        (value) => value === "yes" || value === "no"
+        (value) => value === "yes" || value === "no",
       );
 
       if (sectionCompleted) {
         goToNextSection(sectionId);
       }
     },
-    [answers, emitChange, goToNextSection]
+    [answers, emitChange, goToNextSection],
   );
 
   // Observation modal handlers
@@ -227,7 +230,7 @@ export function useChecklistLogic({
       setObservationDraft(existingNote);
       setObservationModalTarget({ sectionId, itemId });
     },
-    [observationState]
+    [observationState],
   );
 
   const confirmObservation = useCallback(() => {
@@ -243,7 +246,7 @@ export function useChecklistLogic({
       [itemId]: observationDraft.trim(),
     };
 
-    const nextObservationState: ChecklistObservations = {
+    const nextObservationState: QuarterlyControlObservations = {
       ...observationState,
       [sectionId]: nextObservationSection,
     };

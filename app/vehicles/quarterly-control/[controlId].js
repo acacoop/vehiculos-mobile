@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import { ScreenLayout } from "../../../components/ScreenLayout";
 import {
-  getMaintenanceChecklistById,
-  updateChecklistItems,
-} from "../../../services/maintenanceChecklists";
+  getQuarterlyControlById,
+  updateQuarterlyControlItems,
+} from "../../../services/quarterlyControls";
 import { createKilometersLog } from "../../../services/vehicleKilometersLogs";
 import { getCurrentUser } from "../../../services/me";
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { DropDown } from "../../../components/checklist/DropDown";
+import { DropDown } from "../../../components/quarterlyControl/DropDown";
 import { colors } from "../../../constants/colors";
 import Modal from "../../../components/Modal";
 
@@ -27,10 +27,10 @@ const QUARTER_LABELS = {
   4: "Q4",
 };
 
-export default function Checklist() {
-  const { checklist: checklistId } = useLocalSearchParams();
+export default function QuarterlyControl() {
+  const { controlId } = useLocalSearchParams();
   const router = useRouter();
-  const [checklistData, setChecklistData] = useState(null);
+  const [controlData, setControlData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -41,30 +41,30 @@ export default function Checklist() {
   const [kilometersInput, setKilometersInput] = useState("");
 
   useEffect(() => {
-    async function fetchChecklist() {
+    async function fetchControl() {
       setLoading(true);
       try {
-        const data = await getMaintenanceChecklistById(checklistId);
+        const data = await getQuarterlyControlById(controlId);
         if (!data) {
-          setError("Checklist no encontrado");
-          setChecklistData(null);
+          setError("Control trimestral no encontrado");
+          setControlData(null);
           return;
         }
-        setChecklistData(data);
+        setControlData(data);
         setError(null);
       } catch (err) {
-        console.error("Error fetching checklist", err);
-        setError(err.message || "No se pudo cargar el checklist");
-        setChecklistData(null);
+        console.error("Error fetching quarterly control", err);
+        setError(err.message || "No se pudo cargar el control trimestral");
+        setControlData(null);
       } finally {
         setLoading(false);
       }
     }
 
-    if (checklistId) {
-      fetchChecklist();
+    if (controlId) {
+      fetchControl();
     }
-  }, [checklistId]);
+  }, [controlId]);
 
   useEffect(() => {
     getCurrentUser()
@@ -76,10 +76,10 @@ export default function Checklist() {
   }, []);
 
   const categories = useMemo(() => {
-    if (!checklistData?.items) return [];
+    if (!controlData?.items) return [];
 
     const categoryMap = {};
-    checklistData.items.forEach((item) => {
+    controlData.items.forEach((item) => {
       if (!categoryMap[item.category]) {
         categoryMap[item.category] = {
           id: item.category.toLowerCase().replace(/\s+/g, "-"),
@@ -95,15 +95,15 @@ export default function Checklist() {
     });
 
     return Object.values(categoryMap);
-  }, [checklistData]);
+  }, [controlData]);
 
   // Initialize responses state from backend items
   const initialResponses = useMemo(() => {
-    if (!categories.length || !checklistData?.items) return {};
+    if (!categories.length || !controlData?.items) return {};
 
     // Create a map of item id to backend status
     const backendItemsMap = {};
-    checklistData.items.forEach((item) => {
+    controlData.items.forEach((item) => {
       backendItemsMap[item.id] = item.status;
     });
 
@@ -122,14 +122,14 @@ export default function Checklist() {
       }, {});
       return acc;
     }, {});
-  }, [categories, checklistData]);
+  }, [categories, controlData]);
 
   const initialObservations = useMemo(() => {
-    if (!categories.length || !checklistData?.items) return {};
+    if (!categories.length || !controlData?.items) return {};
 
     // Create a map of item id to backend observations
     const backendItemsMap = {};
-    checklistData.items.forEach((item) => {
+    controlData.items.forEach((item) => {
       backendItemsMap[item.id] = item.observations || "";
     });
 
@@ -141,7 +141,7 @@ export default function Checklist() {
       }, {});
       return acc;
     }, {});
-  }, [categories, checklistData]);
+  }, [categories, controlData]);
 
   const [responses, setResponses] = useState({});
   const [observations, setObservations] = useState({});
@@ -162,35 +162,20 @@ export default function Checklist() {
     setObservations(next);
   };
 
-  // Check if all items have been answered
-  const allItemsCompleted = useMemo(() => {
-    if (!categories.length || !Object.keys(responses).length) return false;
-
-    return categories.every((category) => {
-      const categoryResponses = responses[category.id];
-      if (!categoryResponses) return false;
-
-      return category.items.every((item) => {
-        const answer = categoryResponses[item.id];
-        return answer === "yes" || answer === "no";
-      });
-    });
-  }, [categories, responses]);
-
   // Handle submit - opens kilometers modal first
   const handleSubmit = useCallback(() => {
-    if (!checklistData) return;
+    if (!controlData) return;
     setKilometersInput("");
     setShowKilometersModal(true);
-  }, [checklistData]);
+  }, [controlData]);
 
-  // Build checklist payload for submission
-  const buildChecklistPayload = useCallback(() => {
-    if (!checklistData) return [];
+  // Build control payload for submission
+  const buildControlPayload = useCallback(() => {
+    if (!controlData) return [];
 
-    return checklistData.items.map((item) => {
+    return controlData.items.map((item) => {
       const category = categories.find((cat) =>
-        cat.items.some((i) => i.id === item.id)
+        cat.items.some((i) => i.id === item.id),
       );
       const categoryId = category?.id;
       const answer = categoryId ? responses[categoryId]?.[item.id] : null;
@@ -213,14 +198,14 @@ export default function Checklist() {
         observations: observation,
       };
     });
-  }, [checklistData, categories, responses, observations]);
+  }, [controlData, categories, responses, observations]);
 
   // Handle kilometers modal confirm
   const handleKilometersConfirm = useCallback(async () => {
-    const vehicleId = checklistData?.vehicle?.id;
+    const vehicleId = controlData?.vehicle?.id;
     const parsedKilometers = parseInt(
       kilometersInput.replace(/[^0-9]/g, ""),
-      10
+      10,
     );
 
     if (!vehicleId) {
@@ -231,7 +216,7 @@ export default function Checklist() {
     if (!currentUser?.id) {
       Alert.alert(
         "Error",
-        "No se pudo identificar al usuario. Inicia sesión nuevamente."
+        "No se pudo identificar al usuario. Inicia sesión nuevamente.",
       );
       return;
     }
@@ -253,26 +238,26 @@ export default function Checklist() {
         kilometers: parsedKilometers,
       });
 
-      // Then, submit the checklist
-      const itemsPayload = buildChecklistPayload();
-      await updateChecklistItems(checklistId, { items: itemsPayload });
+      // Then, submit the control
+      const itemsPayload = buildControlPayload();
+      await updateQuarterlyControlItems(controlId, { items: itemsPayload });
 
       router.back();
     } catch (err) {
-      console.error("Error submitting checklist", err);
+      console.error("Error submitting quarterly control", err);
       Alert.alert(
         "Error",
-        err.message || "No se pudo guardar. Intenta nuevamente."
+        err.message || "No se pudo guardar. Intenta nuevamente.",
       );
     } finally {
       setSubmitting(false);
     }
   }, [
-    checklistData,
+    controlData,
     kilometersInput,
     currentUser,
-    checklistId,
-    buildChecklistPayload,
+    controlId,
+    buildControlPayload,
     router,
   ]);
 
@@ -281,12 +266,12 @@ export default function Checklist() {
     setKilometersInput("");
   }, []);
 
-  const vehicleInfo = checklistData?.vehicle;
+  const vehicleInfo = controlData?.vehicle;
   const brandName = vehicleInfo?.model?.brand?.name || "";
   const modelName = vehicleInfo?.model?.name || "";
 
   return (
-    <ScreenLayout title="Checklist Vehicular" loading={loading} error={error}>
+    <ScreenLayout title="Control Trimestral" loading={loading} error={error}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -301,8 +286,7 @@ export default function Checklist() {
               : "Marca y modelo desconocidos"}
           </Text>
           <Text style={styles.periodText}>
-            Período: {QUARTER_LABELS[checklistData?.quarter]}{" "}
-            {checklistData?.year}
+            Período: {QUARTER_LABELS[controlData?.quarter]} {controlData?.year}
           </Text>
         </View>
         <View style={{ width: "90%", alignItems: "center", paddingBottom: 20 }}>
@@ -315,7 +299,7 @@ export default function Checklist() {
           />
         </View>
       </ScrollView>
-      <View style={styles.containerChecklistButton}>
+      <View style={styles.containerControlButton}>
         <Pressable
           style={[
             styles.submitButton,
@@ -325,7 +309,7 @@ export default function Checklist() {
           disabled={submitting}
         >
           <Text style={styles.submitButtonText}>
-            {submitting ? "Guardando" : "Guardar Checklist"}
+            {submitting ? "Guardando" : "Guardar Control"}
           </Text>
         </Pressable>
       </View>
@@ -409,7 +393,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  containerChecklistButton: {
+  containerControlButton: {
     width: "100%",
     padding: 16,
     backgroundColor: colors.white,

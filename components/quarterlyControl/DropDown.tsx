@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, Platform, UIManager } from "react-native";
 import {
-  ChecklistCategory,
-  ChecklistObservations,
-  ChecklistState,
-} from "../../interfaces/checklists";
+  QuarterlyControlCategory,
+  QuarterlyControlObservations,
+  QuarterlyControlState,
+} from "../../interfaces/quarterlyControls";
 import Modal from "../Modal";
-import { ChecklistSection, useChecklistLogic } from ".";
+import { QuarterlyControlSection, useQuarterlyControlLogic } from ".";
 
 // Enable LayoutAnimation on Android
 if (
@@ -17,13 +17,13 @@ if (
 }
 
 type DropDownProps = {
-  categories: ChecklistCategory[];
-  value?: ChecklistState;
-  onChange?: (next: ChecklistState) => void;
+  categories: QuarterlyControlCategory[];
+  value?: QuarterlyControlState;
+  onChange?: (next: QuarterlyControlState) => void;
   defaultExpanded?: string[];
   autoAdvance?: boolean;
-  observations?: ChecklistObservations;
-  onObservationsChange?: (next: ChecklistObservations) => void;
+  observations?: QuarterlyControlObservations;
+  onObservationsChange?: (next: QuarterlyControlObservations) => void;
 };
 
 export function DropDown({
@@ -47,7 +47,7 @@ export function DropDown({
     closeObservationModal,
     confirmObservation,
     setObservationDraft,
-  } = useChecklistLogic({
+  } = useQuarterlyControlLogic({
     categories,
     value,
     onChange,
@@ -62,7 +62,7 @@ export function DropDown({
   return (
     <View style={styles.wrapper}>
       {resolvedCategories.map((category) => (
-        <ChecklistSection
+        <QuarterlyControlSection
           key={category.id}
           category={category}
           isExpanded={expandedSections.has(category.id)}

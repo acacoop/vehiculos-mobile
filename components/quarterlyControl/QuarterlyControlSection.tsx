@@ -1,25 +1,25 @@
 import React, { useMemo } from "react";
 import { StyleSheet, Pressable, Text, View, Animated } from "react-native";
 import {
-  ChecklistCategory,
-  ChecklistChoice,
-  ChecklistItem,
-} from "../../interfaces/checklists";
+  QuarterlyControlCategory,
+  QuarterlyControlChoice,
+  QuarterlyControlItemUI,
+} from "../../interfaces/quarterlyControls";
 import { Icon, getIconByKey } from "../Icons";
 import { useSectionAnimation } from "./useSectionAnimation";
 import { colors } from "../../constants/colors";
 
-export type ChecklistSectionProps = {
-  category: ChecklistCategory;
+export type QuarterlyControlSectionProps = {
+  category: QuarterlyControlCategory;
   isExpanded: boolean;
-  answers: Record<string, ChecklistChoice>;
+  answers: Record<string, QuarterlyControlChoice>;
   onToggle: (categoryId: string) => void;
-  onChoice: (itemId: string, choice: ChecklistChoice) => void;
+  onChoice: (itemId: string, choice: QuarterlyControlChoice) => void;
   onOpenObservation: (itemId: string) => void;
   observations: Record<string, string>;
 };
 
-export function ChecklistSection({
+export function QuarterlyControlSection({
   category,
   isExpanded,
   answers,
@@ -27,13 +27,13 @@ export function ChecklistSection({
   onChoice,
   onOpenObservation,
   observations,
-}: ChecklistSectionProps) {
+}: QuarterlyControlSectionProps) {
   const { renderBody, bodyAnimationStyle, arrowAnimationStyle } =
     useSectionAnimation(isExpanded);
 
   const IconComponent = useMemo(
     () => getIconByKey(category.iconKey ?? "shield"),
-    [category.iconKey]
+    [category.iconKey],
   );
 
   // Check section status: pending, completed (all yes), or hasErrors (at least one no)
@@ -46,7 +46,7 @@ export function ChecklistSection({
     });
 
     const hasErrors = category.items.some(
-      (item) => answers?.[item.id] === "no"
+      (item) => answers?.[item.id] === "no",
     );
 
     if (!allAnswered) return "pending";
@@ -105,7 +105,7 @@ export function ChecklistSection({
       >
         {renderBody && (
           <View style={styles.sectionBody}>
-            {category.items.map((item: ChecklistItem) => {
+            {category.items.map((item: QuarterlyControlItemUI) => {
               const answer = answers?.[item.id] ?? null;
               const hasObservation = !!observations?.[item.id]?.trim();
               return (

@@ -127,7 +127,7 @@ const VehicleButtons = ({ vehicleId, licensePlate, modelId }) => {
         style={styles.actionButton}
         onPress={() => {
           router.push({
-            pathname: "/vehicles/checklist/history",
+            pathname: "/vehicles/quarterly-control/history",
             params: { licensePlate },
           });
         }}

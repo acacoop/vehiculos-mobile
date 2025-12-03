@@ -1,12 +1,12 @@
 import { useLocalSearchParams, useFocusEffect } from "expo-router";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { getVehicle } from "../../../services/vehicles";
-import { getChecklistHistoryByVehicle } from "../../../services/maintenanceChecklists";
+import { getQuarterlyControlHistoryByVehicle } from "../../../services/quarterlyControls";
 import { useState, useCallback } from "react";
 import { HistoryCard } from "../../../components/HistoryCard";
 import { ScreenLayout } from "../../../components/ScreenLayout";
 
-export default function ChecklistHistory() {
+export default function QuarterlyControlHistory() {
   const { licensePlate } = useLocalSearchParams();
 
   const [vehicleDetail, setVehicleDetail] = useState(null);
@@ -28,9 +28,11 @@ export default function ChecklistHistory() {
 
       setVehicleDetail(vehicle);
 
-      // Then fetch the checklist history using the vehicleId
-      const checklistHistory = await getChecklistHistoryByVehicle(vehicle.id);
-      setHistory(checklistHistory);
+      // Then fetch the quarterly control history using the vehicleId
+      const controlHistory = await getQuarterlyControlHistoryByVehicle(
+        vehicle.id,
+      );
+      setHistory(controlHistory);
       setError(null);
     } catch (err) {
       console.error("Error fetching data", err);
@@ -46,7 +48,7 @@ export default function ChecklistHistory() {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [fetchData])
+    }, [fetchData]),
   );
 
   return (

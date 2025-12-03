@@ -13,7 +13,7 @@ type UseSectionAnimationResult = {
 };
 
 export function useSectionAnimation(
-  isExpanded: boolean
+  isExpanded: boolean,
 ): UseSectionAnimationResult {
   const animation = useRef(new Animated.Value(isExpanded ? 1 : 0)).current;
   const [renderBody, setRenderBody] = useState(isExpanded);
@@ -51,7 +51,7 @@ export function useSectionAnimation(
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   const arrowAnimationStyle = useMemo(
@@ -65,7 +65,7 @@ export function useSectionAnimation(
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   return {
