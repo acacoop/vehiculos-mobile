@@ -1,5 +1,6 @@
 export interface Maintenance {
   id: string;
+  maintenanceId: string;
   maintenanceName: string;
   maintenanceImgName: string;
   maintenanceCategoryName: string;

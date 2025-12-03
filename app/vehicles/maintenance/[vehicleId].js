@@ -73,6 +73,7 @@ export default function Maintenance() {
                       "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
                     params: {
                       VehicleMaintenanceEntry: JSON.stringify(maintenance),
+                      vehicleId: vehicleId,
                     },
                   })
                 }
@@ -102,7 +103,8 @@ export default function Maintenance() {
             router.push({
               pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
               params: {
-                assignedMaintenanceId: "",
+                maintenanceId: "",
+                vehicleId: vehicleId,
                 maintenanceName: "Mantenimiento correctivo",
                 maintenanceCategoryName: "Correctivo",
                 kilometersFrequency: "",
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "stretch",
     alignSelf: "center",
+    paddingTop: 20,
   },
 
   categoryTitle: {

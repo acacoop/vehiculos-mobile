@@ -64,6 +64,7 @@ function mapMaintenanceRequirement(
 
   return {
     id: api.id,
+    maintenanceId: api.maintenance.id,
     maintenanceName: api.maintenance.name,
     maintenanceImgName: "",
     maintenanceCategoryName: api.maintenance.category.name,

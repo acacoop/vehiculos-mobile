@@ -14,11 +14,11 @@ import {
   useRouter,
 } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-import { getMaintenanceRecordsByAssignedMaintenance } from "../../../../services/maintenanceRecords";
+import { getMaintenanceRecords } from "../../../../services/maintenanceRecords";
 import { Table } from "../../../../components/Table";
 
 export default function VehicleMaintenanceEntry() {
-  const { VehicleMaintenanceEntry } = useLocalSearchParams();
+  const { VehicleMaintenanceEntry, vehicleId } = useLocalSearchParams();
   const maintenance = JSON.parse(VehicleMaintenanceEntry);
 
   const navigation = useNavigation();
@@ -28,14 +28,16 @@ export default function VehicleMaintenanceEntry() {
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [historyError, setHistoryError] = useState(null);
 
-  const assignedMaintenanceId = maintenance?.id;
+  const maintenanceId = maintenance?.maintenanceId;
 
-  const loadMaintenanceRecords = useCallback(async (assignedId) => {
-    if (!assignedId) return;
+  const loadMaintenanceRecords = useCallback(async (maintId, vehId) => {
+    if (!maintId || !vehId) return;
     setLoadingHistory(true);
     try {
-      const records =
-        await getMaintenanceRecordsByAssignedMaintenance(assignedId);
+      const records = await getMaintenanceRecords({
+        maintenanceId: maintId,
+        vehicleId: vehId,
+      });
       setMaintenanceHistory(records);
       setHistoryError(null);
     } catch (error) {
@@ -58,15 +60,15 @@ export default function VehicleMaintenanceEntry() {
   }, [maintenance, navigation]);
 
   useEffect(() => {
-    if (!assignedMaintenanceId) return;
-    loadMaintenanceRecords(assignedMaintenanceId);
-  }, [assignedMaintenanceId, loadMaintenanceRecords]);
+    if (!maintenanceId || !vehicleId) return;
+    loadMaintenanceRecords(maintenanceId, vehicleId);
+  }, [maintenanceId, vehicleId, loadMaintenanceRecords]);
 
   useFocusEffect(
     useCallback(() => {
-      if (!assignedMaintenanceId) return;
-      loadMaintenanceRecords(assignedMaintenanceId);
-    }, [assignedMaintenanceId, loadMaintenanceRecords])
+      if (!maintenanceId || !vehicleId) return;
+      loadMaintenanceRecords(maintenanceId, vehicleId);
+    }, [maintenanceId, vehicleId, loadMaintenanceRecords])
   );
 
   const formattedHistory = useMemo(() => {
@@ -138,7 +140,7 @@ export default function VehicleMaintenanceEntry() {
                 </View>
                 {entry.notes ? (
                   <Text style={styles.historyNotes}>
-                    <span style={{ fontWeight: "bold" }}>Observación:</span>{" "}
+                    <Text style={{ fontWeight: "bold" }}>Observación:</Text>{" "}
                     {entry.notes}
                   </Text>
                 ) : null}
@@ -161,13 +163,14 @@ export default function VehicleMaintenanceEntry() {
         <Pressable
           style={[
             styles.addButton,
-            !assignedMaintenanceId && styles.addButtonDisabled,
+            (!maintenanceId || !vehicleId) && styles.addButtonDisabled,
           ]}
           onPress={() =>
             router.push({
               pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
               params: {
-                assignedMaintenanceId,
+                maintenanceId,
+                vehicleId,
                 maintenanceName: maintenance?.maintenanceName ?? "",
                 maintenanceCategoryName:
                   maintenance?.maintenanceCategoryName ?? "",
@@ -178,10 +181,10 @@ export default function VehicleMaintenanceEntry() {
               },
             })
           }
-          disabled={!assignedMaintenanceId}
+          disabled={!maintenanceId || !vehicleId}
         >
           <Text style={styles.addButtonText}>
-            {!assignedMaintenanceId
+            {!maintenanceId || !vehicleId
               ? "Mantenimiento no disponible"
               : "Registrar mantenimiento"}
           </Text>
@@ -279,7 +282,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   addButton: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#fe9000",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",

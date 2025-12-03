@@ -22,7 +22,8 @@ export default function AddMaintenance() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const assignedMaintenanceId = coerceParam(params.assignedMaintenanceId, "");
+  const maintenanceId = coerceParam(params.maintenanceId, "");
+  const vehicleId = coerceParam(params.vehicleId, "");
   const maintenanceName = coerceParam(params.maintenanceName, "");
   const maintenanceCategoryName = coerceParam(
     params.maintenanceCategoryName,
@@ -55,14 +56,14 @@ export default function AddMaintenance() {
   }, []);
 
   useEffect(() => {
-    if (!assignedMaintenanceId) {
+    if (!maintenanceId || !vehicleId) {
       setFormError(
-        "No se pudo identificar el mantenimiento seleccionado. Vuelve atrás e inténtalo nuevamente."
+        "No se pudo identificar el mantenimiento o vehículo seleccionado. Vuelve atrás e inténtalo nuevamente."
       );
     } else {
       setFormError(null);
     }
-  }, [assignedMaintenanceId]);
+  }, [maintenanceId, vehicleId]);
 
   const maintenanceSummary = useMemo(() => {
     const lines = [];
@@ -84,10 +85,10 @@ export default function AddMaintenance() {
       kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, ".")
     );
 
-    if (!assignedMaintenanceId) {
+    if (!maintenanceId || !vehicleId) {
       Alert.alert(
         "Mantenimiento no disponible",
-        "No se puede registrar el mantenimiento porque falta el identificador."
+        "No se puede registrar el mantenimiento porque falta el identificador del mantenimiento o vehículo."
       );
       return;
     }
@@ -117,7 +118,8 @@ export default function AddMaintenance() {
     }
 
     const payload = {
-      assignedMaintenanceId,
+      maintenanceId,
+      vehicleId,
       userId,
       date,
       kilometers: parsedKilometers,
@@ -194,19 +196,18 @@ export default function AddMaintenance() {
         />
 
         {formError ? <Text style={styles.errorText}>{formError}</Text> : null}
-
-        <View style={styles.actions}>
-          <Pressable
-            style={[styles.button, styles.saveButton]}
-            onPress={handleSubmit}
-            disabled={isSubmitting}
-          >
-            <Text style={styles.saveText}>
-              {isSubmitting ? "Guardando" : "Guardar"}
-            </Text>
-          </Pressable>
-        </View>
       </ScrollView>
+      <View style={styles.actions}>
+        <Pressable
+          style={[styles.button, styles.saveButton]}
+          onPress={handleSubmit}
+          disabled={isSubmitting}
+        >
+          <Text style={styles.saveText}>
+            {isSubmitting ? "Guardando" : "Guardar"}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -281,10 +282,17 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   actions: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 12,
-    marginTop: 12,
+    padding: 16,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    zIndex: 10,
   },
   button: {
     flex: 1,
@@ -292,12 +300,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
+    alignSelf: "center",
   },
   cancelButton: {
     backgroundColor: "#E53935",
   },
   saveButton: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#FE9000",
   },
   cancelText: {
     color: "#fff",

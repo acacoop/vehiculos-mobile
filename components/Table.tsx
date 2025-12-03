@@ -11,6 +11,7 @@ export function Table({ data }: { data: any }) {
       style={style.container}
       data={tableData}
       keyExtractor={(item) => item.key}
+      scrollEnabled={false}
       renderItem={({ item, index }) => (
         <View
           style={[

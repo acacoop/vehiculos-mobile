@@ -1,6 +1,7 @@
 export interface MaintenanceRecord {
   id: string;
-  assignedMaintenanceId: string;
+  maintenanceId: string;
+  vehicleId: string;
   userId: string;
   date: Date;
   kilometers: number;
