@@ -43,3 +43,5 @@ yarn-error.*
 # APK de desarrollo
 *.apk
 google-play-key.json
+
+android/

@@ -9,6 +9,8 @@ import {
   Animated,
   Easing,
   TextInput as RNTextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 export type ModalProps = {
@@ -98,47 +100,55 @@ const Modal: React.FC<ModalProps> = ({
         style={[styles.backdrop, { opacity: backdropOpacity }]}
         pointerEvents={visible ? "auto" : "none"}
       >
-        <Animated.View
-          style={[styles.content, { transform: [{ translateY }] }]}
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoidingContainer}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <Text style={styles.title}>{title}</Text>
-          <TextInput
-            ref={inputRef}
-            value={value}
-            onChangeText={onChangeText}
-            placeholder={placeholder}
-            placeholderTextColor="#9CA0C5"
-            style={[styles.textInput, !multiline && styles.textInputSingleLine]}
-            multiline={multiline}
-            numberOfLines={multiline ? 4 : 1}
-            textAlignVertical={multiline ? "top" : "center"}
-            keyboardType={keyboardType}
-            selection={{ start: value.length, end: value.length }}
-          />
-          <View style={styles.actions}>
-            <Pressable
-              style={[styles.button, styles.cancelButton]}
-              onPress={onCancel}
-            >
-              <Text style={[styles.buttonLabel, styles.cancelLabel]}>
-                {cancelLabel}
-              </Text>
-            </Pressable>
-            <Pressable
+          <Animated.View
+            style={[styles.content, { transform: [{ translateY }] }]}
+          >
+            <Text style={styles.title}>{title}</Text>
+            <TextInput
+              ref={inputRef}
+              value={value}
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+              placeholderTextColor="#9CA0C5"
               style={[
-                styles.button,
-                styles.confirmButton,
-                confirmDisabled && styles.buttonDisabled,
+                styles.textInput,
+                !multiline && styles.textInputSingleLine,
               ]}
-              onPress={onConfirm}
-              disabled={confirmDisabled}
-            >
-              <Text style={[styles.buttonLabel, styles.confirmLabel]}>
-                {confirmLabel}
-              </Text>
-            </Pressable>
-          </View>
-        </Animated.View>
+              multiline={multiline}
+              numberOfLines={multiline ? 4 : 1}
+              textAlignVertical={multiline ? "top" : "center"}
+              keyboardType={keyboardType}
+              selection={{ start: value.length, end: value.length }}
+            />
+            <View style={styles.actions}>
+              <Pressable
+                style={[styles.button, styles.cancelButton]}
+                onPress={onCancel}
+              >
+                <Text style={[styles.buttonLabel, styles.cancelLabel]}>
+                  {cancelLabel}
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.button,
+                  styles.confirmButton,
+                  confirmDisabled && styles.buttonDisabled,
+                ]}
+                onPress={onConfirm}
+                disabled={confirmDisabled}
+              >
+                <Text style={[styles.buttonLabel, styles.confirmLabel]}>
+                  {confirmLabel}
+                </Text>
+              </Pressable>
+            </View>
+          </Animated.View>
+        </KeyboardAvoidingView>
       </Animated.View>
     </RNModal>
   );
@@ -148,6 +158,10 @@ const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.35)",
+    zIndex: 1000,
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
