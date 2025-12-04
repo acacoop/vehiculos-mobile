@@ -177,23 +177,29 @@ export default function AddMaintenance() {
             containerStyle={styles.datePicker}
           />
         </View>
-        <TextInput
-          placeholder="Kilómetros actuales"
-          value={kilometers}
-          onChangeText={setKilometers}
-          style={styles.input}
-          keyboardType="numeric"
-          inputMode="numeric"
-        />
-        <TextInput
-          placeholder="Descripción"
-          value={description}
-          onChangeText={setDescription}
-          style={[styles.input, styles.multilineInput]}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-        />
+        <View style={styles.formRow}>
+          <Text style={styles.sectionTitle}>Kilometros actuales</Text>
+          <TextInput
+            placeholder="Kilómetros actuales"
+            value={kilometers}
+            onChangeText={setKilometers}
+            style={styles.input}
+            keyboardType="numeric"
+            inputMode="numeric"
+          />
+        </View>
+        <View style={styles.formRow}>
+          <Text style={styles.sectionTitle}>Descripción</Text>
+          <TextInput
+            placeholder="Descripción"
+            value={description}
+            onChangeText={setDescription}
+            style={[styles.input, styles.multilineInput]}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </View>
 
         {formError ? <Text style={styles.errorText}>{formError}</Text> : null}
       </ScrollView>

@@ -79,7 +79,7 @@ export const ReserveModal = ({
               disabled={confirmDisabled || confirmLoading}
             >
               <Text style={styles.buttonText}>
-                {confirmLoading ? "Confirmando..." : "Confirmar"}
+                {confirmLoading ? "Confirmar" : "Confirmar"}
               </Text>
             </TouchableOpacity>
           </View>
