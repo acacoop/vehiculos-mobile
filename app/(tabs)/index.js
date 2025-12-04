@@ -8,13 +8,13 @@ export default function Index() {
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Inicio" }} />
       <ImageBackground
-        source={require("../../assets/logo_azul.webp")}
+        source={require("../../assets/ACA_color_RGB.png")}
         style={styles.imageBackground}
         resizeMode="contain"
       >
-        <View style={styles.overlay}>
+        {/*  <View style={styles.overlay}>
           <WarningCard />
-        </View>
+        </View> */}
       </ImageBackground>
     </View>
   );
@@ -29,10 +29,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   imageBackground: {
-    width: "90%",
+    width: "230px",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
+    padding: 20,
+    resizeMode: "contain",
+    opacity: 0.7,
   },
   overlay: {
     flex: 1,
