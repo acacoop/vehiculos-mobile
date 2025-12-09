@@ -86,6 +86,10 @@ const iconNameMapping: Record<string, IconName> = {
   Safety: "shield-checkmark-outline",
   alerttriangle: "warning-outline",
   emergency: "medkit-outline",
+  // Toast notification icons
+  checkcircle: "checkmark-circle",
+  closecircle: "close-circle",
+  infocirlce: "information-circle",
 };
 
 const pickColor = (

@@ -3,6 +3,8 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "../components/Toast/toastConfig";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 function RootNavigator() {
@@ -61,6 +63,7 @@ export default function Layout() {
         <View style={styles.container}>
           <RootNavigator />
         </View>
+        <Toast config={toastConfig} />
       </AuthProvider>
     </SafeAreaProvider>
   );

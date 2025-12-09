@@ -5,9 +5,9 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Alert,
 } from "react-native";
 import { ScreenLayout } from "../../../components/ScreenLayout";
+import { toast } from "../../../hooks/useToast";
 import {
   getQuarterlyControlById,
   updateQuarterlyControlItems,
@@ -209,20 +209,20 @@ export default function QuarterlyControl() {
     );
 
     if (!vehicleId) {
-      Alert.alert("Error", "No se pudo identificar el vehículo.");
+      toast.error({ title: "Error", message: "No se pudo identificar el vehículo." });
       return;
     }
 
     if (!currentUser?.id) {
-      Alert.alert(
-        "Error",
-        "No se pudo identificar al usuario. Inicia sesión nuevamente.",
-      );
+      toast.error({
+        title: "Error",
+        message: "No se pudo identificar al usuario. Inicia sesión nuevamente.",
+      });
       return;
     }
 
     if (isNaN(parsedKilometers) || parsedKilometers <= 0) {
-      Alert.alert("Error", "Ingresa un kilometraje válido mayor a cero.");
+      toast.error({ title: "Error", message: "Ingresa un kilometraje válido mayor a cero." });
       return;
     }
 
@@ -242,13 +242,17 @@ export default function QuarterlyControl() {
       const itemsPayload = buildControlPayload();
       await updateQuarterlyControlItems(controlId, { items: itemsPayload });
 
+      toast.success({
+        title: "Control guardado",
+        message: "El control trimestral se guardó correctamente.",
+      });
       router.back();
     } catch (err) {
       console.error("Error submitting quarterly control", err);
-      Alert.alert(
-        "Error",
-        err.message || "No se pudo guardar. Intenta nuevamente.",
-      );
+      toast.error({
+        title: "Error al guardar",
+        message: err.message || "No se pudo guardar. Intenta nuevamente.",
+      });
     } finally {
       setSubmitting(false);
     }
