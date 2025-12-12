@@ -1,11 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { ScreenLayout } from "../../../components/ScreenLayout";
 import { toast } from "../../../hooks/useToast";
 import {
@@ -175,7 +169,7 @@ export default function QuarterlyControl() {
 
     return controlData.items.map((item) => {
       const category = categories.find((cat) =>
-        cat.items.some((i) => i.id === item.id),
+        cat.items.some((i) => i.id === item.id)
       );
       const categoryId = category?.id;
       const answer = categoryId ? responses[categoryId]?.[item.id] : null;
@@ -205,11 +199,14 @@ export default function QuarterlyControl() {
     const vehicleId = controlData?.vehicle?.id;
     const parsedKilometers = parseInt(
       kilometersInput.replace(/[^0-9]/g, ""),
-      10,
+      10
     );
 
     if (!vehicleId) {
-      toast.error({ title: "Error", message: "No se pudo identificar el vehículo." });
+      toast.error({
+        title: "Error",
+        message: "No se pudo identificar el vehículo.",
+      });
       return;
     }
 
@@ -222,7 +219,10 @@ export default function QuarterlyControl() {
     }
 
     if (isNaN(parsedKilometers) || parsedKilometers <= 0) {
-      toast.error({ title: "Error", message: "Ingresa un kilometraje válido mayor a cero." });
+      toast.error({
+        title: "Error",
+        message: "Ingresa un kilometraje válido mayor a cero.",
+      });
       return;
     }
 
