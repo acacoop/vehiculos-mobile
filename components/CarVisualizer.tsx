@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
 import { Icon } from "./Icons";
 
@@ -36,8 +36,11 @@ export function CarVisualizer({
 
   if (!vehicles || vehicles.length === 0 || !vehicles[index]) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>No hay vehículos disponibles</Text>
+      <View style={[styles.container, { width: containerWidth as any }]}>
+        <View style={styles.emptyState}>
+          <Icon name="car" size={32} color="#9CA3AF" />
+          <Text style={styles.emptyText}>No hay vehículos disponibles</Text>
+        </View>
       </View>
     );
   }
@@ -56,97 +59,137 @@ export function CarVisualizer({
 
   return (
     <View style={[styles.container, { width: containerWidth as any }]}>
-      <View style={styles.vehicleInfo}>
-        <Icon name="left" onPress={goPrevious} size={20} color="#282D86" />
-
-        <View
-          style={{
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 30,
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-            }}
-          >
-            <Text style={styles.text}>{currentVehicle.licensePlate}</Text>
+      <Pressable
+        onPress={goPrevious}
+        style={({ pressed }) => [
+          styles.arrowButton,
+          styles.arrowLeft,
+          pressed && styles.arrowButtonPressed,
+        ]}
+      >
+        <Icon name="left" size={18} color="#282D86" />
+      </Pressable>
+      <View style={styles.vehicleCard}>
+        <View style={styles.content}>
+          <View style={styles.plateContainer}>
+            <Text style={styles.plateText}>{currentVehicle.licensePlate}</Text>
           </View>
-
-          <Text style={styles.text}> | </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={[styles.text, { textAlign: "center", maxWidth: 120 }]}
-              numberOfLines={2}
-              ellipsizeMode="tail"
-            >
-              {currentVehicle.brand + " " + currentVehicle.model}
-            </Text>
+          <Text style={styles.brandText} numberOfLines={1} ellipsizeMode="tail">
+            {currentVehicle.brand} {currentVehicle.model}
+          </Text>
+          <View style={styles.pagination}>
+            {vehicles.map((_, i) => (
+              <View
+                key={i}
+                style={[styles.dot, i === index && styles.dotActive]}
+              />
+            ))}
           </View>
         </View>
-        <Icon name="right" onPress={goNext} size={20} color="#282D86" />
       </View>
+      <Pressable
+        onPress={goNext}
+        style={({ pressed }) => [
+          styles.arrowButton,
+          styles.arrowRight,
+          pressed && styles.arrowButtonPressed,
+        ]}
+      >
+        <Icon name="right" size={18} color="#282D86" />
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 100,
     width: "90%",
-    padding: 20,
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
-    backgroundColor: "#ffff",
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    borderRadius: 10,
+    height: 150,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#282D86",
-    textAlign: "center",
+  arrowButton: {
+    width: 36,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: "50%",
+    marginTop: -18,
+    zIndex: 1,
   },
-  vehicleInfo: {
+  arrowLeft: {
+    left: 12,
+  },
+  arrowRight: {
+    right: 12,
+  },
+  arrowButtonPressed: {
+    opacity: 0.5,
+  },
+  vehicleCard: {
     width: "100%",
-    justifyContent: "center",
-    flexDirection: "row",
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 56,
     alignItems: "center",
-    gap: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
+    position: "relative",
   },
-  text: {
+  content: {
+    alignItems: "center",
+    width: "100%",
+  },
+  plateContainer: {
+    backgroundColor: "#282D86",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  plateText: {
     fontSize: 18,
-    fontWeight: "600",
-    color: "#282D86",
+    fontWeight: "700",
+    color: "#ffffff",
+    letterSpacing: 2,
+  },
+  brandText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#6B7280",
+    textAlign: "center",
+    marginBottom: 12,
+  },
+  pagination: {
+    flexDirection: "row",
+    gap: 6,
   },
   dot: {
-    width: 10,
-    height: 10,
-    backgroundColor: "#282D86",
+    width: 6,
+    height: 6,
     borderRadius: 3,
-    borderWidth: 1,
+    backgroundColor: "#E5E7EB",
+  },
+  dotActive: {
+    backgroundColor: "#282D86",
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 24,
+    gap: 8,
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#9CA3AF",
+    textAlign: "center",
   },
 });
