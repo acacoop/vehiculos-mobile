@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderColor: "#ddd",
     borderWidth: 1,
+    marginBottom: 30,
   },
   buttonText: {
     color: "#282D86",
