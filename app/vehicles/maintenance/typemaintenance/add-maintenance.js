@@ -277,15 +277,12 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 4,
     fontSize: 16,
     color: "#424242",
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   multilineInput: {
     minHeight: 120,

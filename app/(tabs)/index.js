@@ -1,21 +1,18 @@
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
-import WarningCard from "../../components/WarningCard";
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: "Inicio" }} />
-      <ImageBackground
-        source={require("../../assets/ACA_color_RGB.png")}
-        style={styles.imageBackground}
-        resizeMode="contain"
-      >
-        {/*  <View style={styles.overlay}>
-          <WarningCard />
-        </View> */}
-      </ImageBackground>
+      <View style={styles.content}>
+        <Image
+          source={require("../../assets/ACA_color_RGB.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   );
 }
@@ -23,27 +20,17 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
+    backgroundColor: "#ffffff",
   },
-  imageBackground: {
-    width: "230px",
+  content: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
-    padding: 20,
-    resizeMode: "contain",
-    opacity: 0.7,
+    paddingHorizontal: 40,
   },
-  overlay: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%",
-    gap: 20,
-    paddingTop: 20,
+  logo: {
+    width: "70%",
+    height: "40%",
+    opacity: 0.15,
   },
 });

@@ -20,6 +20,11 @@
     },
     "android": {
       "package": "com.acacoop.vehiculos",
+      "statusBar": {
+        "backgroundColor": "#ffffff",
+        "barStyle": "dark-content",
+        "translucent": false
+      },
       "navigationBar": {
         "backgroundColor": "#ffffff",
         "barStyle": "dark-content"
@@ -56,7 +61,7 @@
         {
           "position": "relative",
           "visibility": "visible",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#000000"
         }
       ]
     ],
