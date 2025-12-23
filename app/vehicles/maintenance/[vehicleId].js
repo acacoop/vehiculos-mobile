@@ -152,19 +152,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: colors.maintenance.assigned.title,
+    color: colors.primary,
     marginBottom: 15,
     borderBottomWidth: 2,
-    borderBottomColor: colors.maintenance.assigned.border,
+    borderBottomColor: colors.gray[400],
     paddingBottom: 8,
   },
   sectionTitlePossible: {
     fontSize: 20,
     fontWeight: "bold",
-    color: colors.maintenance.possible.title,
+    color: colors.primary,
     marginBottom: 15,
     borderBottomWidth: 2,
-    borderBottomColor: colors.maintenance.possible.border,
+    borderBottomColor: colors.gray[400],
     paddingBottom: 8,
   },
   maintenanceWrapper: {
