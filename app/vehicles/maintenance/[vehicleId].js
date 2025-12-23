@@ -1,13 +1,18 @@
 import { ScrollView, View, StyleSheet, Text, Pressable } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
+import { Dropdown } from "../../../components/Dropdown";
 import React, { useEffect, useState } from "react";
-import { getMaintenanceByVehicleModel } from "../../../services/vehicles/maintenance";
+import { getGroupedMaintenancesForVehicle } from "../../../services/vehicles/maintenance";
 import { ScreenLayout } from "../../../components/ScreenLayout";
+import { colors } from "../../../constants/colors";
 
 export default function Maintenance() {
   const { vehicleId, modelId } = useLocalSearchParams();
-  const [groupedMaintenances, setGroupedMaintenances] = useState({});
+  const [groupedMaintenances, setGroupedMaintenances] = useState({
+    assigned: {},
+    possible: {},
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -20,28 +25,33 @@ export default function Maintenance() {
     }
 
     setLoading(true);
-    getMaintenanceByVehicleModel(modelId)
+    getGroupedMaintenancesForVehicle(modelId)
       .then((data) => {
-        const grouped = (data || []).reduce((acc, maintenance) => {
-          if (!acc[maintenance.maintenanceCategoryName]) {
-            acc[maintenance.maintenanceCategoryName] = [];
-          }
-          acc[maintenance.maintenanceCategoryName].push(maintenance);
-          return acc;
-        }, {});
-        setGroupedMaintenances(grouped);
+        setGroupedMaintenances(data);
         setError(null);
       })
       .catch((err) => {
         console.error("Error fetching maintenance", err);
         setError(err.message || "No se pudo cargar el mantenimiento");
-        setGroupedMaintenances({});
+        setGroupedMaintenances({ assigned: {}, possible: {} });
       })
       .finally(() => setLoading(false));
   }, [modelId]);
 
-  const isEmpty =
-    !groupedMaintenances || Object.keys(groupedMaintenances).length === 0;
+  const hasAssigned = Object.keys(groupedMaintenances.assigned).length > 0;
+  const hasPossible = Object.keys(groupedMaintenances.possible).length > 0;
+  const isEmpty = !hasAssigned && !hasPossible;
+
+  const handleMaintenancePress = (maintenance) => {
+    router.push({
+      pathname:
+        "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+      params: {
+        VehicleMaintenanceEntry: JSON.stringify(maintenance),
+        vehicleId: vehicleId,
+      },
+    });
+  };
 
   return (
     <ScreenLayout
@@ -49,7 +59,7 @@ export default function Maintenance() {
       loading={loading}
       error={
         isEmpty
-          ? error || "No hay mantenimientos asignados a este vehículo"
+          ? error || "No hay mantenimientos disponibles para este vehículo"
           : null
       }
     >
@@ -57,66 +67,70 @@ export default function Maintenance() {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContainer}
       >
-        {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
-          <View
-            key={category}
-            style={{ width: "100%", gap: 10, marginBottom: 10 }}
-          >
-            <Text style={styles.categoryTitle}>{category}</Text>
-            {maintenances.map((maintenance) => (
-              <Pressable
-                key={maintenance.id}
-                style={styles.maintenanceWrapper}
-                onPress={() =>
-                  router.push({
-                    pathname:
-                      "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
-                    params: {
-                      VehicleMaintenanceEntry: JSON.stringify(maintenance),
-                      vehicleId: vehicleId,
-                    },
-                  })
-                }
-              >
-                <MaintenanceCard maintenance={maintenance} />
-              </Pressable>
-            ))}
+        {/* Mantenimientos Asignados */}
+        {hasAssigned && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Mantenimientos Asignados</Text>
+            {Object.entries(groupedMaintenances.assigned).map(
+              ([category, maintenances]) => (
+                <Dropdown
+                  key={`assigned-${category}`}
+                  title={category}
+                  defaultOpen={false}
+                  icon="tool"
+                  iconColor={colors.maintenance.assigned.icon}
+                  iconBackgroundColor={
+                    colors.maintenance.assigned.iconBackground
+                  }
+                >
+                  {maintenances.map((maintenance) => (
+                    <Pressable
+                      key={maintenance.id}
+                      style={styles.maintenanceWrapper}
+                      onPress={() => handleMaintenancePress(maintenance)}
+                    >
+                      <MaintenanceCard maintenance={maintenance} />
+                    </Pressable>
+                  ))}
+                </Dropdown>
+              )
+            )}
           </View>
-        ))}
+        )}
+
+        {/* Mantenimientos Posibles */}
+        {hasPossible && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitlePossible}>
+              Otros Mantenimientos
+            </Text>
+            {Object.entries(groupedMaintenances.possible).map(
+              ([category, maintenances]) => (
+                <Dropdown
+                  key={`possible-${category}`}
+                  title={category}
+                  defaultOpen={false}
+                  icon="tool"
+                  iconColor={colors.maintenance.possible.icon}
+                  iconBackgroundColor={
+                    colors.maintenance.possible.iconBackground
+                  }
+                >
+                  {maintenances.map((maintenance) => (
+                    <Pressable
+                      key={maintenance.id}
+                      style={styles.maintenanceWrapper}
+                      onPress={() => handleMaintenancePress(maintenance)}
+                    >
+                      <MaintenanceCard maintenance={maintenance} />
+                    </Pressable>
+                  ))}
+                </Dropdown>
+              )
+            )}
+          </View>
+        )}
       </ScrollView>
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: "#fff",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          zIndex: 10,
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            router.push({
-              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-              params: {
-                maintenanceId: "",
-                vehicleId: vehicleId,
-                maintenanceName: "Mantenimiento correctivo",
-                maintenanceCategoryName: "Correctivo",
-                kilometersFrequency: "",
-              },
-            })
-          }
-        >
-          <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "bold" }}>
-            Mantenimiento correctivo
-          </Text>
-        </Pressable>
-      </View>
     </ScreenLayout>
   );
 }
@@ -130,23 +144,28 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     alignSelf: "center",
     paddingTop: 20,
+    paddingBottom: 20,
   },
-
-  categoryTitle: {
-    fontSize: 18,
+  sectionContainer: {
+    marginBottom: 25,
+  },
+  sectionTitle: {
+    fontSize: 20,
     fontWeight: "bold",
-
-    color: "#282D86",
+    color: colors.maintenance.assigned.title,
+    marginBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.maintenance.assigned.border,
+    paddingBottom: 8,
   },
-  button: {
-    backgroundColor: "#fe9000",
-    width: "100%",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-    marginBottom: 16,
-    alignSelf: "center",
+  sectionTitlePossible: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.maintenance.possible.title,
+    marginBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.maintenance.possible.border,
+    paddingBottom: 8,
   },
   maintenanceWrapper: {
     width: "100%",

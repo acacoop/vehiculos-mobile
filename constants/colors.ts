@@ -48,6 +48,22 @@ export const colors = {
   placeholder: "#9ca3af",
   link: "#3b82f6",
   linkHover: "#2563eb",
+
+  // Maintenance colors
+  maintenance: {
+    assigned: {
+      icon: "#4CAF50",
+      iconBackground: "#E8F5E9",
+      title: "#2E7D32",
+      border: "#4CAF50",
+    },
+    possible: {
+      icon: "#FF9800",
+      iconBackground: "#FFF3E0",
+      title: "#E65100",
+      border: "#FF9800",
+    },
+  },
 } as const;
 
 export type ColorKeys = keyof typeof colors;

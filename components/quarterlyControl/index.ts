@@ -1,5 +1,6 @@
 // Re-export all quarterly control components and hooks
 export { QuarterlyControlSection } from "./QuarterlyControlSection";
+export { QuarterlyControlForm } from "./QuarterlyControlForm";
 export { useQuarterlyControlLogic } from "./useQuarterlyControlLogic";
 export { useSectionAnimation } from "./useSectionAnimation";
 

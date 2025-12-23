@@ -8,7 +8,7 @@ import {
 import Modal from "../Modal";
 import { QuarterlyControlSection, useQuarterlyControlLogic } from ".";
 
-type DropDownProps = {
+type QuarterlyControlFormProps = {
   categories: QuarterlyControlCategory[];
   value?: QuarterlyControlState;
   onChange?: (next: QuarterlyControlState) => void;
@@ -18,7 +18,7 @@ type DropDownProps = {
   onObservationsChange?: (next: QuarterlyControlObservations) => void;
 };
 
-export function DropDown({
+export function QuarterlyControlForm({
   categories,
   value,
   onChange,
@@ -26,7 +26,7 @@ export function DropDown({
   autoAdvance = true,
   observations,
   onObservationsChange,
-}: DropDownProps) {
+}: QuarterlyControlFormProps) {
   const {
     expandedSections,
     answers,

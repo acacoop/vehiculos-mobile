@@ -9,7 +9,7 @@ import {
 import { createKilometersLog } from "../../../services/vehicleKilometersLogs";
 import { getCurrentUser } from "../../../services/me";
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { DropDown } from "../../../components/quarterlyControl/DropDown";
+import { QuarterlyControlForm } from "../../../components/quarterlyControl";
 import { colors } from "../../../constants/colors";
 import Modal from "../../../components/Modal";
 
@@ -294,7 +294,7 @@ export default function QuarterlyControl() {
           </Text>
         </View>
         <View style={{ width: "90%", alignItems: "center", paddingBottom: 20 }}>
-          <DropDown
+          <QuarterlyControlForm
             categories={categories}
             value={responses}
             onChange={handleResponsesChange}
