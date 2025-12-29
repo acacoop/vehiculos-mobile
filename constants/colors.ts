@@ -52,14 +52,14 @@ export const colors = {
   // Maintenance colors
   maintenance: {
     assigned: {
-      icon: "#4CAF50",
-      iconBackground: "#E8F5E9",
+      icon: "#282D86",
+      iconBackground: "#f9fafb",
       title: "#2E7D32",
       border: "#4CAF50",
     },
     possible: {
-      icon: "#FF9800",
-      iconBackground: "#FFF3E0",
+      icon: "#282D86",
+      iconBackground: "#f9fafb",
       title: "#E65100",
       border: "#FF9800",
     },
