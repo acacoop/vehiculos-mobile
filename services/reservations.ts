@@ -89,18 +89,79 @@ export interface CreateReservationInput {
   endDate: Date;
 }
 
+/**
+ * Format a Date to ISO date string in local timezone (YYYY-MM-DD)
+ * This avoids timezone conversion issues with toISOString()
+ */
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Get timezone offset string in format +HH:MM or -HH:MM
+ */
+function getTimezoneOffset(date: Date): string {
+  const offset = -date.getTimezoneOffset();
+  const sign = offset >= 0 ? "+" : "-";
+  const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, "0");
+  const minutes = String(Math.abs(offset) % 60).padStart(2, "0");
+  return `${sign}${hours}:${minutes}`;
+}
+
+/**
+ * Format a Date to ISO datetime string with timezone offset
+ * Example: 2025-12-01T10:00:00-03:00
+ */
+function formatLocalDateTime(date: Date): string {
+  const datePart = formatLocalDate(date);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const offset = getTimezoneOffset(date);
+  return `${datePart}T${hours}:${minutes}:${seconds}${offset}`;
+}
+
 export async function createReservation(
   input: CreateReservationInput
 ): Promise<Reservation> {
   const payload = {
     vehicleId: input.vehicleId,
     userId: input.userId,
-    startDate: input.startDate.toISOString(),
-    endDate: input.endDate.toISOString(),
+    startDate: formatLocalDateTime(input.startDate),
+    endDate: formatLocalDateTime(input.endDate),
   };
 
   const response = await apiClient.post<ReservationResponse>(
     "/reservations",
+    payload
+  );
+
+  return mapReservation(response.data);
+}
+
+export interface UpdateReservationInput {
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export async function updateReservation(
+  reservationId: string,
+  input: UpdateReservationInput
+): Promise<Reservation> {
+  const payload: Record<string, string> = {};
+
+  if (input.startDate) {
+    payload.startDate = formatLocalDateTime(input.startDate);
+  }
+  if (input.endDate) {
+    payload.endDate = formatLocalDateTime(input.endDate);
+  }
+
+  const response = await apiClient.patch<ReservationResponse>(
+    `/reservations/${reservationId}`,
     payload
   );
 

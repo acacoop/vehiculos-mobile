@@ -1,170 +1,171 @@
-import {
-  ScrollView,
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  Pressable,
-} from "react-native";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { ScrollView, View, StyleSheet, Text, Pressable } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaintenanceCard } from "../../../components/MaintenanceCard";
+import { Dropdown } from "../../../components/Dropdown";
 import React, { useEffect, useState } from "react";
-import { getMaintenanceByVehicle } from "../../../services/vehicles/maintenance";
+import { getGroupedMaintenancesForVehicle } from "../../../services/vehicles/maintenance";
+import { ScreenLayout } from "../../../components/ScreenLayout";
+import { colors } from "../../../constants/colors";
 
 export default function Maintenance() {
-  const { vehicleId } = useLocalSearchParams();
-  const [groupedMaintenances, setGroupedMaintenances] = useState({});
+  const { vehicleId, modelId } = useLocalSearchParams();
+  const [groupedMaintenances, setGroupedMaintenances] = useState({
+    assigned: {},
+    possible: {},
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (!modelId) {
+      setError("No se pudo obtener el modelo del vehículo");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    getMaintenanceByVehicle(vehicleId)
+    getGroupedMaintenancesForVehicle(modelId)
       .then((data) => {
-        const grouped = (data || []).reduce((acc, maintenance) => {
-          if (!acc[maintenance.maintenanceCategoryName]) {
-            acc[maintenance.maintenanceCategoryName] = [];
-          }
-          acc[maintenance.maintenanceCategoryName].push(maintenance);
-          return acc;
-        }, {});
-        setGroupedMaintenances(grouped);
+        setGroupedMaintenances(data);
         setError(null);
       })
       .catch((err) => {
         console.error("Error fetching maintenance", err);
         setError(err.message || "No se pudo cargar el mantenimiento");
-        setGroupedMaintenances({});
+        setGroupedMaintenances({ assigned: {}, possible: {} });
       })
       .finally(() => setLoading(false));
-  }, [vehicleId]);
+  }, [modelId]);
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#282D86" />
-      </View>
-    );
-  }
+  const hasAssigned = Object.keys(groupedMaintenances.assigned).length > 0;
+  const hasPossible = Object.keys(groupedMaintenances.possible).length > 0;
+  const isEmpty = !hasAssigned && !hasPossible;
 
-  if (!groupedMaintenances || Object.keys(groupedMaintenances).length === 0) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.emptyText}>
-          {error || "No hay mantenimientos asignados a este vehículo"}
-        </Text>
-      </View>
-    );
-  }
+  const handleMaintenancePress = (maintenance) => {
+    router.push({
+      pathname:
+        "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
+      params: {
+        VehicleMaintenanceEntry: JSON.stringify(maintenance),
+        vehicleId: vehicleId,
+      },
+    });
+  };
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Mantenimiento del vehículo",
-          headerTitleAlign: "center",
-        }}
-      />
-
+    <ScreenLayout
+      title="Mantenimiento del vehículo"
+      loading={loading}
+      error={
+        isEmpty
+          ? error || "No hay mantenimientos disponibles para este vehículo"
+          : null
+      }
+    >
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContainer}
       >
-        {Object.entries(groupedMaintenances).map(([category, maintenances]) => (
-          <View
-            key={category}
-            style={{ width: "100%", gap: 10, marginBottom: 10 }}
-          >
-            <Text style={styles.categoryTitle}>{category}</Text>
-            {maintenances.map((maintenance) => (
-              <Pressable
-                key={maintenance.id}
-                style={styles.maintenanceWrapper}
-                onPress={() =>
-                  router.push({
-                    pathname:
-                      "/vehicles/maintenance/typemaintenance/[VehicleMaintenanceEntry]",
-                    params: {
-                      VehicleMaintenanceEntry: JSON.stringify(maintenance),
-                    },
-                  })
-                }
-              >
-                <MaintenanceCard maintenance={maintenance} />
-              </Pressable>
-            ))}
+        {/* Mantenimientos Asignados */}
+        {hasAssigned && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Mantenimientos Asignados</Text>
+            {Object.entries(groupedMaintenances.assigned).map(
+              ([category, maintenances]) => (
+                <Dropdown
+                  key={`assigned-${category}`}
+                  title={category}
+                  defaultOpen={false}
+                  icon="tool"
+                  iconColor={colors.maintenance.assigned.icon}
+                  iconBackgroundColor={
+                    colors.maintenance.assigned.iconBackground
+                  }
+                >
+                  {maintenances.map((maintenance) => (
+                    <Pressable
+                      key={maintenance.id}
+                      style={styles.maintenanceWrapper}
+                      onPress={() => handleMaintenancePress(maintenance)}
+                    >
+                      <MaintenanceCard maintenance={maintenance} />
+                    </Pressable>
+                  ))}
+                </Dropdown>
+              )
+            )}
           </View>
-        ))}
+        )}
+
+        {/* Mantenimientos Posibles */}
+        {hasPossible && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitlePossible}>
+              Otros Mantenimientos
+            </Text>
+            {Object.entries(groupedMaintenances.possible).map(
+              ([category, maintenances]) => (
+                <Dropdown
+                  key={`possible-${category}`}
+                  title={category}
+                  defaultOpen={false}
+                  icon="tool"
+                  iconColor={colors.maintenance.possible.icon}
+                  iconBackgroundColor={
+                    colors.maintenance.possible.iconBackground
+                  }
+                >
+                  {maintenances.map((maintenance) => (
+                    <Pressable
+                      key={maintenance.id}
+                      style={styles.maintenanceWrapper}
+                      onPress={() => handleMaintenancePress(maintenance)}
+                    >
+                      <MaintenanceCard maintenance={maintenance} />
+                    </Pressable>
+                  ))}
+                </Dropdown>
+              )
+            )}
+          </View>
+        )}
       </ScrollView>
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          router.push({
-            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-            params: {
-              assignedMaintenanceId: "",
-              maintenanceName: "Mantenimiento correctivo",
-              maintenanceCategoryName: "Correctivo",
-              kilometersFrequency: "",
-            },
-          })
-        }
-      >
-        <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
-          + Mantenimiento correctivo
-        </Text>
-      </Pressable>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
   scroll: {
     width: "100%",
   },
   scrollContainer: {
-    width: "100%",
-    alignItems: "stretch",
-    paddingHorizontal: "5%",
-  },
-
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 10,
-    color: "#282D86",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#ffffff",
-  },
-  button: {
-    backgroundColor: "#fe9000",
     width: "90%",
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    marginTop: 20,
-    marginBottom: 30,
+    alignItems: "stretch",
+    alignSelf: "center",
+    paddingTop: 20,
+    paddingBottom: 20,
   },
-  emptyText: {
-    color: "#282D86",
-    fontSize: 16,
-    textAlign: "center",
-    paddingHorizontal: 32,
+  sectionContainer: {
+    marginBottom: 25,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.primary,
+    marginBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.gray[400],
+    paddingBottom: 8,
+  },
+  sectionTitlePossible: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.primary,
+    marginBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.gray[400],
+    paddingBottom: 8,
   },
   maintenanceWrapper: {
     width: "100%",

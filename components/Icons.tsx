@@ -1,11 +1,95 @@
-import AntDesign from "@expo/vector-icons/AntDesign";
+import React from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-type IconBaseProps = {
+export type IconName = keyof typeof Ionicons.glyphMap;
+
+type IconColorSet = {
+  default: string;
+  pressed?: string;
+};
+
+type IconPalette = Partial<Record<string, IconColorSet>>;
+
+type BaseIconProps = {
   color?: string;
   onPress?: () => void;
   size?: number;
   style?: any;
   pressed?: boolean;
+};
+
+// Mapping for specific colors per icon type
+const iconPalette: IconPalette = {
+  car: { default: "#282D86", pressed: "#FE9000" },
+  calendar: { default: "black", pressed: "#FE9000" },
+  setting: { default: "#282D86", pressed: "#FE9000" },
+  home: { default: "#282D86" },
+  user: { default: "#282D86", pressed: "white" },
+  wallet: { default: "#282D86", pressed: "white" },
+  lock: { default: "black", pressed: "white" },
+  logout: { default: "#ffffff", pressed: "#FE9000" },
+  left: { default: "#282D86", pressed: "white" },
+  right: { default: "#282D86", pressed: "white" },
+  tool: { default: "#282D86", pressed: "white" },
+  "paper-clip": { default: "#282D86", pressed: "white" },
+  idcard: { default: "#282D86", pressed: "white" },
+  download: { default: "white", pressed: "#282D86" },
+  edit: { default: "#282D86", pressed: "white" },
+  "close-circle": { default: "white", pressed: "white" },
+  "file-text": { default: "#282D86", pressed: "white" },
+  question: { default: "#282D86", pressed: "white" },
+  "clock-circle": { default: "#282D86", pressed: "white" },
+  down: { default: "#282D86" },
+  up: { default: "#282D86" },
+  safety: { default: "#282D86" },
+  check: { default: "#FFFFFF" },
+  close: { default: "#FFFFFF" },
+  key: { default: "#282D86" },
+  bulb: { default: "#282D86" },
+  warning: { default: "#FE9000" },
+};
+
+// Mapping from the old keys (or logical keys) to Ionicons names
+// We use outline variants to avoid the "filled" issue
+const iconNameMapping: Record<string, IconName> = {
+  car: "car-outline",
+  calendar: "calendar-outline",
+  setting: "settings-outline",
+  home: "home-outline",
+  user: "person-outline",
+  wallet: "wallet-outline",
+  lock: "lock-closed-outline",
+  logout: "log-out-outline",
+  left: "chevron-back-outline",
+  right: "chevron-forward-outline",
+  tool: "construct-outline",
+  "paper-clip": "attach-outline",
+  idcard: "card-outline",
+  download: "download-outline",
+  edit: "create-outline",
+  "close-circle": "close-circle-outline",
+  "file-text": "document-text-outline",
+  question: "help-circle-outline",
+  "clock-circle": "time-outline",
+  down: "chevron-down-outline",
+  up: "chevron-up-outline",
+  safety: "shield-checkmark-outline",
+  check: "checkmark-outline",
+  close: "close-outline",
+  key: "key-outline",
+  bulb: "bulb-outline",
+  warning: "warning-outline",
+  // Mappings from iconNameByKey in original file
+  bulb1: "bulb-outline",
+  shield: "shield-checkmark-outline",
+  // Backward compatibility and new requests
+  Safety: "shield-checkmark-outline",
+  alerttriangle: "warning-outline",
+  emergency: "medkit-outline",
+  // Toast notification icons
+  checkcircle: "checkmark-circle",
+  closecircle: "close-circle",
+  infocirlce: "information-circle",
 };
 
 const pickColor = (
@@ -14,38 +98,45 @@ const pickColor = (
   defaultColor: string,
   pressedColor?: string
 ) => {
-  if (color) {
-    return color;
-  }
-  if (pressed && pressedColor) {
-    return pressedColor;
-  }
+  if (color) return color;
+  if (pressed && pressedColor) return pressedColor;
   return defaultColor;
 };
 
-export const IconCar = ({
-  color,
-  size = 24,
-  style,
-  pressed,
-}: IconBaseProps) => {
-  const resolvedColor = pickColor(color, pressed, "#282D86", "#FE9000");
-  return (
-    <AntDesign name="car" size={size} color={resolvedColor} style={style} />
-  );
+export type IconProps = BaseIconProps & {
+  name: string; // We accept string to allow the logical names (e.g. 'car', 'home')
+  defaultColor?: string;
+  pressedColor?: string;
 };
 
-export const IconCalendar = ({
+export const Icon: React.FC<IconProps> = ({
+  name,
   color,
   onPress,
+  pressed,
   size = 24,
   style,
-  pressed,
-}: IconBaseProps) => {
-  const resolvedColor = pickColor(color, pressed, "black", "#FE9000");
+  defaultColor,
+  pressedColor,
+}) => {
+  // Get the actual Ionicon name or fallback to help-circle if not found
+  const ioniconName = iconNameMapping[name] || (name as IconName);
+
+  // Check if we have a palette for the logical name
+  const palette = iconPalette[name] ?? { default: "#282D86" };
+
+  const resolvedDefault = defaultColor ?? palette.default;
+  const resolvedPressed = pressedColor ?? palette.pressed;
+  const resolvedColor = pickColor(
+    color,
+    pressed,
+    resolvedDefault,
+    resolvedPressed
+  );
+
   return (
-    <AntDesign
-      name="calendar"
+    <Ionicons
+      name={ioniconName as IconName}
       size={size}
       color={resolvedColor}
       onPress={onPress}
@@ -54,231 +145,21 @@ export const IconCalendar = ({
   );
 };
 
-export const IconSetting = ({
-  color,
-  size = 24,
-  style,
-  pressed,
-}: IconBaseProps) => {
-  const resolvedColor = pickColor(color, pressed, "#282D86", "#FE9000");
-  return (
-    <AntDesign name="setting" size={size} color={resolvedColor} style={style} />
-  );
-};
+Icon.displayName = "Icon";
 
-export const IconHome = ({ color }: { color: string }) => {
-  return <AntDesign name="home" size={24} color={color} />;
-};
-
-export const IconUser = (props: { pressed?: boolean; style?: any }) => {
-  return (
-    <AntDesign
-      name="user"
-      size={20}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconWallet = (props: { pressed?: boolean; style?: any }) => {
-  return (
-    <AntDesign
-      name="wallet"
-      size={20}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconLock = (props: { pressed?: boolean; style?: any }) => {
-  return (
-    <AntDesign
-      name="lock"
-      size={20}
-      color={props.pressed ? "white" : "black"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconLogout = (props: { pressed?: boolean; style?: any }) => {
-  return (
-    <AntDesign
-      name="logout"
-      size={20}
-      color={props.pressed ? "#fe9000" : "#ffffff"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconArrowLeft = (props: {
-  onPress?: () => void;
-  pressed?: boolean;
-  style?: any;
+export type IconRenderProps = {
   size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="left"
-      onPress={props.onPress}
-      size={props.size || 50}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
+  color?: string;
+  style?: any;
 };
 
-export const IconArrowRigth = (props: {
-  onPress?: () => void;
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="right"
-      onPress={props.onPress}
-      size={props.size || 50}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
+type IconComponentType = React.FC<IconRenderProps>;
 
-export const IconTool = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="tool"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
+// Kept for backward compatibility if used elsewhere
+export const getIconByKey = (key: string): IconComponentType => {
+  const IconByKey: IconComponentType = ({ size = 24, color, style }) => (
+    <Icon name={key} size={size} color={color} style={style} />
   );
-};
-
-export const IconClip = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="paperclip"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconIdCard = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="idcard"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconDownload = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="download"
-      size={props.size || 25}
-      color={props.pressed ? "#282D86" : "white"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconEdit = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="edit"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconClose = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="closecircleo"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "white"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconFile = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="filetext1"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconQuestion = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="question"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
-};
-
-export const IconClock = (props: {
-  pressed?: boolean;
-  style?: any;
-  size?: number;
-}) => {
-  return (
-    <AntDesign
-      name="clockcircleo"
-      size={props.size || 25}
-      color={props.pressed ? "white" : "#282D86"}
-      style={props.style}
-    />
-  );
+  IconByKey.displayName = `Icon(${key})`;
+  return IconByKey;
 };

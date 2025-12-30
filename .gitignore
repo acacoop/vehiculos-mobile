@@ -36,3 +36,12 @@ yarn-error.*
 # vscode
 *.env
 .env
+
+# IDE
+.idea/
+
+# APK de desarrollo
+*.apk
+google-play-key.json
+
+android/

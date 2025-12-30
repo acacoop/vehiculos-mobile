@@ -1,21 +1,17 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Maintenance } from "../interfaces/maintenance";
-import { IconArrowRigth } from "./Icons";
-import { IconTool } from "./Icons";
+import { Icon } from "./Icons";
 
 type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
   return (
     <View style={styles.container}>
       <View style={styles.containerCard}>
-        <View style={styles.containerImage}>
-          <IconTool size={40} />
-        </View>
         <View style={styles.containerText}>
           <Text style={styles.text}>{maintenance.maintenanceName}</Text>
         </View>
-        <IconArrowRigth size={20} />
+        <Icon name="right" size={20} />
       </View>
     </View>
   );
@@ -47,17 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     gap: 25,
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    shadowColor: "#0000006b",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-    borderColor: "#e4e2e2ff",
-    borderWidth: 1,
+    width: "90%",
   },
   containerText: {
     flex: 1,

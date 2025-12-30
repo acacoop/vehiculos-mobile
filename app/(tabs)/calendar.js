@@ -11,7 +11,7 @@ import {
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { getAllVehicles } from "../../services/vehicles";
+import { getMyVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
 import {
   createReservation,
@@ -48,7 +48,7 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    getAllVehicles()
+    getMyVehicles()
       .then((data) => {
         setVehicles(data);
         setLoading(false);
@@ -261,7 +261,7 @@ const Calendar = () => {
           style={styles.buttonReserve}
           onPress={() => setShowReserveModal(true)}
         >
-          <Text style={styles.buttonTextReserve}> + Reservar vehículo</Text>
+          <Text style={styles.buttonTextReserve}>Reservar vehículo</Text>
         </Pressable>
       </View>
 
@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderColor: "#ddd",
     borderWidth: 1,
+    marginBottom: 30,
   },
   buttonText: {
     color: "#282D86",

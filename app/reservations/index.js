@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Schedule } from "../../components/Schedule";
-import { getAllVehicles } from "../../services/vehicles";
+import { getMyVehicles } from "../../services/vehicles";
 import { DatePicker } from "../../components/DatePicker";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { getReservationsByVehicle } from "../../services/reservations";
@@ -37,7 +37,6 @@ export default function Reservations() {
   const params = useLocalSearchParams();
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
   const [reservationsError, setReservationsError] = useState(null);
@@ -100,13 +99,9 @@ export default function Reservations() {
   const [toDate, setToDate] = useState(initialTo);
 
   useEffect(() => {
-    getAllVehicles()
-      .then((data) => {
-        setVehicles(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    getMyVehicles().then((data) => {
+      setVehicles(data);
+    });
   }, []);
 
   useEffect(() => {
@@ -179,6 +174,28 @@ export default function Reservations() {
     setSelectedVehicle(vehicle);
   }, []);
 
+  const fetchReservations = useCallback(() => {
+    if (!selectedVehicle?.id) return;
+
+    setReservationsLoading(true);
+    setReservationsError(null);
+
+    getReservationsByVehicle(selectedVehicle.id)
+      .then((data) => setReservations(data))
+      .catch((error) => {
+        console.error("Error al cargar las reservas", error);
+        setReservations([]);
+        setReservationsError(
+          error?.message || "No se pudieron obtener las reservas"
+        );
+      })
+      .finally(() => setReservationsLoading(false));
+  }, [selectedVehicle?.id]);
+
+  const handleReservationUpdate = useCallback(() => {
+    fetchReservations();
+  }, [fetchReservations]);
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -224,11 +241,13 @@ export default function Reservations() {
           )}
           renderItem={({ item }) => (
             <Schedule
+              id={item.id}
               from={item.from}
               to={item.to}
               licensePlate={item.licensePlate}
               vehicleLabel={item.vehicleLabel}
               requesterName={item.requesterName}
+              onUpdate={handleReservationUpdate}
             />
           )}
         />
@@ -268,23 +287,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 20,
   },
-  sectionMonth: {
-    marginBottom: 10,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingVertical: 20,
-    borderRadius: 10,
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
-    borderColor: "#ddd",
-    borderWidth: 1,
-  },
+
   loader: {
     flex: 1,
     justifyContent: "center",

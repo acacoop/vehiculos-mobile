@@ -1,33 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { IconCalendar, IconCar, IconUser } from "./Icons";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Pressable,
+  Alert,
+} from "react-native";
+import { Icon } from "./Icons";
+import { ReserveModal } from "./ReserveModal";
 import { getCurrentUser } from "../services/me";
+import { updateReservation } from "../services/reservations";
 
 interface ScheduleProps {
+  id: string;
   from: Date;
   to: Date;
   licensePlate: string;
   vehicleLabel?: string;
   requesterName?: string | null;
+  onUpdate?: (updatedReservation: { id: string; from: Date; to: Date }) => void;
 }
 
 export function Schedule({
+  id,
   from,
   to,
   vehicleLabel,
   requesterName,
+  onUpdate,
 }: ScheduleProps) {
-  const formatDateToText = (date: Date) =>
-    date.toLocaleDateString("es-ES", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
     requesterName ?? null
   );
   const [loadingRequester, setLoadingRequester] = useState(!requesterName);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editFromDate, setEditFromDate] = useState(from);
+  const [editToDate, setEditToDate] = useState(to);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const isSmallScreen = Dimensions.get("window").width < 375;
 
@@ -91,6 +102,32 @@ export function Schedule({
     ? "Cargando solicitante..."
     : (fallbackRequester ?? "Solicitante no disponible");
 
+  const handleOpenEditModal = () => {
+    setEditFromDate(from);
+    setEditToDate(to);
+    setShowEditModal(true);
+  };
+
+  const handleEditConfirm = async () => {
+    try {
+      setIsUpdating(true);
+      await updateReservation(id, {
+        startDate: editFromDate,
+        endDate: editToDate,
+      });
+      onUpdate?.({ id, from: editFromDate, to: editToDate });
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("Error al actualizar la reserva", error);
+      Alert.alert(
+        "Error",
+        "No se pudo actualizar la reserva. Intenta nuevamente."
+      );
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -101,10 +138,13 @@ export function Schedule({
         }}
       >
         <Text style={styles.title}>Detalles de la Reserva</Text>
-        <View style={styles.containerImage}>
-          <IconCar size={25} color="#fe9000" />
-        </View>
+        <Pressable onPress={handleOpenEditModal}>
+          <View style={styles.containerImage}>
+            <Icon name="pencil" size={25} color="#fe9000" />
+          </View>
+        </Pressable>
       </View>
+
       {vehicleLabel ? (
         <View style={styles.metaRow}>
           <Text style={styles.metaValue} numberOfLines={2}>
@@ -114,7 +154,7 @@ export function Schedule({
       ) : null}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <IconCalendar color="#282D86" />
+          <Icon name="calendar" color="#282D86" />
         </View>
 
         <View style={styles.itemContainer}>
@@ -133,7 +173,7 @@ export function Schedule({
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <IconCalendar color="#282D86" />
+          <Icon name="calendar" color="#282D86" />
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Fin de la reserva</Text>
@@ -151,7 +191,7 @@ export function Schedule({
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
         <View style={styles.containerImage}>
-          <IconUser />
+          <Icon name="user" />
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Solicitante</Text>
@@ -162,6 +202,17 @@ export function Schedule({
           </View>
         </View>
       </View>
+
+      <ReserveModal
+        visible={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        onConfirm={handleEditConfirm}
+        fromDate={editFromDate}
+        toDate={editToDate}
+        setFromDate={setEditFromDate}
+        setToDate={setEditToDate}
+        confirmLoading={isUpdating}
+      />
     </View>
   );
 }
@@ -185,7 +236,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     gap: 15,
-
     paddingBottom: 30,
   },
   itemContainer: {
@@ -220,15 +270,25 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: "#282D86",
   },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f1f1f1ff",
+    backgroundColor: "#fff",
     borderRadius: "100%",
     padding: 5,
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
 });

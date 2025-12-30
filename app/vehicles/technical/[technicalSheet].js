@@ -1,14 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { getVehicle } from "../../../services/vehicles";
 import { InfoVehicle } from "../../../components/InfoVehicle";
+import { ScreenLayout } from "../../../components/ScreenLayout";
 
 export default function TechnicalSheet() {
   const params = useLocalSearchParams();
@@ -68,92 +63,50 @@ export default function TechnicalSheet() {
     };
   }, [licensePlate]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen
-          options={{
-            headerTitle: "Ficha técnica vehicular",
-            headerTitleAlign: "center",
-          }}
-        />
-        <ActivityIndicator size="large" color="#282D86" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Stack.Screen options={{ headerTitle: "Ficha técnica vehicular" }} />
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
-
-  if (!vehicleDetail) {
-    return null;
-  }
-
-  const sections = [
-    {
-      title: "Información general",
-      items: [
-        { label: "Dominio", value: vehicleDetail.licensePlate },
-        { label: "Marca", value: vehicleDetail.brand },
-        { label: "Modelo", value: vehicleDetail.model },
-        { label: "Año", value: vehicleDetail.year },
-      ],
-    },
-    {
-      title: "Información técnica",
-      items: [
-        { label: "Tipo de vehículo", value: vehicleDetail.vehicleType },
-        { label: "Tipo de combustible", value: vehicleDetail.fuelType },
-        { label: "Transmisión", value: vehicleDetail.transmission },
-        { label: "N.º de motor", value: vehicleDetail.engineNumber },
-        { label: "N.º de chasis", value: vehicleDetail.chassisNumber },
-      ],
-    },
-  ];
+  const sections = vehicleDetail
+    ? [
+        {
+          title: "Información general",
+          items: [
+            { label: "Dominio", value: vehicleDetail.licensePlate },
+            { label: "Marca", value: vehicleDetail.brand },
+            { label: "Modelo", value: vehicleDetail.model },
+            { label: "Año", value: vehicleDetail.year },
+          ],
+        },
+        {
+          title: "Información técnica",
+          items: [
+            { label: "Tipo de vehículo", value: vehicleDetail.vehicleType },
+            { label: "Tipo de combustible", value: vehicleDetail.fuelType },
+            { label: "Transmisión", value: vehicleDetail.transmission },
+            { label: "N.º de motor", value: vehicleDetail.engineNumber },
+            { label: "N.º de chasis", value: vehicleDetail.chassisNumber },
+          ],
+        },
+      ]
+    : [];
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: "Ficha técnica vehicular" }} />
+    <ScreenLayout
+      title="Ficha técnica vehicular"
+      loading={isLoading}
+      error={error || (!vehicleDetail ? "Vehículo no encontrado" : null)}
+    >
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
         <InfoVehicle sections={sections} />
       </ScrollView>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
-  },
-  scrollContainer: {
-    alignItems: "center",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    paddingHorizontal: 24,
-  },
   content: {
     paddingHorizontal: 24,
     paddingVertical: 24,
     rowGap: 32,
-  },
-  errorText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: "#d32f2f",
-    textAlign: "center",
   },
 });

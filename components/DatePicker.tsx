@@ -14,10 +14,11 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 
 type DatePickerProps = {
-  label: string;
+  label?: string;
   value: Date;
   onChange: (date: Date) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  children?: React.ReactNode;
 };
 
 export const DatePicker = ({
@@ -25,31 +26,83 @@ export const DatePicker = ({
   onChange,
   label,
   containerStyle,
+  children,
 }: DatePickerProps) => {
   const [visible, setVisible] = useState(false);
 
   if (Platform.OS === "web") {
     return (
-      <View style={[styles.container, containerStyle]}>
-        <Text style={styles.label}>{label}</Text>
-        <input
-          type="date"
-          value={value.toISOString().slice(0, 10)}
-          onChange={(e) => {
-            const newDate = new Date(value);
-            const [year, month, day] = e.target.value.split("-");
-            newDate.setFullYear(Number(year), Number(month) - 1, Number(day));
-            onChange(newDate);
-          }}
-          style={webInputStyle}
-        />
+      <View
+        style={[
+          styles.container,
+          containerStyle,
+          children ? styles.childrenContainer : null,
+        ]}
+      >
+        {children ? (
+          <View style={{ width: "100%", position: "relative" }}>
+            {children}
+            <input
+              type="date"
+              value={value.toISOString().slice(0, 10)}
+              onChange={(e) => {
+                const newDate = new Date(value);
+                const [year, month, day] = e.target.value.split("-");
+                newDate.setFullYear(
+                  Number(year),
+                  Number(month) - 1,
+                  Number(day)
+                );
+                onChange(newDate);
+              }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                opacity: 0,
+                cursor: "pointer",
+                zIndex: 10,
+              }}
+            />
+          </View>
+        ) : (
+          <>
+            <Text style={styles.label}>{label}</Text>
+            <input
+              type="date"
+              value={value.toISOString().slice(0, 10)}
+              onChange={(e) => {
+                const newDate = new Date(value);
+                const [year, month, day] = e.target.value.split("-");
+                newDate.setFullYear(
+                  Number(year),
+                  Number(month) - 1,
+                  Number(day)
+                );
+                onChange(newDate);
+              }}
+              style={webInputStyle}
+            />
+          </>
+        )}
       </View>
     );
   }
 
   const handleChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     setVisible(false);
-    if (selectedDate) onChange(selectedDate);
+    if (selectedDate) {
+      const newDate = new Date(selectedDate);
+      newDate.setHours(
+        value.getHours(),
+        value.getMinutes(),
+        value.getSeconds(),
+        value.getMilliseconds()
+      );
+      onChange(newDate);
+    }
   };
 
   const picker = (
@@ -64,12 +117,22 @@ export const DatePicker = ({
   return (
     <>
       <TouchableOpacity
-        style={[styles.container, containerStyle]}
+        style={[
+          styles.container,
+          containerStyle,
+          children ? styles.childrenContainer : null,
+        ]}
         onPress={() => setVisible(true)}
         activeOpacity={0.8}
       >
-        <Text style={styles.label}>{label}</Text>
-        <Text style={styles.value}>{value.toLocaleDateString()}</Text>
+        {children ? (
+          children
+        ) : (
+          <>
+            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.value}>{value.toLocaleDateString()}</Text>
+          </>
+        )}
       </TouchableOpacity>
       {visible &&
         (Platform.OS === "ios" ? (
@@ -95,12 +158,28 @@ export const DatePicker = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#eee",
+    backgroundColor: "#ffff",
     padding: 12,
     borderRadius: 8,
     width: "48%",
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#00000070",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    borderColor: "#ddd",
+    borderWidth: 1,
+  },
+  childrenContainer: {
+    backgroundColor: "transparent",
+    padding: 0,
+    width: "100%",
+    borderRadius: 0,
   },
   label: {
     fontWeight: "bold",

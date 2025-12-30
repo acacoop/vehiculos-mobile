@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
-import { IconArrowLeft, IconArrowRigth, IconCalendar } from "./Icons";
+import { Icon } from "./Icons";
 
 const daysOfWeek = ["D", "L", "Ma", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
@@ -119,7 +119,6 @@ export const Calendario = ({
             alignItems: "center",
             paddingVertical: 10,
             paddingHorizontal: 15,
-            backgroundColor: "transparent",
             elevation: 1,
             shadowColor: "#000000f6",
             shadowOffset: { width: 0, height: 1 },
@@ -127,16 +126,18 @@ export const Calendario = ({
             shadowRadius: 1.41,
             borderColor: "#ddd",
             borderWidth: 1,
+            backgroundColor: "#ffff",
           }}
         >
           <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>
             Hoy
           </Text>
         </TouchableOpacity>
-        <IconArrowLeft
+        <Icon
+          name="left"
           onPress={goToPreviousMonth}
-          size={24}
-          style={{ color: "#282D86" }}
+          size={20}
+          color="#282D86"
         />
 
         <View
@@ -154,11 +155,7 @@ export const Calendario = ({
           </Text>
         </View>
 
-        <IconArrowRigth
-          onPress={goToNextMonth}
-          size={24}
-          style={{ color: "#282D86" }}
-        />
+        <Icon name="right" onPress={goToNextMonth} size={20} color="#282D86" />
       </View>
 
       <View style={styles.gridContainer}>
@@ -256,7 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   monthTitle: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#282D86",
     textAlign: "center",
     fontWeight: "bold",

@@ -6,13 +6,14 @@ import {
   Text,
   View,
 } from "react-native";
-import { IconArrowRigth } from "./Icons";
+import { Icon } from "./Icons";
 
 type CardConfigProps = {
   title: string;
   description: string;
   icon: React.ReactNode;
   onPress?: PressableProps["onPress"];
+  showArrow?: boolean;
 };
 
 export function CardConfig({
@@ -20,6 +21,7 @@ export function CardConfig({
   description,
   icon,
   onPress,
+  showArrow = true,
 }: CardConfigProps) {
   if (onPress) {
     return (
@@ -41,7 +43,7 @@ export function CardConfig({
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
-        <IconArrowRigth size={20} />
+        {showArrow ? <Icon name="right" size={20} /> : <View style={{ width: 20 }} />}
       </Pressable>
     );
   }
@@ -50,7 +52,8 @@ export function CardConfig({
     <View style={styles.card}>
       <View
         style={{
-          width: "10%",
+          width: 50,
+          height: 50,
           alignItems: "center",
           justifyContent: "center",
           padding: 5,
@@ -64,7 +67,7 @@ export function CardConfig({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
-      <IconArrowRigth size={20} />
+      {showArrow ? <Icon name="right" size={20} /> : <View style={{ width: 20 }} />}
     </View>
   );
 }

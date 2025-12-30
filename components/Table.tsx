@@ -11,6 +11,7 @@ export function Table({ data }: { data: any }) {
       style={style.container}
       data={tableData}
       keyExtractor={(item) => item.key}
+      scrollEnabled={false}
       renderItem={({ item, index }) => (
         <View
           style={[
@@ -42,7 +43,7 @@ const style = StyleSheet.create({
   container: {
     flexDirection: "column",
     width: "100%",
-    padding: 20,
+    padding: 10,
     gap: 10,
     borderRadius: 20,
     borderColor: "#ddd",
@@ -55,17 +56,18 @@ const style = StyleSheet.create({
     elevation: 2,
   },
   keyText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "600",
     color: "#282D86",
   },
   valueText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "600",
     color: "#424242",
   },
   itemContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
     borderRadius: 8,

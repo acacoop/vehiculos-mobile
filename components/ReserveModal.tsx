@@ -79,7 +79,7 @@ export const ReserveModal = ({
               disabled={confirmDisabled || confirmLoading}
             >
               <Text style={styles.buttonText}>
-                {confirmLoading ? "Confirmando..." : "Confirmar"}
+                {confirmLoading ? "Confirmar" : "Confirmar"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     textAlign: "center",
+    color: "#282D86",
   },
   row: {
     flexDirection: "row",
@@ -135,16 +136,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 8,
-    width: "50%",
+    width: "40%",
     justifyContent: "center",
     alignItems: "center",
   },
   cancelButton: {
-    backgroundColor: "#E53935",
+    backgroundColor: "#FE9000",
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 8,
-    width: "50%",
+    width: "40%",
     justifyContent: "center",
     alignItems: "center",
   },

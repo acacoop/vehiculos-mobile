@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { Vehicle } from "../interfaces/vehicle";
 import { Text, View, StyleSheet, Pressable } from "react-native";
-import { IconCar } from "./Icons";
+import { Icon } from "./Icons";
 
 type VehicleCardProps = { vehicle: Vehicle };
 export function VehicleCard({ vehicle }: VehicleCardProps) {
@@ -10,14 +10,12 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
       <Pressable style={styles.touchable}>
         <View style={styles.card}>
           <View style={styles.containerImage}>
-            <IconCar size={40} />
+            <Icon name="car" size={40} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.text1}>
-              {vehicle.brand} {vehicle.model}
-            </Text>
+            <Text style={styles.text1}>{vehicle.brand}</Text>
+            <Text style={styles.text1}>{vehicle.model}</Text>
             <Text style={styles.text2}>{vehicle.licensePlate}</Text>
-            <Text style={styles.text3}>{vehicle.fuelType}</Text>
           </View>
         </View>
       </Pressable>
@@ -28,17 +26,18 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
 const styles = StyleSheet.create({
   touchable: {
     width: "100%",
-    alignItems: "stretch",
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 50,
+    gap: 20,
     width: "90%",
     alignSelf: "center",
     height: 120,
-    backgroundColor: "#f9f9f9",
-    padding: 10,
+    backgroundColor: "#fff",
+    padding: 15,
     borderRadius: 15,
     shadowColor: "#0000009d",
     shadowOffset: {
@@ -51,14 +50,13 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    flexDirection: "column",
-    color: "#000",
+    justifyContent: "center",
+    gap: 5,
   },
   text1: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#333",
-    marginBottom: 5,
   },
   text2: {
     fontSize: 16,

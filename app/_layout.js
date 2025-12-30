@@ -1,6 +1,10 @@
 import { Stack, useRouter, useSegments } from "expo-router";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
 import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "../components/Toast/toastConfig";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 function RootNavigator() {
@@ -13,6 +17,10 @@ function RootNavigator() {
 
     const currentRoot = Array.isArray(segments) ? segments[0] : undefined;
     const isLoginRoute = currentRoot === "login";
+    const isRedirectRoute = currentRoot === "redirect";
+
+    // No redirigir si estamos en la ruta de redirect (OAuth callback)
+    if (isRedirectRoute) return;
 
     if (!isAuthenticated && !isLoginRoute) {
       router.replace("/login");
@@ -32,13 +40,16 @@ function RootNavigator() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: "#282D86" },
-        headerTintColor: "#ffffff",
-        headerTitleStyle: { fontWeight: "bold" },
-        headerTitle: "",
+        headerStyle: {
+          backgroundColor: "#ffffff",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#282D86",
+        headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
       }}
     >
       <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="redirect" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
@@ -46,11 +57,15 @@ function RootNavigator() {
 
 export default function Layout() {
   return (
-    <AuthProvider>
-      <View style={styles.container}>
-        <RootNavigator />
-      </View>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <StatusBar style="dark" backgroundColor="#ffffff" />
+        <View style={styles.container}>
+          <RootNavigator />
+        </View>
+        <Toast config={toastConfig} />
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
 

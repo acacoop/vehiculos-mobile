@@ -1,0 +1,69 @@
+// Color palette for the application
+
+export const colors = {
+  // Brand colors
+  primary: "#282D86",
+  secondary: "#fe9000",
+
+  // Status colors
+  success: "#43A047",
+  error: "#E53935",
+  warning: "#FB8C00",
+  info: "#039BE5",
+
+  // Text colors
+  textPrimary: "#1f2937",
+  textSecondary: "#6b7280",
+  textLight: "#9ca3af",
+  textWhite: "#ffffff",
+
+  // Background colors
+  background: "#ffffff",
+  backgroundLight: "#f9fafb",
+  backgroundDark: "#111827",
+
+  // Border colors
+  border: "#e5e7eb",
+  borderLight: "#f3f4f6",
+  borderDark: "#d1d5db",
+
+  // Neutral colors
+  black: "#000000",
+  white: "#ffffff",
+  gray: {
+    50: "#f9fafb",
+    100: "#f3f4f6",
+    200: "#e5e7eb",
+    300: "#d1d5db",
+    400: "#9ca3af",
+    500: "#6b7280",
+    600: "#4b5563",
+    700: "#374151",
+    800: "#1f2937",
+    900: "#111827",
+  },
+
+  // Semantic colors
+  disabled: "#d1d5db",
+  placeholder: "#9ca3af",
+  link: "#3b82f6",
+  linkHover: "#2563eb",
+
+  // Maintenance colors
+  maintenance: {
+    assigned: {
+      icon: "#282D86",
+      iconBackground: "#f9fafb",
+      title: "#2E7D32",
+      border: "#4CAF50",
+    },
+    possible: {
+      icon: "#282D86",
+      iconBackground: "#f9fafb",
+      title: "#E65100",
+      border: "#FF9800",
+    },
+  },
+} as const;
+
+export type ColorKeys = keyof typeof colors;

@@ -19,7 +19,7 @@ export function configureApiClient(resolver: () => Promise<string | null>) {
 function buildUrl(path: string, query?: RequestOptions["query"]) {
   if (!API_BASE_URL) {
     throw new Error(
-      "EXPO_PUBLIC_API_BASE_URL no está definido. Agrega la URL base del backend en tu .env"
+      "EXPO_PUBLIC_API_BASE_URL no está definido. Agrega la URL base del backend en tu .env",
     );
   }
 
@@ -47,7 +47,7 @@ async function resolveAccessToken() {
 
 function normaliseHeaders(
   existing: Record<string, string> | undefined,
-  includeJson: boolean
+  includeJson: boolean,
 ) {
   const headers = new Headers(existing);
   if (includeJson && !headers.has("Content-Type")) {
@@ -61,7 +61,7 @@ function normaliseHeaders(
 
 export async function request<T>(
   path: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> {
   const {
     method = "GET",
@@ -79,7 +79,7 @@ export async function request<T>(
     const token = await resolveAccessToken();
     if (!token) {
       throw new Error(
-        "Sesión no válida o token ausente. Inicia sesión nuevamente."
+        "Sesión no válida o token ausente. Inicia sesión nuevamente.",
       );
     }
     headers.set("Authorization", `Bearer ${token}`);
@@ -122,20 +122,20 @@ export const apiClient = {
   post: <T>(
     path: string,
     body?: unknown,
-    options?: Omit<RequestOptions, "method" | "body">
+    options?: Omit<RequestOptions, "method" | "body">,
   ) => request<T>(path, { ...options, method: "POST", body }),
   put: <T>(
     path: string,
     body?: unknown,
-    options?: Omit<RequestOptions, "method" | "body">
+    options?: Omit<RequestOptions, "method" | "body">,
   ) => request<T>(path, { ...options, method: "PUT", body }),
   patch: <T>(
     path: string,
     body?: unknown,
-    options?: Omit<RequestOptions, "method" | "body">
+    options?: Omit<RequestOptions, "method" | "body">,
   ) => request<T>(path, { ...options, method: "PATCH", body }),
   delete: <T>(
     path: string,
-    options?: Omit<RequestOptions, "method" | "body">
+    options?: Omit<RequestOptions, "method" | "body">,
   ) => request<T>(path, { ...options, method: "DELETE" }),
 };

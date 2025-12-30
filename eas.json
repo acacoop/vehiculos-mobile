@@ -1,0 +1,68 @@
+{
+  "cli": {
+    "version": ">= 5.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "base": {
+      "env": {
+        "EXPO_PUBLIC_ENTRA_CLIENT_ID": "cc9d892d-db0e-449d-a6b8-65ceee5fe2b6",
+        "EXPO_PUBLIC_ENTRA_TENANT_ID": "a7cad068-8485-4149-bb95-0f323bdfa89e",
+        "EXPO_PUBLIC_ENTRA_SCOPE": "api://4a2e773c-831f-4294-8273-5571326de83e/access_as_user",
+        "EXPO_PUBLIC_DEEP_LINK_SCHEME": "vehiculos-aca"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://app-vehiculos-api-test.azurewebsites.net"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://app-vehiculos-api-test.azurewebsites.net"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "extends": "base",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://app-vehiculos-api-prod.azurewebsites.net"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-play-key.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "tu-apple-id@email.com",
+        "ascAppId": "TU_APP_STORE_CONNECT_APP_ID"
+      }
+    }
+  }
+}

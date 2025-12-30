@@ -22,7 +22,8 @@ export default function AddMaintenance() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const assignedMaintenanceId = coerceParam(params.assignedMaintenanceId, "");
+  const maintenanceId = coerceParam(params.maintenanceId, "");
+  const vehicleId = coerceParam(params.vehicleId, "");
   const maintenanceName = coerceParam(params.maintenanceName, "");
   const maintenanceCategoryName = coerceParam(
     params.maintenanceCategoryName,
@@ -55,14 +56,14 @@ export default function AddMaintenance() {
   }, []);
 
   useEffect(() => {
-    if (!assignedMaintenanceId) {
+    if (!maintenanceId || !vehicleId) {
       setFormError(
-        "No se pudo identificar el mantenimiento seleccionado. Vuelve atrás e inténtalo nuevamente."
+        "No se pudo identificar el mantenimiento o vehículo seleccionado. Vuelve atrás e inténtalo nuevamente."
       );
     } else {
       setFormError(null);
     }
-  }, [assignedMaintenanceId]);
+  }, [maintenanceId, vehicleId]);
 
   const maintenanceSummary = useMemo(() => {
     const lines = [];
@@ -84,10 +85,10 @@ export default function AddMaintenance() {
       kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, ".")
     );
 
-    if (!assignedMaintenanceId) {
+    if (!maintenanceId || !vehicleId) {
       Alert.alert(
         "Mantenimiento no disponible",
-        "No se puede registrar el mantenimiento porque falta el identificador."
+        "No se puede registrar el mantenimiento porque falta el identificador del mantenimiento o vehículo."
       );
       return;
     }
@@ -117,7 +118,8 @@ export default function AddMaintenance() {
     }
 
     const payload = {
-      assignedMaintenanceId,
+      maintenanceId,
+      vehicleId,
       userId,
       date,
       kilometers: parsedKilometers,
@@ -161,6 +163,9 @@ export default function AddMaintenance() {
             editable={false}
             style={styles.disabledInput}
           />
+          {maintenanceSummary ? (
+            <Text style={styles.summaryText}>{maintenanceSummary}</Text>
+          ) : null}
         </View>
 
         <View style={styles.formRow}>
@@ -172,38 +177,43 @@ export default function AddMaintenance() {
             containerStyle={styles.datePicker}
           />
         </View>
-        <TextInput
-          placeholder="Kilómetros actuales"
-          value={kilometers}
-          onChangeText={setKilometers}
-          style={styles.input}
-          keyboardType="numeric"
-          inputMode="numeric"
-        />
-        <TextInput
-          placeholder="Descripción"
-          value={description}
-          onChangeText={setDescription}
-          style={[styles.input, styles.multilineInput]}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-        />
+        <View style={styles.formRow}>
+          <Text style={styles.sectionTitle}>Kilometros actuales</Text>
+          <TextInput
+            placeholder="Kilómetros actuales"
+            value={kilometers}
+            onChangeText={setKilometers}
+            style={styles.input}
+            keyboardType="numeric"
+            inputMode="numeric"
+          />
+        </View>
+        <View style={styles.formRow}>
+          <Text style={styles.sectionTitle}>Descripción</Text>
+          <TextInput
+            placeholder="Descripción"
+            value={description}
+            onChangeText={setDescription}
+            style={[styles.input, styles.multilineInput]}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </View>
 
         {formError ? <Text style={styles.errorText}>{formError}</Text> : null}
-
-        <View style={styles.actions}>
-          <Pressable
-            style={[styles.button, styles.saveButton]}
-            onPress={handleSubmit}
-            disabled={isSubmitting}
-          >
-            <Text style={styles.saveText}>
-              {isSubmitting ? "Guardando..." : "Guardar"}
-            </Text>
-          </Pressable>
-        </View>
       </ScrollView>
+      <View style={styles.actions}>
+        <Pressable
+          style={[styles.button, styles.saveButton]}
+          onPress={handleSubmit}
+          disabled={isSubmitting}
+        >
+          <Text style={styles.saveText}>
+            {isSubmitting ? "Guardando" : "Guardar"}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -213,19 +223,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 16,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignSelf: "center",
+    width: "90%",
+    gap: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#282D86",
-    marginBottom: 12,
   },
   disabledInputs: {
     backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
-    marginBottom: 20,
     gap: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -244,10 +259,9 @@ const styles = StyleSheet.create({
   formRow: {
     flexDirection: "column",
     justifyContent: "start",
-    marginBottom: 16,
     backgroundColor: "#fff",
-    gap: 10,
-    padding: 16,
+    gap: 5,
+    padding: 20,
     borderRadius: 10,
     borderColor: "#ddd",
     borderWidth: 1,
@@ -262,26 +276,29 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    marginBottom: 16,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 4,
     fontSize: 16,
     color: "#424242",
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
   multilineInput: {
     minHeight: 120,
   },
   actions: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 12,
-    marginTop: 12,
+    padding: 16,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    zIndex: 10,
   },
   button: {
     flex: 1,
@@ -289,12 +306,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 16,
+    width: "100%",
+    alignSelf: "center",
   },
   cancelButton: {
     backgroundColor: "#E53935",
   },
   saveButton: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#FE9000",
   },
   cancelText: {
     color: "#fff",
@@ -311,5 +335,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 4,
     marginBottom: 8,
+  },
+  summaryText: {
+    fontSize: 14,
+    color: "#424242",
+    fontStyle: "italic",
   },
 });

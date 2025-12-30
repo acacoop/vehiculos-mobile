@@ -3,7 +3,8 @@ import { apiClient } from "./apiClient";
 
 interface MaintenanceRecordApiModel {
   id: string;
-  assignedMaintenanceId: string;
+  maintenanceId: string;
+  vehicleId: string;
   userId: string;
   date: string;
   kilometers: number;
@@ -25,7 +26,8 @@ function mapMaintenanceRecord(
 ): MaintenanceRecord {
   return {
     id: api.id,
-    assignedMaintenanceId: api.assignedMaintenanceId,
+    maintenanceId: api.maintenanceId,
+    vehicleId: api.vehicleId,
     userId: api.userId,
     date: new Date(api.date),
     kilometers: api.kilometers,
@@ -33,16 +35,25 @@ function mapMaintenanceRecord(
   };
 }
 
-export async function getMaintenanceRecordsByAssignedMaintenance(
-  assignedMaintenanceId: string
+export interface MaintenanceRecordsFilter {
+  vehicleId?: string;
+  maintenanceId?: string;
+  userId?: string;
+}
+
+export async function getMaintenanceRecords(
+  filter: MaintenanceRecordsFilter
 ): Promise<MaintenanceRecord[]> {
-  if (!assignedMaintenanceId) return [];
+  const { vehicleId, maintenanceId, userId } = filter;
+  if (!vehicleId && !maintenanceId && !userId) return [];
 
   const response = await apiClient.get<MaintenanceRecordsResponse>(
     "/maintenance/records",
     {
       query: {
-        assignedMaintenanceId,
+        ...(vehicleId && { vehicleId }),
+        ...(maintenanceId && { maintenanceId }),
+        ...(userId && { userId }),
         limit: 100,
         page: 1,
       },
@@ -54,7 +65,8 @@ export async function getMaintenanceRecordsByAssignedMaintenance(
 }
 
 export interface CreateMaintenanceRecordInput {
-  assignedMaintenanceId: string;
+  maintenanceId: string;
+  vehicleId: string;
   userId: string;
   date: Date;
   kilometers: number;
@@ -65,9 +77,10 @@ export async function createMaintenanceRecord(
   input: CreateMaintenanceRecordInput
 ): Promise<MaintenanceRecord> {
   const payload = {
-    assignedMaintenanceId: input.assignedMaintenanceId,
+    maintenanceId: input.maintenanceId,
+    vehicleId: input.vehicleId,
     userId: input.userId,
-    date: input.date.toISOString(),
+    date: input.date.toISOString().split("T")[0], // Backend expects date in YYYY-MM-DD format
     kilometers: input.kilometers,
     notes: input.notes ?? null,
   };

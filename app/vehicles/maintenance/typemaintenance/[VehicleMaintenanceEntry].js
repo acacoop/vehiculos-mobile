@@ -14,10 +14,11 @@ import {
   useRouter,
 } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-import { getMaintenanceRecordsByAssignedMaintenance } from "../../../../services/maintenanceRecords";
+import { getMaintenanceRecords } from "../../../../services/maintenanceRecords";
+import { Table } from "../../../../components/Table";
 
 export default function VehicleMaintenanceEntry() {
-  const { VehicleMaintenanceEntry } = useLocalSearchParams();
+  const { VehicleMaintenanceEntry, vehicleId } = useLocalSearchParams();
   const maintenance = JSON.parse(VehicleMaintenanceEntry);
 
   const navigation = useNavigation();
@@ -27,14 +28,16 @@ export default function VehicleMaintenanceEntry() {
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [historyError, setHistoryError] = useState(null);
 
-  const assignedMaintenanceId = maintenance?.id;
+  const maintenanceId = maintenance?.maintenanceId;
 
-  const loadMaintenanceRecords = useCallback(async (assignedId) => {
-    if (!assignedId) return;
+  const loadMaintenanceRecords = useCallback(async (maintId, vehId) => {
+    if (!maintId || !vehId) return;
     setLoadingHistory(true);
     try {
-      const records =
-        await getMaintenanceRecordsByAssignedMaintenance(assignedId);
+      const records = await getMaintenanceRecords({
+        maintenanceId: maintId,
+        vehicleId: vehId,
+      });
       setMaintenanceHistory(records);
       setHistoryError(null);
     } catch (error) {
@@ -57,15 +60,15 @@ export default function VehicleMaintenanceEntry() {
   }, [maintenance, navigation]);
 
   useEffect(() => {
-    if (!assignedMaintenanceId) return;
-    loadMaintenanceRecords(assignedMaintenanceId);
-  }, [assignedMaintenanceId, loadMaintenanceRecords]);
+    if (!maintenanceId || !vehicleId) return;
+    loadMaintenanceRecords(maintenanceId, vehicleId);
+  }, [maintenanceId, vehicleId, loadMaintenanceRecords]);
 
   useFocusEffect(
     useCallback(() => {
-      if (!assignedMaintenanceId) return;
-      loadMaintenanceRecords(assignedMaintenanceId);
-    }, [assignedMaintenanceId, loadMaintenanceRecords])
+      if (!maintenanceId || !vehicleId) return;
+      loadMaintenanceRecords(maintenanceId, vehicleId);
+    }, [maintenanceId, vehicleId, loadMaintenanceRecords])
   );
 
   const formattedHistory = useMemo(() => {
@@ -79,31 +82,11 @@ export default function VehicleMaintenanceEntry() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          headerTitle: "Detalle del Mantenimiento",
+          headerTitle: maintenance.maintenanceName,
           headerTitleAlign: "center",
         }}
       />
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: "#fff",
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          shadowColor: "#00000070",
-          shadowOffset: {
-            width: 0,
-            height: 5,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 4,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          zIndex: 10,
-        }}
-      >
-        <Text style={styles.categoryTitle}>{maintenance.maintenanceName}</Text>
-      </View>
+
       <ScrollView
         style={{
           flex: 1,
@@ -112,31 +95,20 @@ export default function VehicleMaintenanceEntry() {
           paddingTop: 16,
         }}
       >
-        <View style={styles.containerInfocar}>
-          <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Tipo de Mantenimiento</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.maintenanceCategoryName}
-            </Text>
-          </View>
-          <View style={styles.rowOdd}>
-            <Text style={styles.textTitle}>Frecuencia (km)</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.kilometersFrequency ||
+        <Table
+          data={{
+            Mantenimiento: maintenance.maintenanceCategoryName,
+            "Frecuencia (km)":
+              maintenance.kilometersFrequency ||
               maintenance.kilometersFrequency === 0
                 ? `${maintenance.kilometersFrequency} km`
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.rowEven}>
-            <Text style={styles.textTitle}>Frecuencia (días)</Text>
-            <Text style={styles.textInfo}>
-              {maintenance.daysFrequency || maintenance.daysFrequency === 0
+                : "-",
+            "Frecuencia (días)":
+              maintenance.daysFrequency || maintenance.daysFrequency === 0
                 ? `${maintenance.daysFrequency} días`
-                : "-"}
-            </Text>
-          </View>
-        </View>
+                : "-",
+          }}
+        />
 
         <View style={styles.historyContainer}>
           <Text style={styles.historyTitle}>Historial de Mantenimientos</Text>
@@ -168,7 +140,7 @@ export default function VehicleMaintenanceEntry() {
                 </View>
                 {entry.notes ? (
                   <Text style={styles.historyNotes}>
-                    <span style={{ fontWeight: "bold" }}>Observación:</span>{" "}
+                    <Text style={{ fontWeight: "bold" }}>Observación:</Text>{" "}
                     {entry.notes}
                   </Text>
                 ) : null}
@@ -183,7 +155,6 @@ export default function VehicleMaintenanceEntry() {
           backgroundColor: "#fff",
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-
           borderColor: "#ddd",
           borderWidth: 1,
           zIndex: 10,
@@ -192,13 +163,14 @@ export default function VehicleMaintenanceEntry() {
         <Pressable
           style={[
             styles.addButton,
-            !assignedMaintenanceId && styles.addButtonDisabled,
+            (!maintenanceId || !vehicleId) && styles.addButtonDisabled,
           ]}
           onPress={() =>
             router.push({
               pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
               params: {
-                assignedMaintenanceId,
+                maintenanceId,
+                vehicleId,
                 maintenanceName: maintenance?.maintenanceName ?? "",
                 maintenanceCategoryName:
                   maintenance?.maintenanceCategoryName ?? "",
@@ -209,12 +181,12 @@ export default function VehicleMaintenanceEntry() {
               },
             })
           }
-          disabled={!assignedMaintenanceId}
+          disabled={!maintenanceId || !vehicleId}
         >
           <Text style={styles.addButtonText}>
-            {!assignedMaintenanceId
+            {!maintenanceId || !vehicleId
               ? "Mantenimiento no disponible"
-              : "+ Registrar mantenimiento"}
+              : "Registrar mantenimiento"}
           </Text>
         </Pressable>
       </View>
@@ -310,7 +282,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   addButton: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#fe9000",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",

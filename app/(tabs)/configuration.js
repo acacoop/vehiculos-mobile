@@ -1,11 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Linking, Platform, Text } from "react-native";
-import {
-  IconUser,
-  IconWallet,
-  IconLogout,
-  IconQuestion,
-} from "../../components/Icons";
+import { Icon } from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
 import { PressableButton } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
@@ -24,22 +19,34 @@ export default function Configuration() {
   };
 
   const openMiArgentina = async () => {
-    const appUrl = "miargentina://";
-    const playStoreUrl =
-      "https://play.google.com/store/apps/details?id=ar.gob.mincyt.miargentina";
-    const appStoreUrl =
-      "https://apps.apple.com/ar/app/mi-argentina/id1235195816";
+    const androidPackage = "ar.gob.androides";
+    const iosAppId = "1435736780";
+
+    // Esquemas para abrir la tienda nativa directamente
+    const androidUrl = `market://details?id=${androidPackage}`;
+    const iosUrl = `itms-apps://itunes.apple.com/app/id${iosAppId}?action=write-review`;
+
+    // URLs Web (Fallback por si falla la tienda nativa)
+    const androidWebUrl = `https://play.google.com/store/apps/details?id=${androidPackage}`;
+    const iosWebUrl = `https://apps.apple.com/ar/app/mi-argentina/id${iosAppId}`;
+
     try {
-      const supported = await Linking.canOpenURL(appUrl);
+      // Determinar la URL según el SO
+      const url = Platform.OS === "ios" ? iosUrl : androidUrl;
+      const fallbackUrl = Platform.OS === "ios" ? iosWebUrl : androidWebUrl;
+
+      // Intentar abrir la tienda nativa
+      const supported = await Linking.canOpenURL(url);
+
       if (supported) {
-        await Linking.openURL(appUrl);
+        await Linking.openURL(url);
       } else {
-        await Linking.openURL(
-          Platform.OS === "ios" ? appStoreUrl : playStoreUrl
-        );
+        // Si falla (ej: en un simulador), abrir el navegador
+        await Linking.openURL(fallbackUrl);
       }
-    } catch (e) {
-      await Linking.openURL(Platform.OS === "ios" ? appStoreUrl : playStoreUrl);
+    } catch (error) {
+      console.error("Error al abrir el link:", error);
+      Alert.alert("Error", "No se pudo abrir la tienda de aplicaciones.");
     }
   };
 
@@ -63,13 +70,13 @@ export default function Configuration() {
         <CardConfig
           title="Información de la cuenta"
           description="Gestionar Información de la cuenta"
-          icon={<IconUser />}
+          icon={<Icon name="user" size={24} />}
           onPress={() => configButtons({ user: "user" })}
         />
         <CardConfig
           title="Credenciales"
           description="Consulta con MiArgentina los documentos disponibles"
-          icon={<IconWallet />}
+          icon={<Icon name="wallet" size={24} />}
           onPress={openMiArgentina}
         />
         <View style={{ textAlign: "start", width: "90%", marginTop: 20 }}>
@@ -78,7 +85,7 @@ export default function Configuration() {
         <CardConfig
           title="Contacto"
           description="Contáctanos para soporte o sugerencias"
-          icon={<IconQuestion />}
+          icon={<Icon name="question" size={24} />}
           onPress={openSupportPortal}
         />
       </View>
@@ -92,7 +99,9 @@ export default function Configuration() {
       >
         <PressableButton
           text="Cerrar sesión"
-          icon={({ pressed }) => <IconLogout pressed={pressed} />}
+          icon={({ pressed }) => (
+            <Icon name="logout" pressed={pressed} size={24} />
+          )}
           onPress={handleSignOut}
         />
       </View>

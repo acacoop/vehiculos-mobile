@@ -6,7 +6,7 @@ import {
   Text,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { getAllVehicles } from "../../../services/vehicles";
+import { getMyVehicles } from "../../../services/vehicles";
 import { VehicleCard } from "../../../components/VehicleCard";
 import { Stack } from "expo-router";
 
@@ -16,7 +16,7 @@ export default function Vehicles() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getAllVehicles()
+    getMyVehicles()
       .then((data) => {
         setVehicles(data);
         setError(null);
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingVertical: 20,
-    paddingHorizontal: 20,
-    gap: 30,
+
+    gap: 25,
     alignItems: "stretch",
   },
 });
