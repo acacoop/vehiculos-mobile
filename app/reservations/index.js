@@ -36,6 +36,7 @@ const groupReservationsByMonth = (reservations) => {
 export default function Reservations() {
   const params = useLocalSearchParams();
   const [vehicles, setVehicles] = useState([]);
+  const [vehiclesLoading, setVehiclesLoading] = useState(true);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [reservations, setReservations] = useState([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
@@ -99,9 +100,17 @@ export default function Reservations() {
   const [toDate, setToDate] = useState(initialTo);
 
   useEffect(() => {
-    getMyVehicles().then((data) => {
-      setVehicles(data);
-    });
+    setVehiclesLoading(true);
+    getMyVehicles()
+      .then((data) => {
+        setVehicles(data);
+      })
+      .catch((error) => {
+        console.error("Error al cargar los vehículos", error);
+      })
+      .finally(() => {
+        setVehiclesLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -195,6 +204,21 @@ export default function Reservations() {
   const handleReservationUpdate = useCallback(() => {
     fetchReservations();
   }, [fetchReservations]);
+
+  // Loading inicial mientras se cargan los vehículos
+  if (vehiclesLoading) {
+    return (
+      <View style={styles.container}>
+        <Stack.Screen
+          options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
+        />
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#282D86" />
+          <Text style={styles.loadingText}>Cargando información...</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -292,6 +316,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    gap: 15,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "#282D86",
+    marginTop: 10,
   },
   month: {
     fontSize: 20,
