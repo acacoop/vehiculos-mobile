@@ -277,18 +277,6 @@ const styles = StyleSheet.create({
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: "100%",
     padding: 5,
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
-    borderColor: "#ddd",
-    borderWidth: 1,
   },
 });
