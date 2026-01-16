@@ -111,6 +111,7 @@ export const DatePicker = ({
       mode="date"
       display={Platform.OS === "ios" ? "spinner" : "default"}
       onChange={handleChange}
+      themeVariant="light"
     />
   );
 
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalContent: {
-    backgroundColor: "#282D86",
+    backgroundColor: "#ffff",
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   closeButtonText: {
-    color: "white",
+    color: "#282D86",
     fontWeight: "bold",
     marginBottom: 20,
     fontSize: 20,
