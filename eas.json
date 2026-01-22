@@ -60,8 +60,9 @@
         "track": "internal"
       },
       "ios": {
-        "appleId": "tu-apple-id@email.com",
-        "ascAppId": "TU_APP_STORE_CONNECT_APP_ID"
+        "appleId": "TU_EMAIL_PERSONAL_CORPORATIVO",
+        "ascAppId": "TU_APP_ID_DE_APPSTORECONNECT",
+        "appleTeamId": "TU_TEAM_ID"
       }
     }
   }
