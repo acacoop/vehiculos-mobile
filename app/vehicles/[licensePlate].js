@@ -5,6 +5,7 @@ import { View, StyleSheet, Pressable, FlatList, Text } from "react-native";
 import { Table } from "../../components/Table";
 import { Icon } from "../../components/Icons";
 import { ScreenLayout } from "../../components/ScreenLayout";
+import { BottomActionButton } from "../../components/BottomActionButton";
 import { colors } from "../../constants/colors";
 
 export default function VehicleDetail() {
@@ -56,22 +57,18 @@ export default function VehicleDetail() {
         )}
         contentContainerStyle={styles.flatListContainer}
       />
-      <View style={styles.containerReservar}>
-        <Pressable
-          style={styles.PressableReservar}
-          onPress={() => {
-            router.push({
-              pathname: `/calendar`,
-              params: {
-                vehicleId: vehicleDetail.id,
-                licensePlate: vehicleDetail.licensePlate,
-              },
-            });
-          }}
-        >
-          <Text style={styles.textReserva}>Reservar</Text>
-        </Pressable>
-      </View>
+      <BottomActionButton
+        text="Reservar"
+        onPress={() => {
+          router.push({
+            pathname: `/calendar`,
+            params: {
+              vehicleId: vehicleDetail.id,
+              licensePlate: vehicleDetail.licensePlate,
+            },
+          });
+        }}
+      />
     </ScreenLayout>
   );
 }
@@ -162,16 +159,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     gap: 20,
   },
-  containerReservar: {
-    padding: 16,
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderColor: colors.border,
-    borderWidth: 1,
-    zIndex: 10,
-    alignItems: "center",
-  },
+
   actionButton: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -197,22 +185,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
   },
-  PressableReservar: {
-    backgroundColor: colors.secondary,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-    marginBottom: 16,
-    width: "100%",
-    alignSelf: "center",
-  },
-  textReserva: {
-    color: colors.white,
-    fontSize: 18,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
+
   flatListContainer: {
     flexGrow: 1,
     justifyContent: "flex-start",

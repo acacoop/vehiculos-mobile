@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { ScreenLayout } from "../../../components/ScreenLayout";
+import { BottomActionButton } from "../../../components/BottomActionButton";
 import { toast } from "../../../hooks/useToast";
 import {
   getQuarterlyControlById,
@@ -169,7 +170,7 @@ export default function QuarterlyControl() {
 
     return controlData.items.map((item) => {
       const category = categories.find((cat) =>
-        cat.items.some((i) => i.id === item.id)
+        cat.items.some((i) => i.id === item.id),
       );
       const categoryId = category?.id;
       const answer = categoryId ? responses[categoryId]?.[item.id] : null;
@@ -199,7 +200,7 @@ export default function QuarterlyControl() {
     const vehicleId = controlData?.vehicle?.id;
     const parsedKilometers = parseInt(
       kilometersInput.replace(/[^0-9]/g, ""),
-      10
+      10,
     );
 
     if (!vehicleId) {
@@ -303,20 +304,13 @@ export default function QuarterlyControl() {
           />
         </View>
       </ScrollView>
-      <View style={styles.containerControlButton}>
-        <Pressable
-          style={[
-            styles.submitButton,
-            submitting && styles.submitButtonDisabled,
-          ]}
-          onPress={handleSubmit}
-          disabled={submitting}
-        >
-          <Text style={styles.submitButtonText}>
-            {submitting ? "Guardando" : "Guardar Control"}
-          </Text>
-        </Pressable>
-      </View>
+      <BottomActionButton
+        text="Guardar Control"
+        onPress={handleSubmit}
+        isLoading={submitting}
+        loadingText="Guardando"
+        disabled={submitting}
+      />
 
       <Modal
         visible={showKilometersModal}
@@ -382,41 +376,5 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  submitButton: {
-    backgroundColor: "#FE9000",
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 12,
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 20,
-    shadowColor: "#00000040",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  containerControlButton: {
-    width: "100%",
-    padding: 16,
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderColor: colors.border,
-    borderWidth: 1,
-    zIndex: 10,
-    alignItems: "center",
-  },
-
-  submitButtonDisabled: {
-    backgroundColor: "#D0D4EB",
-    shadowOpacity: 0,
-    elevation: 0,
-  },
-  submitButtonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "600",
   },
 });

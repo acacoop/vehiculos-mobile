@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  Pressable,
 } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -16,6 +15,7 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { getMaintenanceRecords } from "../../../../services/maintenanceRecords";
 import { Table } from "../../../../components/Table";
+import { BottomActionButton } from "../../../../components/BottomActionButton";
 
 export default function VehicleMaintenanceEntry() {
   const { VehicleMaintenanceEntry, vehicleId } = useLocalSearchParams();
@@ -44,7 +44,7 @@ export default function VehicleMaintenanceEntry() {
       console.error("Error al cargar el historial de mantenimiento", error);
       setMaintenanceHistory([]);
       setHistoryError(
-        error?.message || "No se pudo obtener el historial de mantenimiento"
+        error?.message || "No se pudo obtener el historial de mantenimiento",
       );
     } finally {
       setLoadingHistory(false);
@@ -68,7 +68,7 @@ export default function VehicleMaintenanceEntry() {
     useCallback(() => {
       if (!maintenanceId || !vehicleId) return;
       loadMaintenanceRecords(maintenanceId, vehicleId);
-    }, [maintenanceId, vehicleId, loadMaintenanceRecords])
+    }, [maintenanceId, vehicleId, loadMaintenanceRecords]),
   );
 
   const formattedHistory = useMemo(() => {
@@ -149,47 +149,30 @@ export default function VehicleMaintenanceEntry() {
           )}
         </View>
       </ScrollView>
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: "#fff",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          zIndex: 10,
-        }}
-      >
-        <Pressable
-          style={[
-            styles.addButton,
-            (!maintenanceId || !vehicleId) && styles.addButtonDisabled,
-          ]}
-          onPress={() =>
-            router.push({
-              pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
-              params: {
-                maintenanceId,
-                vehicleId,
-                maintenanceName: maintenance?.maintenanceName ?? "",
-                maintenanceCategoryName:
-                  maintenance?.maintenanceCategoryName ?? "",
-                kilometersFrequency: String(
-                  maintenance?.kilometersFrequency ?? ""
-                ),
-                daysFrequency: String(maintenance?.daysFrequency ?? ""),
-              },
-            })
-          }
-          disabled={!maintenanceId || !vehicleId}
-        >
-          <Text style={styles.addButtonText}>
-            {!maintenanceId || !vehicleId
-              ? "Mantenimiento no disponible"
-              : "Registrar mantenimiento"}
-          </Text>
-        </Pressable>
-      </View>
+      <BottomActionButton
+        text={
+          !maintenanceId || !vehicleId
+            ? "Mantenimiento no disponible"
+            : "Registrar mantenimiento"
+        }
+        onPress={() =>
+          router.push({
+            pathname: "/vehicles/maintenance/typemaintenance/add-maintenance",
+            params: {
+              maintenanceId,
+              vehicleId,
+              maintenanceName: maintenance?.maintenanceName ?? "",
+              maintenanceCategoryName:
+                maintenance?.maintenanceCategoryName ?? "",
+              kilometersFrequency: String(
+                maintenance?.kilometersFrequency ?? "",
+              ),
+              daysFrequency: String(maintenance?.daysFrequency ?? ""),
+            },
+          })
+        }
+        disabled={!maintenanceId || !vehicleId}
+      />
     </View>
   );
 }
@@ -280,23 +263,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     marginTop: 8,
-  },
-  addButton: {
-    backgroundColor: "#fe9000",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-    marginBottom: 16,
-    width: "100%",
-    alignSelf: "center",
-  },
-  addButtonDisabled: {
-    opacity: 0.6,
-  },
-  addButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 18,
   },
 });

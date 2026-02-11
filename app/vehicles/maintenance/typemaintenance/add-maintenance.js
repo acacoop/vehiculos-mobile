@@ -6,10 +6,10 @@ import {
   Text,
   TextInput,
   View,
-  Pressable,
 } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { DatePicker } from "../../../../components/DatePicker";
+import { BottomActionButton } from "../../../../components/BottomActionButton";
 import { createMaintenanceRecord } from "../../../../services/maintenanceRecords";
 import { getCurrentUser } from "../../../../services/me";
 
@@ -27,7 +27,7 @@ export default function AddMaintenance() {
   const maintenanceName = coerceParam(params.maintenanceName, "");
   const maintenanceCategoryName = coerceParam(
     params.maintenanceCategoryName,
-    ""
+    "",
   );
   const kilometersFrequency = coerceParam(params.kilometersFrequency, "");
 
@@ -58,7 +58,7 @@ export default function AddMaintenance() {
   useEffect(() => {
     if (!maintenanceId || !vehicleId) {
       setFormError(
-        "No se pudo identificar el mantenimiento o vehículo seleccionado. Vuelve atrás e inténtalo nuevamente."
+        "No se pudo identificar el mantenimiento o vehículo seleccionado. Vuelve atrás e inténtalo nuevamente.",
       );
     } else {
       setFormError(null);
@@ -82,13 +82,13 @@ export default function AddMaintenance() {
   const handleSubmit = async () => {
     const trimmedDescription = description.trim();
     const parsedKilometers = Number.parseFloat(
-      kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, ".")
+      kilometers.replace(/[^0-9.,]/g, "").replace(/,/g, "."),
     );
 
     if (!maintenanceId || !vehicleId) {
       Alert.alert(
         "Mantenimiento no disponible",
-        "No se puede registrar el mantenimiento porque falta el identificador del mantenimiento o vehículo."
+        "No se puede registrar el mantenimiento porque falta el identificador del mantenimiento o vehículo.",
       );
       return;
     }
@@ -96,7 +96,7 @@ export default function AddMaintenance() {
     if (!userId) {
       Alert.alert(
         "Sesión expirada",
-        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente.",
       );
       return;
     }
@@ -104,7 +104,7 @@ export default function AddMaintenance() {
     if (!trimmedDescription || Number.isNaN(parsedKilometers)) {
       Alert.alert(
         "Datos incompletos",
-        "Por favor completa todos los campos obligatorios."
+        "Por favor completa todos los campos obligatorios.",
       );
       return;
     }
@@ -112,7 +112,7 @@ export default function AddMaintenance() {
     if (parsedKilometers <= 0) {
       Alert.alert(
         "Kilómetros inválidos",
-        "Los kilómetros deben ser mayores a cero."
+        "Los kilómetros deben ser mayores a cero.",
       );
       return;
     }
@@ -135,7 +135,7 @@ export default function AddMaintenance() {
       console.error("Error al crear el mantenimiento", error);
       Alert.alert(
         "Error",
-        "No se pudo guardar el mantenimiento. Intenta nuevamente."
+        "No se pudo guardar el mantenimiento. Intenta nuevamente.",
       );
     } finally {
       setIsSubmitting(false);
@@ -203,17 +203,12 @@ export default function AddMaintenance() {
 
         {formError ? <Text style={styles.errorText}>{formError}</Text> : null}
       </ScrollView>
-      <View style={styles.actions}>
-        <Pressable
-          style={[styles.button, styles.saveButton]}
-          onPress={handleSubmit}
-          disabled={isSubmitting}
-        >
-          <Text style={styles.saveText}>
-            {isSubmitting ? "Guardando" : "Guardar"}
-          </Text>
-        </Pressable>
-      </View>
+      <BottomActionButton
+        text="Guardar"
+        onPress={handleSubmit}
+        isLoading={isSubmitting}
+        loadingText="Guardando"
+      />
     </View>
   );
 }
@@ -286,49 +281,6 @@ const styles = StyleSheet.create({
   },
   multilineInput: {
     minHeight: 120,
-  },
-  actions: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 12,
-    padding: 16,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    zIndex: 10,
-  },
-  button: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-    marginBottom: 16,
-    width: "100%",
-    alignSelf: "center",
-  },
-  cancelButton: {
-    backgroundColor: "#E53935",
-  },
-  saveButton: {
-    backgroundColor: "#FE9000",
-  },
-  cancelText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  saveText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 18,
   },
   errorText: {
     color: "#D32F2F",
