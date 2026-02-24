@@ -1,11 +1,12 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { getVehicle } from "../../services/vehicles";
-import { View, StyleSheet, Pressable, FlatList, Text } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { Table } from "../../components/Table";
 import { Icon } from "../../components/Icons";
 import { ScreenLayout } from "../../components/ScreenLayout";
 import { BottomActionButton } from "../../components/BottomActionButton";
+import { Button } from "../../components/Buttons";
 import { colors } from "../../constants/colors";
 
 export default function VehicleDetail() {
@@ -90,48 +91,39 @@ const VehicleButtons = ({ vehicleId, licensePlate, modelId }) => {
 
   return (
     <View style={styles.containerButton}>
-      <Pressable
-        style={styles.actionButton}
+      <Button
+        text="Mantenimiento"
+        variant="secondary"
+        width={"100%"}
+        icon={({ color }) => <Icon name="right" size={20} color={color} />}
         onPress={() => {
           router.push({
             pathname: `/vehicles/maintenance/${vehicleId}`,
             params: { modelId },
           });
         }}
-      >
-        <Text style={styles.buttonText}>Mantenimiento</Text>
-        <Icon name="right" size={20} />
-      </Pressable>
-      <Pressable
-        style={styles.actionButton}
+      />
+      <Button
+        text="Ficha técnica"
+        variant="secondary"
+        width={"100%"}
+        icon={({ color }) => <Icon name="right" size={20} color={color} />}
         onPress={() => {
           router.push(`/vehicles/technical/${licensePlate}`);
         }}
-      >
-        <Text style={styles.buttonText}>Ficha técnica</Text>
-        <Icon name="right" size={20} />
-      </Pressable>
-      {/* <Pressable
-        style={styles.actionButton}
-        onPress={() => {
-          router.push(`/vehicles/documentation/${licensePlate}`);
-        }}
-      >
-        <Text style={styles.buttonText}>Documentación</Text>
-        <Icon name="right" size={20} />
-      </Pressable> */}
-      <Pressable
-        style={styles.actionButton}
+      />
+      <Button
+        text="Control trimestral"
+        variant="secondary"
+        width={"100%"}
+        icon={({ color }) => <Icon name="right" size={20} color={color} />}
         onPress={() => {
           router.push({
             pathname: "/vehicles/quarterly-control/history",
             params: { licensePlate },
           });
         }}
-      >
-        <Text style={styles.buttonText}>Control trimestral</Text>
-        <Icon name="right" size={20} />
-      </Pressable>
+      />
     </View>
   );
 };
@@ -156,34 +148,8 @@ const styles = StyleSheet.create({
   containerButton: {
     width: "100%",
     flexDirection: "column",
-    alignItems: "stretch",
-    gap: 20,
-  },
-
-  actionButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    shadowColor: colors.gray[500],
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    width: "100%",
-  },
-  buttonText: {
-    color: colors.primary,
-    fontSize: 20,
-    padding: 10,
-    textAlign: "center",
-    fontWeight: "600",
+    gap: 20,
   },
 
   flatListContainer: {

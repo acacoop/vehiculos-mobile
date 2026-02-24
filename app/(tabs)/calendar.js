@@ -3,11 +3,10 @@ import {
   ScrollView,
   View,
   StyleSheet,
-  Pressable,
-  Text,
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { Button } from "../../components/Buttons";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
@@ -91,7 +90,7 @@ const Calendar = () => {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && vehicle.id === desiredId) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate)
+        (desiredPlate && vehicle.licensePlate === desiredPlate),
     );
 
     if (found) {
@@ -127,7 +126,7 @@ const Calendar = () => {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron cargar las reservas"
+          error?.message || "No se pudieron cargar las reservas",
         );
       })
       .finally(() => {
@@ -143,7 +142,7 @@ const Calendar = () => {
     if (!selectedVehicle?.id) {
       Alert.alert(
         "Selecciona un vehículo",
-        "Debes elegir un vehículo antes de crear la reserva."
+        "Debes elegir un vehículo antes de crear la reserva.",
       );
       return;
     }
@@ -151,7 +150,7 @@ const Calendar = () => {
     if (!currentUser?.id) {
       Alert.alert(
         "Sesión no disponible",
-        "No se pudo identificar al usuario actual. Inicia sesión nuevamente."
+        "No se pudo identificar al usuario actual. Inicia sesión nuevamente.",
       );
       return;
     }
@@ -170,7 +169,7 @@ const Calendar = () => {
       console.error("No se pudo crear la reserva", error);
       Alert.alert(
         "Error",
-        error?.message || "No se pudo crear la reserva. Intenta nuevamente."
+        error?.message || "No se pudo crear la reserva. Intenta nuevamente.",
       );
     } finally {
       setIsSubmittingReservation(false);
@@ -186,7 +185,7 @@ const Calendar = () => {
         vehicleId: reservation.vehicleId,
         licensePlate: reservation.licensePlate,
       })),
-    [reservations]
+    [reservations],
   );
 
   return (
@@ -241,28 +240,20 @@ const Calendar = () => {
           {reservationsError}
         </Text>
       )}
-      <View
-        style={{
-          flexDirection: "column",
-          gap: 20,
-          width: "100%",
-        }}
-      >
-        <Pressable
-          style={styles.button}
+      <View style={styles.buttonGroup}>
+        <Button
+          text="Ver reservas"
+          variant="tertiary"
           onPress={() => {
             navigateToReservations();
           }}
-        >
-          <Text style={styles.buttonText}>Ver reservas</Text>
-        </Pressable>
+        />
 
-        <Pressable
-          style={styles.buttonReserve}
+        <Button
+          text="Reservar vehículo"
+          variant="primary"
           onPress={() => setShowReserveModal(true)}
-        >
-          <Text style={styles.buttonTextReserve}>Reservar vehículo</Text>
-        </Pressable>
+        />
       </View>
 
       <ReserveModal
@@ -285,59 +276,18 @@ export default Calendar;
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    paddingVertical: 20,
     gap: 20,
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
   },
-  button: {
-    backgroundColor: "#ffff",
-    padding: 15,
-    borderRadius: 10,
+  buttonGroup: {
+    display: "flex",
+    width: "100%",
+    gap: 20,
+    flexDirection: "column",
     alignItems: "center",
-    width: "90%",
-    alignSelf: "center",
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 1,
-    borderColor: "#ddd",
-    borderWidth: 1,
-  },
-  buttonReserve: {
-    backgroundColor: "#FE9000",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    width: "90%",
-    alignSelf: "center",
-    shadowColor: "#00000070",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
-    borderColor: "#ddd",
-    borderWidth: 1,
     marginBottom: 30,
-  },
-  buttonText: {
-    color: "#282D86",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-
-  buttonTextReserve: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 20,
   },
 
   arrowRow: {
@@ -345,7 +295,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
-    gap: 30,
+    gap: 20,
   },
   arrowButton: {
     padding: 10,

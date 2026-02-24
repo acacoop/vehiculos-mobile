@@ -1,5 +1,6 @@
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { colors } from "../constants/colors";
+import { Button } from "./Buttons";
 
 type BottomActionButtonProps = {
   text: string;
@@ -16,18 +17,17 @@ export function BottomActionButton({
   isLoading = false,
   loadingText,
 }: BottomActionButtonProps) {
-  const isDisabled = disabled || isLoading;
-  const displayText = isLoading && loadingText ? loadingText : text;
-
   return (
     <View style={styles.container}>
-      <Pressable
-        style={[styles.button, isDisabled && styles.buttonDisabled]}
+      <Button
+        text={text}
         onPress={onPress}
-        disabled={isDisabled}
-      >
-        <Text style={styles.buttonText}>{displayText}</Text>
-      </Pressable>
+        disabled={disabled}
+        isLoading={isLoading}
+        loadingText={loadingText}
+        variant="primary"
+        width="90%"
+      />
     </View>
   );
 }
@@ -35,7 +35,7 @@ export function BottomActionButton({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: 16,
+    paddingVertical: 20,
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -43,23 +43,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     zIndex: 10,
     alignItems: "center",
-  },
-  button: {
-    backgroundColor: colors.secondary,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-    marginBottom: 16,
-    width: "100%",
-    alignSelf: "center",
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: colors.white,
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
