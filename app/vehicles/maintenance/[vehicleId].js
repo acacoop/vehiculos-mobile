@@ -70,7 +70,7 @@ export default function Maintenance() {
         {/* Mantenimientos Asignados */}
         {hasAssigned && (
           <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Mantenimientos Asignados</Text>
+            <Text style={styles.sectionTitle}>Mantenimientos Requeridos</Text>
             {Object.entries(groupedMaintenances.assigned).map(
               ([category, maintenances]) => (
                 <Dropdown
@@ -93,7 +93,7 @@ export default function Maintenance() {
                     </Pressable>
                   ))}
                 </Dropdown>
-              )
+              ),
             )}
           </View>
         )}
@@ -126,7 +126,7 @@ export default function Maintenance() {
                     </Pressable>
                   ))}
                 </Dropdown>
-              )
+              ),
             )}
           </View>
         )}

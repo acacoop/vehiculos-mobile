@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Linking, Platform, Text } from "react-native";
 import { Icon } from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
-import { PressableButton } from "../../components/Buttons";
+import { Button } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -52,7 +52,7 @@ export default function Configuration() {
 
   const openSupportPortal = async () => {
     await Linking.openURL(
-      "https://acacoop.atlassian.net/servicedesk/customer/portals"
+      "https://acacoop.atlassian.net/servicedesk/customer/portals",
     );
   };
 
@@ -97,9 +97,11 @@ export default function Configuration() {
           marginBottom: 20,
         }}
       >
-        <PressableButton
+        <Button
+          width="90%"
           text="Cerrar sesión"
-          icon={({ pressed }) => (
+          contentAlign="center"
+          icon={({ pressed, color }) => (
             <Icon name="logout" pressed={pressed} size={24} />
           )}
           onPress={handleSignOut}

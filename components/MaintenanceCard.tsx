@@ -23,13 +23,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
     width: "100%",
   },
   containerTitle: {
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    margin: 10,
   },
 
   text: {
@@ -42,8 +40,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 25,
     width: "90%",
+    backgroundColor: "#f9fafb",
+    borderRadius: 10,
+    padding: 10,
+    borderColor: "#e5e7eb",
+    borderWidth: 1,
   },
   containerText: {
     flex: 1,
@@ -55,8 +57,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 10,
     backgroundColor: "#f9f9f9",
-    borderRadius: "100%",
-
+    borderRadius: 50,
     padding: 5,
   },
 });

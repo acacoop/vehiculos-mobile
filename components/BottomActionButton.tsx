@@ -43,5 +43,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     zIndex: 10,
     alignItems: "center",
+    minHeight: 120,
   },
 });

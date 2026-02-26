@@ -18,6 +18,7 @@ type ButtonProps = {
   isLoading?: boolean;
   loadingText?: string;
   width?: string | number;
+  contentAlign?: "center" | "flex-start" | "space-between";
 };
 
 export function Button({
@@ -29,6 +30,7 @@ export function Button({
   isLoading = false,
   loadingText,
   width = "90%",
+  contentAlign,
 }: ButtonProps) {
   const isDisabled = disabled || isLoading;
   const displayText = isLoading && loadingText ? loadingText : text;
@@ -62,6 +64,10 @@ export function Button({
   };
 
   const getJustifyContent = () => {
+    // Allow manual override
+    if (contentAlign) {
+      return contentAlign;
+    }
     // Variation 2 uses space-between when icon is present
     if (variant === "secondary" && icon) {
       return "space-between";
