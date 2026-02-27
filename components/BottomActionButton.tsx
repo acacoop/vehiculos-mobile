@@ -1,4 +1,5 @@
 import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../constants/colors";
 import { Button } from "./Buttons";
 
@@ -17,8 +18,10 @@ export function BottomActionButton({
   isLoading = false,
   loadingText,
 }: BottomActionButtonProps) {
+  const insets = useSafeAreaInsets();
+  
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: Math.max(insets.bottom, 20) }]}>
       <Button
         text={text}
         onPress={onPress}
@@ -35,7 +38,7 @@ export function BottomActionButton({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingVertical: 20,
+    paddingTop: 20,
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -43,6 +46,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     zIndex: 10,
     alignItems: "center",
-    minHeight: 120,
   },
 });

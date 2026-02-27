@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     gap: 20,
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: 30,
+    paddingBottom: 20,
   },
 
   arrowRow: {

@@ -65,14 +65,6 @@ export default function AddMaintenance() {
     }
   }, [maintenanceId, vehicleId]);
 
-  const maintenanceSummary = useMemo(() => {
-    const lines = [];
-    if (kilometersFrequency) {
-      lines.push(`${kilometersFrequency} km sugeridos`);
-    }
-    return lines.join(" • ");
-  }, [kilometersFrequency]);
-
   const resetForm = () => {
     setDate(new Date());
     setKilometers("");
@@ -163,9 +155,6 @@ export default function AddMaintenance() {
             editable={false}
             style={styles.disabledInput}
           />
-          {maintenanceSummary ? (
-            <Text style={styles.summaryText}>{maintenanceSummary}</Text>
-          ) : null}
         </View>
 
         <View style={styles.formRow}>

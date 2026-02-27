@@ -187,31 +187,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#282D86",
   },
-  containerInfocar: {
-    backgroundColor: "#ffffff",
-    marginBottom: 20,
-    gap: 15,
-    padding: 10,
-    borderRadius: 15,
-    borderColor: "#ddd",
-    borderWidth: 1,
-  },
-  rowEven: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#ffffff",
-    padding: 10,
-    borderRadius: 8,
-    gap: 10,
-  },
-  rowOdd: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#f1f1f1ff",
-    padding: 10,
-    borderRadius: 8,
-    gap: 10,
-  },
+
   textTitle: {
     fontWeight: "bold",
     fontSize: 16,
@@ -223,23 +199,23 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   historyContainer: {
-    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    paddingTop: 16,
   },
   historyTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
     color: "#282D86",
   },
   errorText: {
     fontSize: 16,
     color: "#D32F2F",
-    marginTop: 8,
   },
   emptyHistoryText: {
     fontSize: 16,
     color: "#282D86",
-    marginTop: 8,
   },
   historyEntry: {
     backgroundColor: "#fff",
