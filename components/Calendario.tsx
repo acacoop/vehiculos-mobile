@@ -119,14 +119,13 @@ export const Calendario = ({
             alignItems: "center",
             paddingVertical: 10,
             paddingHorizontal: 15,
-            elevation: 1,
-            shadowColor: "#000000f6",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.4,
-            shadowRadius: 1.41,
-            borderColor: "#ddd",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.08,
+            shadowRadius: 8,
+            elevation: 3,
             borderWidth: 1,
-            backgroundColor: "#ffff",
+            borderColor: "#F0F0F0",
           }}
         >
           <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>

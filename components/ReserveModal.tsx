@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 12,
     elevation: 5,
+    gap: 10,
   },
   sectionTitle: {
     fontWeight: "bold",
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 15,
+    gap: 10,
   },
   pickerButton: {
     flex: 1,

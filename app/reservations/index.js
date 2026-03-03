@@ -205,7 +205,6 @@ export default function Reservations() {
     fetchReservations();
   }, [fetchReservations]);
 
-  // Loading inicial mientras se cargan los vehículos
   if (vehiclesLoading) {
     return (
       <View style={styles.container}>
@@ -255,7 +254,7 @@ export default function Reservations() {
       ) : (
         <SectionList
           contentContainerStyle={styles.scrollContent}
-          style={{ width: "100%" }}
+          style={{ width: "100%", zIndex: 1 }}
           sections={sections}
           keyExtractor={(item, index) => item.id + index}
           renderSectionHeader={({ section: { title } }) => (
