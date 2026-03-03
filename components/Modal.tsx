@@ -3,7 +3,6 @@ import {
   Modal as RNModal,
   View,
   Text,
-  Pressable,
   TextInput,
   StyleSheet,
   Animated,
@@ -12,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { Button } from "./Buttons";
 
 export type ModalProps = {
   visible: boolean;
@@ -125,27 +125,13 @@ const Modal: React.FC<ModalProps> = ({
               selection={{ start: value.length, end: value.length }}
             />
             <View style={styles.actions}>
-              <Pressable
-                style={[styles.button, styles.cancelButton]}
-                onPress={onCancel}
-              >
-                <Text style={[styles.buttonLabel, styles.cancelLabel]}>
-                  {cancelLabel}
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.button,
-                  styles.confirmButton,
-                  confirmDisabled && styles.buttonDisabled,
-                ]}
+              <Button text={cancelLabel} onPress={onCancel} variant="primary" />
+              <Button
+                text={confirmLabel}
                 onPress={onConfirm}
+                variant="primaryBg"
                 disabled={confirmDisabled}
-              >
-                <Text style={[styles.buttonLabel, styles.confirmLabel]}>
-                  {confirmLabel}
-                </Text>
-              </Pressable>
+              />
             </View>
           </Animated.View>
         </KeyboardAvoidingView>
@@ -202,34 +188,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 12,
-  },
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonLabel: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  cancelButton: {
-    backgroundColor: "#FE9000",
-  },
-  cancelLabel: {
-    color: "#FFFF",
-  },
-  confirmButton: {
-    backgroundColor: "#282D86",
-  },
-  confirmLabel: {
-    color: "#FFFFFF",
-  },
-  buttonDisabled: {
-    opacity: 0.5,
+    justifyContent: "space-between",
   },
 });
 

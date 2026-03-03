@@ -1,13 +1,19 @@
 import React from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Text, StyleSheet } from "react-native";
 
-const WarningCard = () => {
+interface WarningCardProps {
+  message: string;
+}
+
+const WarningCard = ({ message }: WarningCardProps) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.warningText}>⚠️ Atención</Text>
-      <Text style={styles.cardText}>
-        El mantenimiento de Cambio de aceite está próximo a vencer.
+      <Text style={styles.warningText}>
+        {" "}
+        <Ionicons name="warning" size={24} color="#e74c3c" /> Atención
       </Text>
+      <Text style={styles.cardText}>{message}</Text>
     </View>
   );
 };

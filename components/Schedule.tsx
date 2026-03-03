@@ -31,7 +31,7 @@ export function Schedule({
   onUpdate,
 }: ScheduleProps) {
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
-    requesterName ?? null
+    requesterName ?? null,
   );
   const [loadingRequester, setLoadingRequester] = useState(!requesterName);
 
@@ -121,7 +121,7 @@ export function Schedule({
       console.error("Error al actualizar la reserva", error);
       Alert.alert(
         "Error",
-        "No se pudo actualizar la reserva. Intenta nuevamente."
+        "No se pudo actualizar la reserva. Intenta nuevamente.",
       );
     } finally {
       setIsUpdating(false);
@@ -189,7 +189,7 @@ export function Schedule({
           </View>
         </View>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
           <Icon name="user" />
         </View>
