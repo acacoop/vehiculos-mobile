@@ -74,14 +74,14 @@ export default function UserConfig() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          headerTitle: "Configuración Usuario",
+          headerTitle: "Configuración usuario",
           headerTitleAlign: "center",
         }}
       />
 
       <View style={styles.containerconfig}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionHeaderText}>Información Personal</Text>
+          <Text style={styles.sectionHeaderText}>Información personal</Text>
         </View>
 
         <CardConfig
@@ -109,7 +109,7 @@ export default function UserConfig() {
         />
 
         <CardConfig
-          title="Carnet de Conducir"
+          title="Carnet de conducir"
           description={`Vencimiento: ${formatDate(carnetExpiration)}`}
           icon={<Icon name="car" size={24} />}
           onPress={undefined} // Let DatePicker handle press

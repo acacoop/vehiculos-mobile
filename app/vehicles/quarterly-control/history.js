@@ -52,7 +52,7 @@ export default function QuarterlyControlHistory() {
   );
 
   return (
-    <ScreenLayout title="Historial de Control" loading={loading} error={error}>
+    <ScreenLayout title="Historial de control" loading={loading} error={error}>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.licensePlateTitle}>

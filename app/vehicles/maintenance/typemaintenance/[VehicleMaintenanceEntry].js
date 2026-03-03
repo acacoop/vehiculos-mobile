@@ -111,7 +111,7 @@ export default function VehicleMaintenanceEntry() {
         />
 
         <View style={styles.historyContainer}>
-          <Text style={styles.historyTitle}>Historial de Mantenimientos</Text>
+          <Text style={styles.historyTitle}>Historial de mantenimientos</Text>
           {loadingHistory ? (
             <ActivityIndicator size="small" color="#282D86" />
           ) : historyError ? (

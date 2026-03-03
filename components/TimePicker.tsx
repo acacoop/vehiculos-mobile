@@ -82,7 +82,7 @@ export const TimePicker = ({
         selectedDate.getHours(),
         selectedDate.getMinutes(),
         selectedDate.getSeconds(),
-        selectedDate.getMilliseconds()
+        selectedDate.getMilliseconds(),
       );
       onChange(newDate);
     }
@@ -146,10 +146,10 @@ export const TimePicker = ({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#ffff",
     padding: 12,
     borderRadius: 8,
-    width: "48%",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#00000070",

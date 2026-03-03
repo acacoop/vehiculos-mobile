@@ -51,7 +51,7 @@ export const DatePicker = ({
                 newDate.setFullYear(
                   Number(year),
                   Number(month) - 1,
-                  Number(day)
+                  Number(day),
                 );
                 onChange(newDate);
               }}
@@ -79,7 +79,7 @@ export const DatePicker = ({
                 newDate.setFullYear(
                   Number(year),
                   Number(month) - 1,
-                  Number(day)
+                  Number(day),
                 );
                 onChange(newDate);
               }}
@@ -99,7 +99,7 @@ export const DatePicker = ({
         value.getHours(),
         value.getMinutes(),
         value.getSeconds(),
-        value.getMilliseconds()
+        value.getMilliseconds(),
       );
       onChange(newDate);
     }
@@ -159,10 +159,10 @@ export const DatePicker = ({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#ffff",
     padding: 12,
     borderRadius: 8,
-    width: "48%",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#00000070",

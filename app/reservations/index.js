@@ -68,7 +68,7 @@ export default function Reservations() {
     const found = vehicles.find(
       (vehicle) =>
         (desiredId && String(vehicle.id) === String(desiredId)) ||
-        (desiredPlate && vehicle.licensePlate === desiredPlate)
+        (desiredPlate && vehicle.licensePlate === desiredPlate),
     );
 
     if (found) {
@@ -134,7 +134,7 @@ export default function Reservations() {
         if (!isMounted) return;
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron obtener las reservas"
+          error?.message || "No se pudieron obtener las reservas",
         );
       })
       .finally(() => {
@@ -160,7 +160,7 @@ export default function Reservations() {
           .trim()
           .replace(/\s+/g, " "),
       })),
-    [reservations]
+    [reservations],
   );
 
   const filteredReservations = mappedReservations.filter((res) => {
@@ -195,7 +195,7 @@ export default function Reservations() {
         console.error("Error al cargar las reservas", error);
         setReservations([]);
         setReservationsError(
-          error?.message || "No se pudieron obtener las reservas"
+          error?.message || "No se pudieron obtener las reservas",
         );
       })
       .finally(() => setReservationsLoading(false));
@@ -233,7 +233,7 @@ export default function Reservations() {
           containerWidth={"100%"}
         />
 
-        <View style={{ flexDirection: "row", gap: 10, padding: 20 }}>
+        <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
           <DatePicker value={fromDate} label="Desde" onChange={setFromDate} />
           <DatePicker value={toDate} label="Hasta" onChange={setToDate} />
         </View>
@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderColor: "#ddd",
     borderWidth: 1,
+    gap: 20,
   },
   scrollContent: {
     paddingVertical: 20,

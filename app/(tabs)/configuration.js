@@ -69,7 +69,7 @@ export default function Configuration() {
         </View>
         <CardConfig
           title="Información de la cuenta"
-          description="Gestionar Información de la cuenta"
+          description="Gestionar información de la cuenta"
           icon={<Icon name="user" size={24} />}
           onPress={() => configButtons({ user: "user" })}
         />

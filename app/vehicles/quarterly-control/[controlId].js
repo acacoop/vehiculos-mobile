@@ -276,7 +276,7 @@ export default function QuarterlyControl() {
   const modelName = vehicleInfo?.model?.name || "";
 
   return (
-    <ScreenLayout title="Control Trimestral" loading={loading} error={error}>
+    <ScreenLayout title="Control trimestral" loading={loading} error={error}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -305,7 +305,7 @@ export default function QuarterlyControl() {
         </View>
       </ScrollView>
       <BottomActionButton
-        text="Guardar Control"
+        text="Guardar control"
         onPress={handleSubmit}
         isLoading={submitting}
         loadingText="Guardando"
@@ -333,10 +333,10 @@ export default function QuarterlyControl() {
 // Helper function to get icon for category
 function getCategoryIcon(category) {
   const iconMap = {
-    "Motor y Fluidos": "tool",
-    "Luces y Señalización": "bulb1",
-    "Neumáticos y Carrocería": "car",
-    "Seguridad y Emergencia": "alerttriangle",
+    "Motor y fluidos": "tool",
+    "Luces y señalización": "bulb1",
+    "Neumáticos y carrocería": "car",
+    "Seguridad y emergencia": "alerttriangle",
   };
   return iconMap[category] || "shield";
 }

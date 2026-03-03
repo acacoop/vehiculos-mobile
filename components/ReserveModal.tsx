@@ -44,24 +44,24 @@ export const ReserveModal = ({
           <Text style={styles.sectionTitle}>Seleccioná fecha y hora</Text>
           <View style={styles.row}>
             <DatePicker
-              label="Desde Fecha"
+              label="Desde fecha"
               value={fromDate}
               onChange={handleFromChange}
             />
             <TimePicker
-              label="Desde Hora"
+              label="Desde hora"
               value={fromDate}
               onChange={handleFromChange}
             />
           </View>
           <View style={styles.row}>
             <DatePicker
-              label="Hasta Fecha"
+              label="Hasta fecha"
               value={toDate}
               onChange={handleToChange}
             />
             <TimePicker
-              label="Hasta Hora"
+              label="Hasta hora"
               value={toDate}
               onChange={handleToChange}
             />
@@ -116,10 +116,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   pickerButton: {
+    flex: 1,
     backgroundColor: "#eee",
     padding: 12,
     borderRadius: 8,
-    width: "48%",
     alignItems: "center",
     justifyContent: "center",
   },

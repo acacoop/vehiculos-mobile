@@ -137,7 +137,7 @@ export function Schedule({
           justifyContent: "space-between",
         }}
       >
-        <Text style={styles.title}>Detalles de la Reserva</Text>
+        <Text style={styles.title}>Detalles de la reserva</Text>
         <Pressable onPress={handleOpenEditModal}>
           <View style={styles.containerImage}>
             <Icon name="pencil" size={25} color="#fe9000" />
