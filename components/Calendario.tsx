@@ -126,6 +126,7 @@ export const Calendario = ({
             elevation: 3,
             borderWidth: 1,
             borderColor: "#F0F0F0",
+            backgroundColor: "#ffffff",
           }}
         >
           <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>

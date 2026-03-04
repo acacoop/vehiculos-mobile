@@ -7,7 +7,6 @@ import { Icon } from "../../components/Icons";
 import { ScreenLayout } from "../../components/ScreenLayout";
 import { BottomActionButton } from "../../components/BottomActionButton";
 import { Button } from "../../components/Buttons";
-import { colors } from "../../constants/colors";
 
 export default function VehicleDetail() {
   const { licensePlate } = useLocalSearchParams();
@@ -122,6 +121,15 @@ const VehicleButtons = ({ vehicleId, licensePlate, modelId }) => {
             pathname: "/vehicles/quarterly-control/history",
             params: { licensePlate },
           });
+        }}
+      />
+      <Button
+        text="Registro de kilometraje"
+        variant="secondary"
+        width={"100%"}
+        icon={({ color }) => <Icon name="right" size={20} color={color} />}
+        onPress={() => {
+          router.push(`/vehicles/kilometersregister/${licensePlate}`);
         }}
       />
     </View>

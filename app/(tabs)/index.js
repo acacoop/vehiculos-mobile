@@ -33,9 +33,9 @@ export default function Index() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {warnings.map((warning) => (
+        {/*  {warnings.map((warning) => (
           <WarningCard key={warning.id} message={warning.message} />
-        ))}
+        ))} */}
       </ScrollView>
     </View>
   );

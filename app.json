@@ -23,6 +23,7 @@
     },
     "android": {
       "package": "com.acacoop.vehiculos",
+      "icon": "./assets/icon.png",
       "statusBar": {
         "backgroundColor": "#ffffff",
         "barStyle": "dark-content",
@@ -46,10 +47,7 @@
               "host": "redirect"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },

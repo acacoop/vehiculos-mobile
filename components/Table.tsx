@@ -21,17 +21,19 @@ export function Table({ data }: { data: any }) {
             },
           ]}
         >
+          <View style={{ width: "25%" }}>
+            <Text numberOfLines={1} style={style.keyText}>
+              {item.key}{" "}
+            </Text>
+          </View>
           <View
             style={{
-              justifyContent: "center",
-              alignContent: "flex-start",
-              width: "50%",
+              flex: 1,
             }}
           >
-            <Text style={style.keyText}>{item.key} </Text>
-          </View>
-          <View>
-            <Text style={style.valueText}>{item.value}</Text>
+            <Text numberOfLines={1} style={style.valueText}>
+              {item.value}
+            </Text>
           </View>
         </View>
       )}
@@ -44,7 +46,7 @@ const style = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     padding: 10,
-    gap: 10,
+    gap: 2,
     borderRadius: 20,
     borderColor: "#ddd",
     borderWidth: 1,
@@ -64,6 +66,7 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#424242",
+    textAlign: "right",
   },
   itemContainer: {
     flexDirection: "row",
@@ -71,5 +74,6 @@ const style = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     borderRadius: 8,
+    gap: 5,
   },
 });

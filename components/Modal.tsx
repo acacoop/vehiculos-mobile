@@ -125,12 +125,13 @@ const Modal: React.FC<ModalProps> = ({
               selection={{ start: value.length, end: value.length }}
             />
             <View style={styles.actions}>
-              <Button text={cancelLabel} onPress={onCancel} variant="primary" />
+              <Button text={cancelLabel} onPress={onCancel} variant="primary" width="48%" />
               <Button
                 text={confirmLabel}
                 onPress={onConfirm}
                 variant="primaryBg"
                 disabled={confirmDisabled}
+                width="48%"
               />
             </View>
           </Animated.View>
