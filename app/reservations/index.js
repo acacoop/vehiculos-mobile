@@ -254,9 +254,10 @@ export default function Reservations() {
       ) : (
         <SectionList
           contentContainerStyle={styles.scrollContent}
-          style={{ width: "100%", zIndex: 1 }}
+          style={{ width: "100%" }}
           sections={sections}
           keyExtractor={(item, index) => item.id + index}
+          stickySectionHeadersEnabled={false}
           renderSectionHeader={({ section: { title } }) => (
             <View style={styles.sectionMonth}>
               <Text style={styles.month}>{title}</Text>
@@ -319,6 +320,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#282D86",
     marginTop: 10,
+  },
+  sectionMonth: {
+    backgroundColor: "#f0f0f000",
   },
   month: {
     fontSize: 20,
