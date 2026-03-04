@@ -1,16 +1,14 @@
 import { useLocalSearchParams, useFocusEffect } from "expo-router";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useState, useCallback } from "react";
 import { ScreenLayout } from "../../../components/ScreenLayout";
 import { BottomActionButton } from "../../../components/BottomActionButton";
 import Modal from "../../../components/Modal";
 import { CardGrid } from "../../../components/Card";
+import {
+  PaginatedFlatList,
+  usePaginatedList,
+} from "../../../components/PaginatedFlatList";
 import { getVehicle } from "../../../services/vehicles";
 import { getCurrentUser } from "../../../services/me";
 import {
@@ -19,8 +17,6 @@ import {
 } from "../../../services/vehicleKilometersLogs";
 import { useToast } from "../../../hooks/useToast";
 import { colors } from "../../../constants/colors";
-
-const PAGE_SIZE = 10;
 
 function KilometersCard({ item }) {
   const formatDate = (dateString) => {
@@ -59,43 +55,33 @@ export default function KilometersRegister() {
   const { kilometersregister } = useLocalSearchParams();
   const licensePlate = kilometersregister;
   const toast = useToast();
+  const { refreshKey, refresh } = usePaginatedList();
 
   const [vehicleDetail, setVehicleDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [logs, setLogs] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [kilometersInput, setKilometersInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const fetchInitialData = useCallback(async () => {
+  // Fetch vehicle details
+  const fetchVehicle = useCallback(async () => {
     setLoading(true);
     try {
       const vehicle = await getVehicle(licensePlate);
       if (!vehicle) {
         setError("Vehículo no encontrado");
         setVehicleDetail(null);
-        setLogs([]);
         return;
       }
-
       setVehicleDetail(vehicle);
-
-      const result = await getKilometersLogsByVehicle(vehicle.id, 1, PAGE_SIZE);
-      setLogs(result.items);
-      setHasMore(result.hasMore);
-      setPage(1);
       setError(null);
     } catch (err) {
-      console.error("Error fetching data", err);
-      setError(err.message || "No se pudo cargar el historial");
+      console.error("Error fetching vehicle", err);
+      setError(err.message || "No se pudo cargar el vehículo");
       setVehicleDetail(null);
-      setLogs([]);
     } finally {
       setLoading(false);
     }
@@ -103,34 +89,20 @@ export default function KilometersRegister() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchInitialData();
-    }, [fetchInitialData])
+      fetchVehicle();
+    }, [fetchVehicle]),
   );
 
-  const loadMore = async () => {
-    if (loadingMore || !hasMore || !vehicleDetail) return;
-
-    setLoadingMore(true);
-    try {
-      const nextPage = page + 1;
-      const result = await getKilometersLogsByVehicle(
-        vehicleDetail.id,
-        nextPage,
-        PAGE_SIZE
-      );
-      setLogs((prev) => [...prev, ...result.items]);
-      setHasMore(result.hasMore);
-      setPage(nextPage);
-    } catch (err) {
-      console.error("Error loading more", err);
-      toast.error({
-        title: "Error",
-        message: "No se pudo cargar más registros",
-      });
-    } finally {
-      setLoadingMore(false);
-    }
-  };
+  // Fetch function for paginated list
+  const fetchKilometersLogs = useCallback(
+    async (page, limit) => {
+      if (!vehicleDetail?.id) {
+        return { items: [], total: 0, hasMore: false };
+      }
+      return getKilometersLogsByVehicle(vehicleDetail.id, page, limit);
+    },
+    [vehicleDetail?.id],
+  );
 
   const handleOpenModal = () => {
     setKilometersInput("");
@@ -185,26 +157,31 @@ export default function KilometersRegister() {
       });
 
       handleCloseModal();
-      await fetchInitialData();
+      refresh(); // Refresh the paginated list
     } catch (err) {
       console.error("Error creating kilometers log", err);
-      
+
       // Parse error and show user-friendly message
       let errorMessage = "No se pudo registrar el kilometraje";
-      
+
       try {
         // Try to parse if error message is JSON
-        const errorData = typeof err?.message === "string" && err.message.includes("{")
-          ? JSON.parse(err.message)
-          : err?.response?.data;
-        
-        if (errorData?.status === 422 || errorData?.type?.includes("invalid-kilometers")) {
-          errorMessage = "Ingrese un kilometraje válido. El valor debe ser mayor al último registro.";
+        const errorData =
+          typeof err?.message === "string" && err.message.includes("{")
+            ? JSON.parse(err.message)
+            : err?.response?.data;
+
+        if (
+          errorData?.status === 422 ||
+          errorData?.type?.includes("invalid-kilometers")
+        ) {
+          errorMessage =
+            "Ingrese un kilometraje válido. El valor debe ser mayor al último registro.";
         }
       } catch {
         // If parsing fails, use default message
       }
-      
+
       toast.error({
         title: "Error",
         message: errorMessage,
@@ -214,14 +191,15 @@ export default function KilometersRegister() {
     }
   };
 
-  const renderFooter = () => {
-    if (!loadingMore) return null;
-    return (
-      <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color={colors.primary} />
-      </View>
-    );
-  };
+  const handleListError = useCallback(
+    (err) => {
+      toast.error({
+        title: "Error",
+        message: err.message || "No se pudo cargar más registros",
+      });
+    },
+    [toast],
+  );
 
   return (
     <ScreenLayout
@@ -241,16 +219,15 @@ export default function KilometersRegister() {
           </Text>
         </View>
 
-        <FlatList
+        <PaginatedFlatList
           style={styles.list}
-          data={logs}
-          keyExtractor={(item) => item.id}
+          fetchData={fetchKilometersLogs}
           renderItem={({ item }) => <KilometersCard item={item} />}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
+          onError={handleListError}
+          enabled={!!vehicleDetail?.id}
+          refreshDeps={[refreshKey, vehicleDetail?.id]}
           ListEmptyComponent={
             <Text style={styles.emptyText}>
               No hay registros de kilometraje para este vehículo.
@@ -290,9 +267,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   header: {
-    width: "90%",
+    width: "100%",
     backgroundColor: colors.white,
-    borderRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     padding: 20,
     gap: 8,
     shadowColor: "#00000012",
@@ -300,13 +278,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 3,
-    marginTop: 16,
-    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#0000001A",
   },
   licensePlateTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: colors.textPrimary,
+    color: colors.primary,
   },
   subtitle: {
     fontSize: 14,
@@ -315,19 +293,15 @@ const styles = StyleSheet.create({
   list: {
     width: "90%",
     flex: 1,
+    paddingVertical: 10,
   },
   listContainer: {
     gap: 12,
-    paddingBottom: 20,
   },
   emptyText: {
     textAlign: "center",
     color: colors.textSecondary,
     fontSize: 14,
     marginTop: 40,
-  },
-  footerLoader: {
-    paddingVertical: 20,
-    alignItems: "center",
   },
 });

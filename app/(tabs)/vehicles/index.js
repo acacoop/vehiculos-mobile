@@ -1,33 +1,18 @@
-import {
-  FlatList,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Text,
-} from "react-native";
-import { useEffect, useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { useCallback } from "react";
 import { getMyVehicles } from "../../../services/vehicles";
 import { VehicleCard } from "../../../components/VehicleCard";
+import { PaginatedFlatList } from "../../../components/PaginatedFlatList";
 import { Stack } from "expo-router";
 
 export default function Vehicles() {
-  const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    getMyVehicles()
-      .then((data) => {
-        setVehicles(data);
-        setError(null);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching vehicles", err);
-        setError(err.message || "No se pudo cargar la lista de vehículos");
-        setVehicles([]);
-        setLoading(false);
-      });
+  const fetchVehicles = useCallback(async () => {
+    const data = await getMyVehicles();
+    return {
+      items: data,
+      total: data.length,
+      hasMore: false,
+    };
   }, []);
 
   return (
@@ -37,32 +22,18 @@ export default function Vehicles() {
           headerTitle: "Vehículos",
         }}
       />
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#282D86" />
-        </View>
-      ) : error ? (
-        <View style={styles.loadingContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      ) : vehicles.length === 0 ? (
-        <View style={styles.loadingContainer}>
+      <PaginatedFlatList
+        style={{ width: "100%", flex: 1 }}
+        fetchData={fetchVehicles}
+        renderItem={({ item }) => <VehicleCard vehicle={item} />}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
           <Text style={styles.emptyText}>
             No hay vehículos disponibles para mostrar
           </Text>
-        </View>
-      ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          bounces={false}
-          style={{ width: "100%", flex: 1 }}
-          data={vehicles}
-          renderItem={({ item }) => <VehicleCard vehicle={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContent}
-        />
-      )}
+        }
+      />
     </View>
   );
 }
@@ -74,28 +45,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-  },
   emptyText: {
     color: "#282D86",
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 32,
-  },
-  errorText: {
-    color: "#D32F2F",
-    fontSize: 16,
-    textAlign: "center",
-    paddingHorizontal: 32,
+    marginTop: 40,
   },
   listContent: {
     paddingVertical: 20,
-
     gap: 25,
     alignItems: "stretch",
   },

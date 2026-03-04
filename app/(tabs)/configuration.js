@@ -19,7 +19,7 @@ export default function Configuration() {
   };
 
   const openMiArgentina = async () => {
-    const androidPackage = "ar.gob.androides";
+    const androidPackage = "ar.gob.miargentina";
     const iosAppId = "1435736780";
 
     // Esquemas para abrir la tienda nativa directamente

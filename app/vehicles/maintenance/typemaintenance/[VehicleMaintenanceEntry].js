@@ -1,21 +1,54 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import React, { useCallback, useEffect } from "react";
 import {
   useLocalSearchParams,
   Stack,
   useNavigation,
   useRouter,
 } from "expo-router";
-import { useFocusEffect } from "@react-navigation/native";
-import { getMaintenanceRecords } from "../../../../services/maintenanceRecords";
+import { getMaintenanceRecordsPaginated } from "../../../../services/maintenanceRecords";
 import { Table } from "../../../../components/Table";
 import { BottomActionButton } from "../../../../components/BottomActionButton";
+import { CardGrid } from "../../../../components/Card";
+import {
+  PaginatedFlatList,
+  usePaginatedList,
+} from "../../../../components/PaginatedFlatList";
+import { useToast } from "../../../../hooks/useToast";
+import { colors } from "../../../../constants/colors";
+
+function MaintenanceHistoryCard({ item }) {
+  const formatDate = (date) => {
+    if (!date) return "Sin fecha";
+    try {
+      const d = date instanceof Date ? date : new Date(date);
+      return new Intl.DateTimeFormat("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }).format(d);
+    } catch {
+      return "Sin fecha";
+    }
+  };
+
+  const formatKilometers = (km) => {
+    if (km === undefined || km === null) return "-";
+    return `${new Intl.NumberFormat("es-AR").format(km)} km`;
+  };
+
+  const items = [
+    { value: formatDate(item.date), highlight: true },
+    { value: formatKilometers(item.kilometers) },
+  ];
+
+  // Add notes if present as full width item
+  if (item.notes) {
+    items.push({ value: `Observación: ${item.notes}`, fullWidth: true });
+  }
+
+  return <CardGrid items={items} />;
+}
 
 export default function VehicleMaintenanceEntry() {
   const { VehicleMaintenanceEntry, vehicleId } = useLocalSearchParams();
@@ -23,33 +56,34 @@ export default function VehicleMaintenanceEntry() {
 
   const navigation = useNavigation();
   const router = useRouter();
-
-  const [maintenanceHistory, setMaintenanceHistory] = useState([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);
-  const [historyError, setHistoryError] = useState(null);
+  const toast = useToast();
+  const { refreshKey } = usePaginatedList();
 
   const maintenanceId = maintenance?.maintenanceId;
 
-  const loadMaintenanceRecords = useCallback(async (maintId, vehId) => {
-    if (!maintId || !vehId) return;
-    setLoadingHistory(true);
-    try {
-      const records = await getMaintenanceRecords({
-        maintenanceId: maintId,
-        vehicleId: vehId,
-      });
-      setMaintenanceHistory(records);
-      setHistoryError(null);
-    } catch (error) {
-      console.error("Error al cargar el historial de mantenimiento", error);
-      setMaintenanceHistory([]);
-      setHistoryError(
-        error?.message || "No se pudo obtener el historial de mantenimiento",
+  const fetchMaintenanceRecords = useCallback(
+    async (page, limit) => {
+      if (!maintenanceId || !vehicleId) {
+        return { items: [], total: 0, hasMore: false };
+      }
+      return getMaintenanceRecordsPaginated(
+        { maintenanceId, vehicleId },
+        page,
+        limit,
       );
-    } finally {
-      setLoadingHistory(false);
-    }
-  }, []);
+    },
+    [maintenanceId, vehicleId],
+  );
+
+  const handleError = useCallback(
+    (error) => {
+      toast.error({
+        title: "Error",
+        message: error.message || "No se pudo cargar más registros",
+      });
+    },
+    [toast],
+  );
 
   useEffect(() => {
     if (maintenance?.maintenanceName) {
@@ -59,24 +93,25 @@ export default function VehicleMaintenanceEntry() {
     }
   }, [maintenance, navigation]);
 
-  useEffect(() => {
-    if (!maintenanceId || !vehicleId) return;
-    loadMaintenanceRecords(maintenanceId, vehicleId);
-  }, [maintenanceId, vehicleId, loadMaintenanceRecords]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!maintenanceId || !vehicleId) return;
-      loadMaintenanceRecords(maintenanceId, vehicleId);
-    }, [maintenanceId, vehicleId, loadMaintenanceRecords]),
+  const renderHeader = () => (
+    <View style={styles.headerContent}>
+      <Table
+        data={{
+          Mantenimiento: maintenance.maintenanceCategoryName,
+          "Frecuencia (km)":
+            maintenance.kilometersFrequency ||
+            maintenance.kilometersFrequency === 0
+              ? `${maintenance.kilometersFrequency} km`
+              : "-",
+          "Frecuencia (días)":
+            maintenance.daysFrequency || maintenance.daysFrequency === 0
+              ? `${maintenance.daysFrequency} días`
+              : "-",
+        }}
+      />
+      <Text style={styles.historyTitle}>Historial de mantenimientos</Text>
+    </View>
   );
-
-  const formattedHistory = useMemo(() => {
-    return maintenanceHistory.map((entry) => ({
-      ...entry,
-      dateLabel: entry.date?.toLocaleDateString?.() || "-",
-    }));
-  }, [maintenanceHistory]);
 
   return (
     <View style={styles.container}>
@@ -87,68 +122,23 @@ export default function VehicleMaintenanceEntry() {
         }}
       />
 
-      <ScrollView
-        style={{
-          flex: 1,
-          width: "90%",
-          alignSelf: "center",
-          paddingTop: 16,
-        }}
-      >
-        <Table
-          data={{
-            Mantenimiento: maintenance.maintenanceCategoryName,
-            "Frecuencia (km)":
-              maintenance.kilometersFrequency ||
-              maintenance.kilometersFrequency === 0
-                ? `${maintenance.kilometersFrequency} km`
-                : "-",
-            "Frecuencia (días)":
-              maintenance.daysFrequency || maintenance.daysFrequency === 0
-                ? `${maintenance.daysFrequency} días`
-                : "-",
-          }}
-        />
+      <PaginatedFlatList
+        style={styles.list}
+        fetchData={fetchMaintenanceRecords}
+        renderItem={({ item }) => <MaintenanceHistoryCard item={item} />}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={
+          <Text style={styles.emptyHistoryText}>
+            No hay registros de mantenimiento disponibles
+          </Text>
+        }
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+        onError={handleError}
+        enabled={!!maintenanceId && !!vehicleId}
+        refreshDeps={[refreshKey, maintenanceId, vehicleId]}
+      />
 
-        <View style={styles.historyContainer}>
-          <Text style={styles.historyTitle}>Historial de mantenimientos</Text>
-          {loadingHistory ? (
-            <ActivityIndicator size="small" color="#282D86" />
-          ) : historyError ? (
-            <Text style={styles.errorText}>{historyError}</Text>
-          ) : formattedHistory.length === 0 ? (
-            <Text style={styles.emptyHistoryText}>
-              No hay registros de mantenimiento disponibles
-            </Text>
-          ) : (
-            formattedHistory.map((entry) => (
-              <View key={entry.id} style={styles.historyEntry}>
-                <View
-                  style={{
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                    paddingBottom: 8,
-                    borderBottomColor: "#ccc",
-                    borderBottomWidth: 1,
-                    marginBottom: 8,
-                  }}
-                >
-                  <Text style={styles.historyDate}>{entry.dateLabel}</Text>
-                  <Text style={styles.historyKilometers}>
-                    {entry.kilometers} km
-                  </Text>
-                </View>
-                {entry.notes ? (
-                  <Text style={styles.historyNotes}>
-                    <Text style={{ fontWeight: "bold" }}>Observación:</Text>{" "}
-                    {entry.notes}
-                  </Text>
-                ) : null}
-              </View>
-            ))
-          )}
-        </View>
-      </ScrollView>
       <BottomActionButton
         text={
           !maintenanceId || !vehicleId
@@ -182,62 +172,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-  categoryTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#282D86",
+  list: {
+    flex: 1,
+    width: "100%",
   },
-
-  textTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    gap: 10,
-  },
-  textInfo: {
-    color: "#282D86",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  historyContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
+  listContainer: {
+    paddingHorizontal: 20,
     paddingTop: 16,
+    paddingBottom: 20,
+    gap: 12,
+  },
+  headerContent: {
+    marginBottom: 8,
   },
   historyTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#282D86",
-  },
-  errorText: {
-    fontSize: 16,
-    color: "#D32F2F",
+    color: colors.primary,
+    marginTop: 16,
+    marginBottom: 8,
   },
   emptyHistoryText: {
     fontSize: 16,
-    color: "#282D86",
-  },
-  historyEntry: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 10,
-    borderColor: "#ddd",
-    borderWidth: 1,
-  },
-  historyDate: {
-    fontSize: 16,
-    color: "#282D86",
-    fontWeight: "700",
-  },
-  historyKilometers: {
-    fontSize: 16,
-    color: "#a0a0a0ff",
-    fontWeight: "600",
-  },
-  historyNotes: {
-    fontSize: 16,
-    color: "#333",
-    marginTop: 8,
+    color: colors.textSecondary,
+    textAlign: "center",
+    marginTop: 20,
   },
 });

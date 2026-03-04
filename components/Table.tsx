@@ -21,7 +21,7 @@ export function Table({ data }: { data: any }) {
             },
           ]}
         >
-          <View style={{ width: "25%" }}>
+          <View>
             <Text numberOfLines={1} style={style.keyText}>
               {item.key}{" "}
             </Text>
@@ -74,6 +74,6 @@ const style = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     borderRadius: 8,
-    gap: 5,
+    gap: 10,
   },
 });
