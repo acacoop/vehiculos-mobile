@@ -1,3 +1,4 @@
+import { act } from "react";
 import { Vehicle } from "../interfaces/vehicle";
 import { apiClient } from "./apiClient";
 import { getCurrentUser } from "./me";
@@ -62,6 +63,30 @@ type AssignmentsResponse = {
   };
 };
 
+// Vehicle Responsible response types
+type ResponsibleVehicle = {
+  id: string;
+  licensePlate: string;
+  year: number;
+  model: {
+    id: string;
+    name: string;
+    brand: { id: string; name: string };
+  };
+};
+
+type VehicleResponsible = {
+  id: string;
+  startDate: string;
+  endDate?: string | null;
+  vehicle: ResponsibleVehicle;
+};
+
+type VehicleResponsiblesResponse = {
+  status: "success";
+  data: VehicleResponsible[];
+};
+
 function mapVehicle(api: VehicleApiModel): Vehicle {
   const brandName = api.model?.brand?.name ?? "";
   const modelName = api.model?.name ?? "";
@@ -102,35 +127,70 @@ export async function getMyVehicles(): Promise<Vehicle[]> {
   }
 
   // Get assignments filtered by userId and current date
-  const today = new Date().toISOString().split("T")[0];
-  const response = await apiClient.get<AssignmentsResponse>("/assignments", {
-    query: {
-      userId: currentUser.id,
-      date: today,
-      limit: 100,
-      page: 1,
-    },
-  });
 
-  const assignments = Array.isArray(response?.data) ? response.data : [];
+  // Fetch both assigned vehicles and responsible vehicles in parallel
+  const [assignmentsResponse, responsiblesResponse] = await Promise.all([
+    apiClient.get<AssignmentsResponse>("/assignments", {
+      query: {
+        userId: currentUser.id,
+        active: true,
+        limit: 100,
+        page: 1,
+      },
+    }),
+    apiClient.get<VehicleResponsiblesResponse>(
+      `/vehicle-responsibles/user/${currentUser.id}/current`,
+    ),
+  ]);
 
-  // Extract vehicles from assignments and map to Vehicle type
-  return assignments.map((assignment) => {
+  const assignments = Array.isArray(assignmentsResponse?.data)
+    ? assignmentsResponse.data
+    : [];
+  const responsibles = Array.isArray(responsiblesResponse?.data)
+    ? responsiblesResponse.data
+    : [];
+
+  // Create a map to track unique vehicles by id
+  const vehicleMap = new Map<string, Vehicle>();
+
+  // Add vehicles from assignments
+  assignments.forEach((assignment) => {
     const v = assignment.vehicle;
-    return {
-      id: v.id,
-      licensePlate: v.licensePlate,
-      brand: v.model?.brand?.name ?? "",
-      model: v.model?.name ?? "",
-      modelId: v.model?.id,
-      year: v.year,
-      imgUrl: "",
-    };
+    if (!vehicleMap.has(v.id)) {
+      vehicleMap.set(v.id, {
+        id: v.id,
+        licensePlate: v.licensePlate,
+        brand: v.model?.brand?.name ?? "",
+        model: v.model?.name ?? "",
+        modelId: v.model?.id,
+        year: v.year,
+        imgUrl: "",
+      });
+    }
   });
+
+  // Add vehicles from responsibles (only if not already present)
+  responsibles.forEach((responsible) => {
+    const v = responsible.vehicle;
+    if (!vehicleMap.has(v.id)) {
+      vehicleMap.set(v.id, {
+        id: v.id,
+        licensePlate: v.licensePlate,
+        brand: v.model?.brand?.name ?? "",
+        model: v.model?.name ?? "",
+        modelId: v.model?.id,
+        year: v.year,
+        imgUrl: "",
+      });
+    }
+  });
+
+  // Return unique vehicles as array
+  return Array.from(vehicleMap.values());
 }
 
 export async function getVehicle(
-  licensePlate: string
+  licensePlate: string,
 ): Promise<Vehicle | null> {
   if (!licensePlate) return null;
 
@@ -149,7 +209,7 @@ export async function getVehicle(
 
   try {
     const detail = await apiClient.get<VehicleDetailResponse>(
-      `/vehicles/${first.id}`
+      `/vehicles/${first.id}`,
     );
 
     if (detail?.data) {
