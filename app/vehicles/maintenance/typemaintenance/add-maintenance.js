@@ -165,8 +165,7 @@ export default function AddMaintenance() {
             onChange={setDate}
             containerStyle={styles.datePicker}
           />
-        </View>
-        <View style={styles.formRow}>
+
           <Text style={styles.sectionTitle}>Kilometros actuales</Text>
           <TextInput
             placeholder="Kilómetros actuales"
@@ -176,8 +175,7 @@ export default function AddMaintenance() {
             keyboardType="numeric"
             inputMode="numeric"
           />
-        </View>
-        <View style={styles.formRow}>
+
           <Text style={styles.sectionTitle}>Descripción</Text>
           <TextInput
             placeholder="Descripción"
@@ -244,7 +242,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "start",
     backgroundColor: "#fff",
-    gap: 5,
+    gap: 20,
     padding: 20,
     borderRadius: 10,
     borderColor: "#ddd",
