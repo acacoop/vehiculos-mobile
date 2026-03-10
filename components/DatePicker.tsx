@@ -12,6 +12,7 @@ import {
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
+import { colors } from "../constants/colors";
 
 type DatePickerProps = {
   label?: string;
@@ -160,18 +161,18 @@ export const DatePicker = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
+    backgroundColor: colors.white,
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "#F0F0F0",
+    borderColor: colors.borderExtraLight,
   },
   childrenContainer: {
     backgroundColor: "transparent",
@@ -182,11 +183,11 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#282D86",
+    color: colors.primary,
   },
   value: {
     fontSize: 16,
-    color: "#424242",
+    color: colors.textDarkAlt,
   },
   modalOverlay: {
     flex: 1,
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalContent: {
-    backgroundColor: "#ffff",
+    backgroundColor: colors.white,
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   closeButtonText: {
-    color: "#282D86",
+    color: colors.primary,
     fontWeight: "bold",
     marginBottom: 20,
     fontSize: 20,

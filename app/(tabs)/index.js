@@ -1,6 +1,7 @@
 import { StyleSheet, View, Image, ScrollView } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
+import { colors } from "../../constants/colors";
 import WarningCard from "../../components/WarningCard";
 
 export default function Index() {
@@ -44,7 +45,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
   },
   logoContainer: {
     ...StyleSheet.absoluteFillObject,

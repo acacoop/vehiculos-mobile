@@ -17,6 +17,7 @@ import {
   getReservationsByVehicle,
 } from "../../services/reservations";
 import { getCurrentUser } from "../../services/me";
+import { colors } from "../../constants/colors";
 
 const Calendar = () => {
   const params = useLocalSearchParams();
@@ -207,7 +208,7 @@ const Calendar = () => {
       {loading ? (
         <ActivityIndicator
           size="large"
-          color="#282D86"
+          color={colors.primary}
           style={{ marginTop: 40 }}
         />
       ) : (
@@ -231,12 +232,12 @@ const Calendar = () => {
       {reservationsLoading && (
         <ActivityIndicator
           size="small"
-          color="#282D86"
+          color={colors.primary}
           style={{ marginTop: 10 }}
         />
       )}
       {reservationsError && (
-        <Text style={{ color: "#D32F2F", marginTop: 8 }}>
+        <Text style={{ color: colors.errorDark, marginTop: 8 }}>
           {reservationsError}
         </Text>
       )}

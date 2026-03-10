@@ -11,6 +11,7 @@ import { Icon } from "./Icons";
 import { ReserveModal } from "./ReserveModal";
 import { getCurrentUser } from "../services/me";
 import { updateReservation } from "../services/reservations";
+import { colors } from "../constants/colors";
 
 interface ScheduleProps {
   id: string;
@@ -140,7 +141,7 @@ export function Schedule({
         <Text style={styles.title}>Detalles de la reserva</Text>
         <Pressable onPress={handleOpenEditModal}>
           <View style={styles.containerImage}>
-            <Icon name="pencil" size={25} color="#fe9000" />
+            <Icon name="pencil" size={25} color={colors.secondary} />
           </View>
         </Pressable>
       </View>
@@ -154,7 +155,7 @@ export function Schedule({
       ) : null}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <Icon name="calendar" color="#282D86" />
+          <Icon name="calendar" color={colors.primary} />
         </View>
 
         <View style={styles.itemContainer}>
@@ -173,7 +174,7 @@ export function Schedule({
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <View style={styles.containerImage}>
-          <Icon name="calendar" color="#282D86" />
+          <Icon name="calendar" color={colors.primary} />
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.subTitle}>Fin de la reserva</Text>
@@ -219,11 +220,11 @@ export function Schedule({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 20,
-    shadowColor: "#00000070",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
-    borderColor: "#ddd",
+    borderColor: colors.borderDark,
     borderWidth: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -244,12 +245,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#282D86",
+    color: colors.primary,
   },
   subTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#424242",
+    color: colors.textDarkAlt,
   },
   metaRow: {
     flexDirection: "row",
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
   metaValue: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#fe9000",
+    color: colors.secondary,
   },
 
   textContainer: {
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#282D86",
+    color: colors.primary,
   },
   containerImage: {
     justifyContent: "center",

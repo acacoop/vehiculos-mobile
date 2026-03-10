@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 type CarVisualizerProps = {
   vehicles: Vehicle[];
@@ -38,7 +39,7 @@ export function CarVisualizer({
     return (
       <View style={[styles.container, { width: containerWidth as any }]}>
         <View style={styles.emptyState}>
-          <Icon name="car" size={32} color="#9CA3AF" />
+          <Icon name="car" size={32} color={colors.textLight} />
           <Text style={styles.emptyText}>No hay vehículos disponibles</Text>
         </View>
       </View>
@@ -67,7 +68,7 @@ export function CarVisualizer({
           pressed && styles.arrowButtonPressed,
         ]}
       >
-        <Icon name="left" size={18} color="#282D86" />
+        <Icon name="left" size={18} color={colors.primary} />
       </Pressable>
       <View style={styles.vehicleCard}>
         <View style={styles.content}>
@@ -95,7 +96,7 @@ export function CarVisualizer({
           pressed && styles.arrowButtonPressed,
         ]}
       >
-        <Icon name="right" size={18} color="#282D86" />
+        <Icon name="right" size={18} color={colors.primary} />
       </Pressable>
     </View>
   );
@@ -128,18 +129,18 @@ const styles = StyleSheet.create({
   },
   vehicleCard: {
     width: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
     borderRadius: 8,
     paddingVertical: 16,
     paddingHorizontal: 56,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "#F0F0F0",
+    borderColor: colors.borderExtraLight,
     position: "relative",
   },
   content: {
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   plateContainer: {
-    backgroundColor: "#282D86",
+    backgroundColor: colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -156,13 +157,13 @@ const styles = StyleSheet.create({
   plateText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#ffffff",
+    color: colors.white,
     letterSpacing: 2,
   },
   brandText: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#6B7280",
+    color: colors.textSecondary,
     textAlign: "center",
     marginBottom: 12,
   },
@@ -174,10 +175,10 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: "#E5E7EB",
+    backgroundColor: colors.border,
   },
   dotActive: {
-    backgroundColor: "#282D86",
+    backgroundColor: colors.primary,
   },
   emptyState: {
     flex: 1,
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: colors.textLight,
     textAlign: "center",
   },
 });

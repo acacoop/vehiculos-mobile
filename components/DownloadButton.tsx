@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Pressable, Text, View } from "react-native";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 export default function DownloadButton() {
   return (
@@ -8,7 +9,7 @@ export default function DownloadButton() {
       <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
         <View
           style={{
-            backgroundColor: "#f9f9f9",
+            backgroundColor: colors.backgroundLight,
             borderRadius: 100,
             padding: 10,
             justifyContent: "center",
@@ -27,12 +28,12 @@ export default function DownloadButton() {
 const styles = StyleSheet.create({
   Pressable: {
     flexDirection: "row",
-    backgroundColor: "#ffff",
+    backgroundColor: colors.white,
     padding: 20,
     borderRadius: 15,
     marginTop: 20,
     elevation: 2,
-    shadowColor: "#0000006c",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -41,14 +42,14 @@ const styles = StyleSheet.create({
     shadowRadius: 2.5,
     justifyContent: "space-between",
     alignItems: "center",
-    borderColor: "#d3d3d3ff",
+    borderColor: colors.borderDark,
     borderWidth: 1,
     width: "100%",
     gap: 20,
   },
   text: {
     fontSize: 20,
-    color: "#282D86",
+    color: colors.primary,
     fontWeight: "bold",
     textAlign: "left",
   },

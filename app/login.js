@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
+import { colors } from "../constants/colors";
 
 export default function LoginScreen() {
   const { signIn, isLoading, isAuthenticated, error } = useAuth();
@@ -43,7 +44,7 @@ export default function LoginScreen() {
               resizeMode="contain"
             />
             {isLoading ? (
-              <ActivityIndicator color="#ffffff" />
+              <ActivityIndicator color={colors.white} />
             ) : (
               <Text style={styles.buttonText}>Iniciar sesión</Text>
             )}
@@ -69,10 +70,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
     padding: 24,
     borderRadius: 8,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 20,
     fontWeight: "bold",
-    color: "#282D86",
+    color: colors.primary,
     textAlign: "center",
   },
 
@@ -103,16 +104,16 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: "center",
     fontSize: 16,
-    color: "#4A4A4A",
+    color: colors.textDark,
     lineHeight: 22,
   },
   error: {
-    color: "#D32F2F",
+    color: colors.errorDark,
     textAlign: "center",
   },
   button: {
     flexDirection: "row",
-    backgroundColor: "#282D86",
+    backgroundColor: colors.primary,
     justifyContent: "center",
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    color: "#ffffff",
+    color: colors.white,
     fontSize: 16,
     fontWeight: "600",
   },

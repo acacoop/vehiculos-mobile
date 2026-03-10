@@ -6,6 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/Toast/toastConfig";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { colors } from "../constants/colors";
 
 function RootNavigator() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -32,7 +33,7 @@ function RootNavigator() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#282D86" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -41,10 +42,10 @@ function RootNavigator() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#ffffff",
+          backgroundColor: colors.white,
         },
         headerTitleAlign: "center",
-        headerTintColor: "#282D86",
+        headerTintColor: colors.primary,
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
       }}
     >
@@ -59,7 +60,7 @@ export default function Layout() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <StatusBar style="dark" backgroundColor="#ffffff" />
+        <StatusBar style="dark" backgroundColor={colors.white} />
         <View style={styles.container}>
           <RootNavigator />
         </View>
@@ -77,6 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
   },
 });

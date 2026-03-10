@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 18,
     borderRadius: 10,
-    shadowColor: "#00000070",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
-    borderColor: "#ddd",
+    borderColor: colors.borderDark,
     borderWidth: 1,
   },
   content: {

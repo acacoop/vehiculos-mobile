@@ -1,6 +1,7 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../constants/colors";
 
 interface WarningCardProps {
   message: string;
@@ -11,7 +12,7 @@ const WarningCard = ({ message }: WarningCardProps) => {
     <View style={styles.card}>
       <Text style={styles.warningText}>
         {" "}
-        <Ionicons name="warning" size={24} color="#e74c3c" /> Atención
+        <Ionicons name="warning" size={24} color={colors.error} /> Atención
       </Text>
       <Text style={styles.cardText}>{message}</Text>
     </View>
@@ -20,12 +21,12 @@ const WarningCard = ({ message }: WarningCardProps) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     padding: 20,
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   warningText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#e74c3c",
+    color: colors.error,
   },
   cardText: {
     fontSize: 16,

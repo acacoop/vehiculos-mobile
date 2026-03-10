@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Vehicle } from "../interfaces/vehicle";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 const daysOfWeek = ["D", "L", "Ma", "Mi", "J", "V", "S"];
 const CELL_WIDTH = 42;
@@ -60,7 +61,7 @@ export const Calendario = ({
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
   const weeks = generateWeeksInMonth(currentMonth, currentYear);
-  const DEFAULT_RESERVATION_COLOR = "#cdd4ffdc";
+  const DEFAULT_RESERVATION_COLOR = colors.primaryAlpha;
 
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -119,17 +120,17 @@ export const Calendario = ({
             alignItems: "center",
             paddingVertical: 10,
             paddingHorizontal: 15,
-            shadowColor: "#000",
+            shadowColor: colors.shadow,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.08,
             shadowRadius: 8,
             elevation: 3,
             borderWidth: 1,
-            borderColor: "#F0F0F0",
-            backgroundColor: "#ffffff",
+            borderColor: colors.borderExtraLight,
+            backgroundColor: colors.white,
           }}
         >
-          <Text style={{ color: "#282D86", fontWeight: "bold", fontSize: 16 }}>
+          <Text style={{ color: colors.primary, fontWeight: "bold", fontSize: 16 }}>
             Hoy
           </Text>
         </TouchableOpacity>
@@ -137,7 +138,7 @@ export const Calendario = ({
           name="left"
           onPress={goToPreviousMonth}
           size={20}
-          color="#282D86"
+          color={colors.primary}
         />
 
         <View
@@ -155,7 +156,7 @@ export const Calendario = ({
           </Text>
         </View>
 
-        <Icon name="right" onPress={goToNextMonth} size={20} color="#282D86" />
+        <Icon name="right" onPress={goToNextMonth} size={20} color={colors.primary} />
       </View>
 
       <View style={styles.gridContainer}>
@@ -193,7 +194,7 @@ export const Calendario = ({
                             selectedVehicle?.color || DEFAULT_RESERVATION_COLOR,
                         }
                       : null,
-                    isToday(day) ? { backgroundColor: "#282D86" } : null,
+                    isToday(day) ? { backgroundColor: colors.primary } : null,
                   ]}
                 >
                   <Text
@@ -204,7 +205,7 @@ export const Calendario = ({
                             color: DEFAULT_RESERVATION_COLOR,
                             fontWeight: "bold",
                           }
-                        : { color: "#282D86" },
+                        : { color: colors.primary },
                     ]}
                   >
                     {day.getDate()}
@@ -225,10 +226,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#ffff",
+    backgroundColor: colors.white,
     borderRadius: 10,
     gap: 2,
-    shadowColor: "#00000070",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
-    borderColor: "#ddd",
+    borderColor: colors.borderDark,
     borderWidth: 1,
   },
   headerRow: {
@@ -247,14 +248,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   navButton: {
-    backgroundColor: "#282d8621",
+    backgroundColor: colors.primaryAlpha,
     fontSize: 24,
-    color: "#282D86",
+    color: colors.primary,
     borderRadius: 100,
   },
   monthTitle: {
     fontSize: 18,
-    color: "#282D86",
+    color: colors.primary,
     textAlign: "center",
     fontWeight: "bold",
     lineHeight: 36,
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
     width: CELL_WIDTH,
     height: CELL_HEIGHT,
     fontSize: 16,
-    color: "#282D86",
+    color: colors.primary,
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -299,10 +300,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 1,
-    backgroundColor: "#ffffff33",
+    backgroundColor: `${colors.white}33`,
     borderRadius: 6,
   },
   dayText: {
-    color: "#282D86",
+    color: colors.primary,
   },
 });

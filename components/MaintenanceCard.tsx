@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Maintenance } from "../interfaces/maintenance";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 type MaintenanceCardProps = { maintenance: Maintenance };
 export function MaintenanceCard({ maintenance }: MaintenanceCardProps) {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 16,
-    color: "#1A237E",
+    color: colors.primaryDark,
     marginRight: 5,
     fontWeight: "600",
   },
@@ -41,22 +42,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    backgroundColor: "#f9fafb",
+    backgroundColor: colors.backgroundLight,
     borderRadius: 10,
     padding: 10,
-    borderColor: "#e5e7eb",
+    borderColor: colors.border,
     borderWidth: 1,
   },
   containerText: {
     flex: 1,
-    color: "#000",
+    color: colors.black,
     marginRight: 10,
   },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.backgroundLight,
     borderRadius: 50,
     padding: 5,
   },

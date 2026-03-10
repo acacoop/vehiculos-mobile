@@ -1,5 +1,6 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { colors } from "../constants/colors";
 
 export type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -20,33 +21,33 @@ type BaseIconProps = {
 
 // Mapping for specific colors per icon type
 const iconPalette: IconPalette = {
-  car: { default: "#282D86", pressed: "#FE9000" },
-  calendar: { default: "black", pressed: "#FE9000" },
-  setting: { default: "#282D86", pressed: "#FE9000" },
-  home: { default: "#282D86" },
-  user: { default: "#282D86", pressed: "white" },
-  wallet: { default: "#282D86", pressed: "white" },
-  lock: { default: "black", pressed: "white" },
-  logout: { default: "#ffffff", pressed: "#FE9000" },
-  left: { default: "#282D86", pressed: "white" },
-  right: { default: "#282D86", pressed: "white" },
-  tool: { default: "#282D86", pressed: "white" },
-  "paper-clip": { default: "#282D86", pressed: "white" },
-  idcard: { default: "#282D86", pressed: "white" },
-  download: { default: "white", pressed: "#282D86" },
-  edit: { default: "#282D86", pressed: "white" },
-  "close-circle": { default: "white", pressed: "white" },
-  "file-text": { default: "#282D86", pressed: "white" },
-  question: { default: "#282D86", pressed: "white" },
-  "clock-circle": { default: "#282D86", pressed: "white" },
-  down: { default: "#282D86" },
-  up: { default: "#282D86" },
-  safety: { default: "#282D86" },
-  check: { default: "#FFFFFF" },
-  close: { default: "#FFFFFF" },
-  key: { default: "#282D86" },
-  bulb: { default: "#282D86" },
-  warning: { default: "#FE9000" },
+  car: { default: colors.primary, pressed: colors.secondary },
+  calendar: { default: colors.black, pressed: colors.secondary },
+  setting: { default: colors.primary, pressed: colors.secondary },
+  home: { default: colors.primary },
+  user: { default: colors.primary, pressed: colors.white },
+  wallet: { default: colors.primary, pressed: colors.white },
+  lock: { default: colors.black, pressed: colors.white },
+  logout: { default: colors.white, pressed: colors.secondary },
+  left: { default: colors.primary, pressed: colors.white },
+  right: { default: colors.primary, pressed: colors.white },
+  tool: { default: colors.primary, pressed: colors.white },
+  "paper-clip": { default: colors.primary, pressed: colors.white },
+  idcard: { default: colors.primary, pressed: colors.white },
+  download: { default: colors.white, pressed: colors.primary },
+  edit: { default: colors.primary, pressed: colors.white },
+  "close-circle": { default: colors.white, pressed: colors.white },
+  "file-text": { default: colors.primary, pressed: colors.white },
+  question: { default: colors.primary, pressed: colors.white },
+  "clock-circle": { default: colors.primary, pressed: colors.white },
+  down: { default: colors.primary },
+  up: { default: colors.primary },
+  safety: { default: colors.primary },
+  check: { default: colors.white },
+  close: { default: colors.white },
+  key: { default: colors.primary },
+  bulb: { default: colors.primary },
+  warning: { default: colors.secondary },
 };
 
 // Mapping from the old keys (or logical keys) to Ionicons names
@@ -123,7 +124,7 @@ export const Icon: React.FC<IconProps> = ({
   const ioniconName = iconNameMapping[name] || (name as IconName);
 
   // Check if we have a palette for the logical name
-  const palette = iconPalette[name] ?? { default: "#282D86" };
+  const palette = iconPalette[name] ?? { default: colors.primary };
 
   const resolvedDefault = defaultColor ?? palette.default;
   const resolvedPressed = pressedColor ?? palette.pressed;

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../constants/colors";
 
 type InfoItem = {
   label: string;
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#282D86",
+    color: colors.primary,
   },
   itemsContainer: {
     rowGap: 10,
@@ -100,13 +101,13 @@ const styles = StyleSheet.create({
     columnGap: 12,
   },
   itemCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
-    shadowColor: "#000",
+    borderColor: colors.border,
+    shadowColor: colors.shadow,
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 2,
@@ -119,13 +120,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#282D86",
+    color: colors.primary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   value: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: colors.textPrimary,
   },
 });

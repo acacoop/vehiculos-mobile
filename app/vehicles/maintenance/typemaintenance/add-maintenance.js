@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { colors } from "../../../../constants/colors";
 import { DatePicker } from "../../../../components/DatePicker";
 import { BottomActionButton } from "../../../../components/BottomActionButton";
 import { createMaintenanceRecord } from "../../../../services/maintenanceRecords";
@@ -217,14 +218,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#282D86",
+    color: colors.primary,
   },
   disabledInputs: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 16,
     gap: 10,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
@@ -232,22 +233,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   disabledInput: {
-    backgroundColor: "#e9e9e9ff",
+    backgroundColor: colors.backgroundGray,
     borderRadius: 8,
     padding: 12,
-    color: "#424242",
+    color: colors.textDarkAlt,
     fontWeight: "600",
   },
   formRow: {
     flexDirection: "column",
     justifyContent: "start",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     gap: 20,
     padding: 20,
     borderRadius: 10,
-    borderColor: "#ddd",
+    borderColor: colors.borderDark,
     borderWidth: 1,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
@@ -260,24 +261,24 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 16,
     borderRadius: 8,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     fontSize: 16,
-    color: "#424242",
-    borderColor: "#ddd",
+    color: colors.textDarkAlt,
+    borderColor: colors.borderDark,
     borderWidth: 1,
   },
   multilineInput: {
     minHeight: 120,
   },
   errorText: {
-    color: "#D32F2F",
+    color: colors.errorDark,
     fontSize: 15,
     marginTop: 4,
     marginBottom: 8,
   },
   summaryText: {
     fontSize: 14,
-    color: "#424242",
+    color: colors.textDarkAlt,
     fontStyle: "italic",
   },
 });

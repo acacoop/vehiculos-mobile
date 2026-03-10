@@ -12,6 +12,7 @@ import {
   Platform,
 } from "react-native";
 import { Button } from "./Buttons";
+import { colors } from "../constants/colors";
 
 export type ModalProps = {
   visible: boolean;
@@ -113,7 +114,7 @@ const Modal: React.FC<ModalProps> = ({
               value={value}
               onChangeText={onChangeText}
               placeholder={placeholder}
-              placeholderTextColor="#9CA0C5"
+              placeholderTextColor={colors.primaryMuted}
               style={[
                 styles.textInput,
                 !multiline && styles.textInputSingleLine,
@@ -162,10 +163,10 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 420,
     borderRadius: 16,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     padding: 24,
     gap: 16,
-    shadowColor: "#00000040",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.25,
     shadowRadius: 20,
@@ -175,17 +176,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 20,
     fontWeight: "700",
-    color: "#282D86",
+    color: colors.primary,
   },
   textInput: {
     minHeight: 120,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#D0D4EB",
+    borderColor: colors.primaryLight,
     padding: 14,
     fontSize: 16,
-    color: "#424242",
-    backgroundColor: "#F8F9FF",
+    color: colors.textDarkAlt,
+    backgroundColor: colors.backgroundPrimaryLight,
   },
   textInputSingleLine: {
     minHeight: 50,

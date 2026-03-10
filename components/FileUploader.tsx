@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, Image, Alert, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { colors } from "../constants/colors";
 
 type PickedImage = {
   uri: string;
@@ -20,14 +21,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   button: {
-    backgroundColor: "#282D86",
+    backgroundColor: colors.primary,
     padding: 15,
     borderRadius: 10,
     width: 200,
     alignItems: "center" as const,
   },
   buttonText: {
-    color: "white",
+    color: colors.white,
     fontWeight: "bold" as const,
     fontSize: 16,
   },
@@ -38,9 +39,9 @@ const styles = StyleSheet.create({
     justifyContent: "center" as const,
     alignItems: "center" as const,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.borderDark,
     borderRadius: 8,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: colors.backgroundLight,
   },
   thumbnailContainerEmpty: {
     borderWidth: 0,

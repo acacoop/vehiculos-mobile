@@ -4,6 +4,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Icon } from "../../components/Icons";
 import { CardConfig } from "../../components/CardConfig";
 import { getCurrentUser } from "../../services/me";
+import { colors } from "../../constants/colors";
 
 export default function UserConfig() {
   const [userInfo, setUserInfo] = useState(null);
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.backgroundLight,
   },
   containerconfig: {
     flex: 1,
@@ -144,6 +145,6 @@ const styles = StyleSheet.create({
   sectionHeaderText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#282D86",
+    color: colors.primary,
   },
 });

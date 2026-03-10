@@ -6,6 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { colors } from "../constants/colors";
 import { Icon } from "./Icons";
 
 type CardConfigProps = {
@@ -33,7 +34,7 @@ export function CardConfig({
             alignItems: "center",
             justifyContent: "center",
             padding: 5,
-            backgroundColor: "#ebecf1ff",
+            backgroundColor: colors.backgroundGray,
             borderRadius: "100%",
           }}
         >
@@ -57,7 +58,7 @@ export function CardConfig({
           alignItems: "center",
           justifyContent: "center",
           padding: 5,
-          backgroundColor: "#ebecf1ff",
+          backgroundColor: colors.backgroundGray,
           borderRadius: "100%",
         }}
       >
@@ -73,23 +74,23 @@ export function CardConfig({
 }
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.backgroundLight,
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 15,
-    borderBottomColor: "#ddd",
+    borderBottomColor: colors.borderDark,
     borderBottomWidth: 1,
     width: "90%",
   },
   title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#000",
+    color: colors.black,
   },
   description: {
     fontSize: 14,
-    color: "#666",
+    color: colors.textSecondary,
   },
 });

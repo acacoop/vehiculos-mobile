@@ -92,7 +92,7 @@ export function QuarterlyControlSection({
           <Text style={styles.sectionTitle}>{category.title}</Text>
         </View>
         <Animated.View style={arrowAnimationStyle}>
-          <Icon name="down" size={18} color="#282D86" />
+          <Icon name="down" size={18} color={colors.primary} />
         </Animated.View>
       </Pressable>
       <Animated.View
@@ -125,7 +125,7 @@ export function QuarterlyControlSection({
                       <Icon
                         name="check"
                         size={14}
-                        color={answer === "yes" ? "#ffffff" : "#D0D4EB"}
+                        color={answer === "yes" ? colors.white : colors.primaryLight}
                       />
                     </Pressable>
                     <Pressable
@@ -145,7 +145,7 @@ export function QuarterlyControlSection({
                       <Icon
                         name="close"
                         size={14}
-                        color={answer === "no" ? "#ffffff" : "#D0D4EB"}
+                        color={answer === "no" ? colors.white : colors.primaryLight}
                       />
                     </Pressable>
                     <Pressable
@@ -159,7 +159,7 @@ export function QuarterlyControlSection({
                       <Icon
                         name="information"
                         size={14}
-                        color={hasObservation ? "#ffffff" : "#D0D4EB"}
+                        color={hasObservation ? colors.white : colors.primaryLight}
                       />
                     </Pressable>
                   </View>
@@ -175,15 +175,15 @@ export function QuarterlyControlSection({
 
 const styles = StyleSheet.create({
   section: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 16,
-    shadowColor: "#00000022",
+    shadowColor: colors.shadowLight,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.12,
     shadowRadius: 12,
     elevation: 4,
     borderWidth: 1,
-    borderColor: "#F0F0F5",
+    borderColor: colors.borderExtraLight,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
   },
   sectionHeaderPressed: {
-    backgroundColor: "#F6F7FF",
+    backgroundColor: colors.primaryHover,
   },
   headerLeft: {
     flexDirection: "row",
@@ -204,20 +204,20 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#EEF1FE",
+    backgroundColor: colors.primaryLightBg,
     alignItems: "center",
     justifyContent: "center",
   },
   iconBadgeSuccess: {
-    backgroundColor: "#E8F5E9",
+    backgroundColor: colors.successLight,
   },
   iconBadgeError: {
-    backgroundColor: "#FFEBEE",
+    backgroundColor: colors.errorLight,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#282D86",
+    color: colors.primary,
   },
   sectionBodyWrapper: {
     overflow: "hidden",
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   itemLabel: {
     flex: 1,
     fontSize: 15,
-    color: "#4A4A68",
+    color: colors.textDark,
   },
   itemLabelContainer: {
     flex: 1,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: "#D0D4EB",
+    borderColor: colors.primaryLight,
     alignItems: "center",
     justifyContent: "center",
   },

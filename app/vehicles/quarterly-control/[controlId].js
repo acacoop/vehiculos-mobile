@@ -344,11 +344,11 @@ function getCategoryIcon(category) {
 const styles = StyleSheet.create({
   header: {
     width: "90%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 16,
     padding: 20,
     gap: 8,
-    shadowColor: "#00000012",
+    shadowColor: colors.shadowLight,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
@@ -358,15 +358,15 @@ const styles = StyleSheet.create({
   licensePlateTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#282D86",
+    color: colors.primary,
   },
   subtitle: {
     fontSize: 16,
-    color: "#7A80A6",
+    color: colors.textMuted,
   },
   periodText: {
     fontSize: 14,
-    color: "#9CA0C5",
+    color: colors.textMuted,
     marginTop: 4,
   },
   scrollContent: {

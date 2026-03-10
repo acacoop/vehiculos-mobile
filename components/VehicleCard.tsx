@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { Vehicle } from "../interfaces/vehicle";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 type VehicleCardProps = { vehicle: Vehicle };
 export function VehicleCard({ vehicle }: VehicleCardProps) {
@@ -36,10 +37,10 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     height: 120,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     padding: 15,
     borderRadius: 15,
-    shadowColor: "#0000009d",
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -56,23 +57,23 @@ const styles = StyleSheet.create({
   text1: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: colors.textPrimary,
   },
   text2: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#8b8b8bff",
+    color: colors.textMuted,
   },
   text3: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#fe9000",
+    color: colors.secondary,
   },
   containerImage: {
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    backgroundColor: "#f1f1f1ff",
+    backgroundColor: colors.backgroundGray,
     borderRadius: "100%",
     marginLeft: 20,
   },

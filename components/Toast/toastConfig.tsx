@@ -25,11 +25,11 @@ const ToastIcon = ({
     success: {
       name: "checkcircle",
       color: colors.success,
-      bgColor: "#E8F5E9",
+      bgColor: colors.successLight,
     },
-    error: { name: "closecircle", color: colors.error, bgColor: "#FFEBEE" },
-    info: { name: "infocirlce", color: colors.info, bgColor: "#E3F2FD" },
-    warning: { name: "warning", color: colors.warning, bgColor: "#FFF3E0" },
+    error: { name: "closecircle", color: colors.error, bgColor: colors.errorLight },
+    info: { name: "infocirlce", color: colors.info, bgColor: colors.infoLight },
+    warning: { name: "warning", color: colors.warning, bgColor: colors.warningLight },
   };
 
   const config = iconConfig[type];
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,

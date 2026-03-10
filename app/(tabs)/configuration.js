@@ -5,6 +5,7 @@ import { CardConfig } from "../../components/CardConfig";
 import { Button } from "../../components/Buttons";
 import { Stack, useRouter } from "expo-router";
 import { useAuth } from "../../contexts/AuthContext";
+import { colors } from "../../constants/colors";
 
 export default function Configuration() {
   const router = useRouter();
@@ -116,12 +117,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     flexDirection: "column",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.backgroundLight,
   },
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#282D86",
+    color: colors.primary,
   },
   containerconfig: {
     flex: 1,

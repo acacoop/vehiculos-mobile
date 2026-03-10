@@ -9,6 +9,7 @@ import {
   UIManager,
 } from "react-native";
 import { Icon } from "./Icons";
+import { colors } from "../constants/colors";
 
 // Habilitar LayoutAnimation en Android
 if (
@@ -38,8 +39,8 @@ export function Dropdown({
   defaultOpen = false,
   children,
   icon = "tool",
-  iconColor = "#282D86",
-  iconBackgroundColor = "#EEF1FE",
+  iconColor = colors.primary,
+  iconBackgroundColor = colors.primaryLightBg,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [shouldRender, setShouldRender] = useState(defaultOpen);
@@ -117,7 +118,7 @@ export function Dropdown({
           <Text style={styles.title}>{title}</Text>
         </View>
         <Animated.View style={arrowAnimationStyle}>
-          <Icon name="down" size={18} color="#282D86" />
+          <Icon name="down" size={18} color={colors.primary} />
         </Animated.View>
       </Pressable>
 
@@ -139,15 +140,15 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     marginBottom: 12,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 16,
-    shadowColor: "#00000022",
+    shadowColor: colors.shadowLight,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.12,
     shadowRadius: 12,
     elevation: 4,
     borderWidth: 1,
-    borderColor: "#F0F0F5",
+    borderColor: colors.borderExtraLight,
   },
   header: {
     flexDirection: "row",
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
   },
   headerPressed: {
-    backgroundColor: "#F6F7FF",
+    backgroundColor: colors.primaryHover,
   },
   headerLeft: {
     flexDirection: "row",
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#282D86",
+    color: colors.primary,
   },
   contentWrapper: {
     overflow: "hidden",

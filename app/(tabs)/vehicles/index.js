@@ -4,6 +4,7 @@ import { getMyVehicles } from "../../../services/vehicles";
 import { VehicleCard } from "../../../components/VehicleCard";
 import { PaginatedFlatList } from "../../../components/PaginatedFlatList";
 import { Stack } from "expo-router";
+import { colors } from "../../../constants/colors";
 
 export default function Vehicles() {
   const fetchVehicles = useCallback(async () => {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   emptyText: {
-    color: "#282D86",
+    color: colors.primary,
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 32,

@@ -13,6 +13,7 @@ import { getMyVehicles } from "../../services/vehicles";
 import { DatePicker } from "../../components/DatePicker";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { getReservationsByVehicle } from "../../services/reservations";
+import { colors } from "../../constants/colors";
 
 const getMonthYearKey = (date) => {
   const d = new Date(date);
@@ -212,7 +213,7 @@ export default function Reservations() {
           options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
         />
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#282D86" />
+          <ActivityIndicator size="large" color={colors.primary} />
           <Text style={styles.loadingText}>Cargando información...</Text>
         </View>
       </View>
@@ -239,11 +240,11 @@ export default function Reservations() {
       </View>
       {reservationsLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#282D86" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : reservationsError ? (
         <View style={styles.emptyContainer}>
-          <Text style={[styles.emptyText, { color: "#D32F2F" }]}>
+          <Text style={[styles.emptyText, { color: colors.errorDark }]}>
             {reservationsError}
           </Text>
         </View>
@@ -290,18 +291,18 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     zIndex: 10,
     padding: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "#F0F0F0",
+    borderColor: colors.borderExtraLight,
     gap: 20,
   },
   scrollContent: {
@@ -318,17 +319,17 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: "#282D86",
+    color: colors.primary,
     marginTop: 10,
   },
   sectionMonth: {
-    backgroundColor: "#f0f0f000",
+    backgroundColor: "transparent",
   },
   month: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "start",
-    color: "#282D86",
+    color: colors.primary,
     marginLeft: 10,
   },
   emptyContainer: {
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 20,
-    color: "#282D86",
+    color: colors.primary,
     textAlign: "center",
     fontWeight: "bold",
   },

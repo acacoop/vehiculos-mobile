@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { getVehicle } from "../../../services/vehicles";
 import { Stack, useLocalSearchParams } from "expo-router";
 import DownloadButton from "../../../components/DownloadButton";
+import { colors } from "../../../constants/colors";
 
 export default function Documentation() {
   const { documentation } = useLocalSearchParams();
@@ -20,7 +21,7 @@ export default function Documentation() {
   if (vehicleDetail === null) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#282D86" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#282D86",
+    color: colors.primary,
     marginTop: 30,
     alignSelf: "flex-start",
   },
@@ -94,14 +95,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: "#282D86",
+    color: colors.primary,
     fontWeight: "bold",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   titleContainer: {
     width: "90%",

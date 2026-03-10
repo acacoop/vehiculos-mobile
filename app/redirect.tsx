@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
+import { colors } from "../constants/colors";
 
 export default function RedirectScreen() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function RedirectScreen() {
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#282D86" />
+      <ActivityIndicator size="large" color={colors.primary} />
       <Text style={styles.text}>Completando inicio de sesión...</Text>
     </View>
   );
@@ -31,11 +32,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
   },
   text: {
     marginTop: 16,
     fontSize: 16,
-    color: "#282D86",
+    color: colors.primary,
   },
 });

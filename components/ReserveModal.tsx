@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { DatePicker } from "./DatePicker";
 import { TimePicker } from "./TimePicker";
+import { colors } from "../constants/colors";
 
 type ReserveModalProps = {
   visible: boolean;
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     padding: 20,
     width: "90%",
     borderRadius: 12,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     textAlign: "center",
-    color: "#282D86",
+    color: colors.primary,
   },
   row: {
     flexDirection: "row",
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   },
   pickerButton: {
     flex: 1,
-    backgroundColor: "#eee",
+    backgroundColor: colors.gray[200],
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: "#282D86",
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     borderRadius: 8,
     justifyContent: "center",
@@ -142,14 +143,14 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     flex: 1,
-    backgroundColor: "#FE9000",
+    backgroundColor: colors.secondary,
     paddingVertical: 12,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontWeight: "bold",
     fontSize: 16,
   },

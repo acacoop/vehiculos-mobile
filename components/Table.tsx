@@ -1,4 +1,5 @@
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import { colors } from "../constants/colors";
 
 export function Table({ data }: { data: any }) {
   const tableData = Object.entries(data).map(([key, value]) => ({
@@ -17,7 +18,7 @@ export function Table({ data }: { data: any }) {
           style={[
             style.itemContainer,
             {
-              backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#FFFFFF",
+              backgroundColor: index % 2 === 0 ? colors.backgroundLight : colors.white,
             },
           ]}
         >
@@ -48,10 +49,10 @@ const style = StyleSheet.create({
     padding: 10,
     gap: 2,
     borderRadius: 20,
-    borderColor: "#ddd",
+    borderColor: colors.borderDark,
     borderWidth: 1,
-    backgroundColor: "#fff",
-    shadowColor: "#0000006c",
+    backgroundColor: colors.white,
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -60,12 +61,12 @@ const style = StyleSheet.create({
   keyText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#282D86",
+    color: colors.primary,
   },
   valueText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#424242",
+    color: colors.textDarkAlt,
     textAlign: "right",
   },
   itemContainer: {
