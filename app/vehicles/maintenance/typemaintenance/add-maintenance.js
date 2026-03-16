@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { Table } from "../../../../components/Table";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { colors } from "../../../../constants/colors";
 import { DatePicker } from "../../../../components/DatePicker";
@@ -144,19 +145,12 @@ export default function AddMaintenance() {
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.disabledInputs}>
-          <Text style={styles.sectionTitle}>Mantenimiento seleccionado</Text>
-          <TextInput
-            value={maintenanceName || "Nombre no disponible"}
-            editable={false}
-            style={styles.disabledInput}
-          />
-          <TextInput
-            value={maintenanceCategoryName || "Tipo no disponible"}
-            editable={false}
-            style={styles.disabledInput}
-          />
-        </View>
+        <Table
+          data={{
+            Nombre: maintenanceName || "Nombre no disponible",
+            Tipo: maintenanceCategoryName || "Tipo no disponible",
+          }}
+        />
 
         <View style={styles.formRow}>
           <Text style={styles.sectionTitle}>Completa los datos</Text>
@@ -246,9 +240,9 @@ const styles = StyleSheet.create({
     gap: 20,
     padding: 20,
     borderRadius: 10,
-    borderColor: colors.borderDark,
+    borderColor: colors.borderLight,
     borderWidth: 1,
-    shadowColor: colors.shadow,
+    shadowColor: colors.shadowLight,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 4,

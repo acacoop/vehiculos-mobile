@@ -130,7 +130,9 @@ export const Calendario = ({
             backgroundColor: colors.white,
           }}
         >
-          <Text style={{ color: colors.primary, fontWeight: "bold", fontSize: 16 }}>
+          <Text
+            style={{ color: colors.primary, fontWeight: "bold", fontSize: 16 }}
+          >
             Hoy
           </Text>
         </TouchableOpacity>
@@ -156,7 +158,12 @@ export const Calendario = ({
           </Text>
         </View>
 
-        <Icon name="right" onPress={goToNextMonth} size={20} color={colors.primary} />
+        <Icon
+          name="right"
+          onPress={goToNextMonth}
+          size={20}
+          color={colors.primary}
+        />
       </View>
 
       <View style={styles.gridContainer}>
@@ -202,8 +209,7 @@ export const Calendario = ({
                       styles.dayText,
                       isToday(day)
                         ? {
-                            color: DEFAULT_RESERVATION_COLOR,
-                            fontWeight: "bold",
+                            color: colors.white,
                           }
                         : { color: colors.primary },
                     ]}
@@ -229,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
     gap: 2,
-    shadowColor: colors.shadow,
+    shadowColor: colors.shadowLight,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -237,7 +243,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
-    borderColor: colors.borderDark,
+    borderColor: colors.borderLight,
     borderWidth: 1,
   },
   headerRow: {

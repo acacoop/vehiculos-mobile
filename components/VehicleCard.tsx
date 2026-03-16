@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 15,
     borderRadius: 15,
-    shadowColor: colors.shadow,
+    borderColor: colors.borderLight,
+    borderWidth: 1,
+    shadowColor: colors.shadowLight,
     shadowOffset: {
       width: 0,
       height: 2,

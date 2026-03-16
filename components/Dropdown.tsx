@@ -83,7 +83,7 @@ export function Dropdown({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   const arrowAnimationStyle = useMemo(
@@ -97,7 +97,7 @@ export function Dropdown({
         },
       ],
     }),
-    [animation]
+    [animation],
   );
 
   return (
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 4,
     borderWidth: 1,
-    borderColor: colors.borderExtraLight,
+    borderColor: colors.borderLight,
   },
   header: {
     flexDirection: "row",

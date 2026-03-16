@@ -18,7 +18,8 @@ export function Table({ data }: { data: any }) {
           style={[
             style.itemContainer,
             {
-              backgroundColor: index % 2 === 0 ? colors.backgroundLight : colors.white,
+              backgroundColor:
+                index % 2 === 0 ? colors.backgroundLight : colors.white,
             },
           ]}
         >
@@ -49,10 +50,10 @@ const style = StyleSheet.create({
     padding: 10,
     gap: 2,
     borderRadius: 20,
-    borderColor: colors.borderDark,
+    borderColor: colors.borderLight,
     borderWidth: 1,
     backgroundColor: colors.white,
-    shadowColor: colors.shadow,
+    shadowColor: colors.shadowLight,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

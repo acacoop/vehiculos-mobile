@@ -42,9 +42,10 @@ function MaintenanceHistoryCard({ item }) {
     { value: formatKilometers(item.kilometers) },
   ];
 
-  // Add notes if present as full width item
+  // Add notes if present as full width items
   if (item.notes) {
-    items.push({ value: `Observación: ${item.notes}`, fullWidth: true });
+    items.push({ value: "Observación:", fullWidth: true, bold: true });
+    items.push({ value: item.notes, fullWidth: true });
   }
 
   return <CardGrid items={items} />;

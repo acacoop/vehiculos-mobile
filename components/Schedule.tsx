@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 20,
-    shadowColor: colors.shadow,
+    shadowColor: colors.shadowLight,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
-    borderColor: colors.borderDark,
+    borderColor: colors.borderLight,
     borderWidth: 1,
     flexDirection: "column",
     justifyContent: "flex-start",

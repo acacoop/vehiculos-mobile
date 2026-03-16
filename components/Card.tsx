@@ -14,6 +14,8 @@ export type CardGridItem = {
   highlight?: boolean;
   /** Si es true, el item ocupa todo el ancho */
   fullWidth?: boolean;
+  /** Si es true, se aplica negrita al texto */
+  bold?: boolean;
 };
 
 type CardProps = {
@@ -87,6 +89,7 @@ export function CardGrid({
               style={[
                 item.highlight ? styles.gridValueHighlight : styles.gridValue,
                 item.highlight ? highlightStyle : valueStyle,
+                item.bold && { fontWeight: "700" },
               ]}
             >
               {item.value}
@@ -104,10 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     gap: 12,
+    borderColor: colors.borderLight,
+    borderWidth: 1,
     shadowColor: colors.shadowLight,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
     elevation: 2,
   },
   cardRow: {
