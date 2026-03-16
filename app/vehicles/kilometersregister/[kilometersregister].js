@@ -291,12 +291,12 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   list: {
-    width: "90%",
     flex: 1,
-    paddingVertical: 10,
+    alignSelf: "center",
   },
   listContainer: {
-    gap: 12,
+    paddingTop: 20,
+    gap: 16,
   },
   emptyText: {
     textAlign: "center",
