@@ -42,6 +42,7 @@ export const ScreenLayout: React.FC<ScreenLayoutProps> = ({
         options={{
           headerTitle: title,
           headerTitleAlign: "center",
+          headerBackTitle: "",
         }}
       />
       {renderContent()}
