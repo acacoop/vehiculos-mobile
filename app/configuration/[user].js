@@ -77,7 +77,9 @@ export default function UserConfig() {
         options={{
           headerTitle: "Configuración usuario",
           headerTitleAlign: "center",
+          headerBackTitleVisible: false,
         }}
+        headerBackTitleVisible={false}
       />
 
       <View style={styles.containerconfig}>

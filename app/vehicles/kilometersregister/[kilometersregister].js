@@ -293,6 +293,7 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     alignSelf: "center",
+    width: "90%",
   },
   listContainer: {
     paddingTop: 20,

@@ -35,6 +35,7 @@ export default function VehicleDetail() {
       title="Vehículos disponibles"
       loading={loading}
       error={!vehicleDetail ? error || "Vehículo no encontrado" : null}
+      headerBackTitleVisible={false}
     >
       <FlatList
         showsVerticalScrollIndicator={false}
