@@ -23,6 +23,7 @@ export default function TabLayout() {
         headerTitleAlign: "center",
         headerTintColor: colors.primary,
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
+        headerBackTitle: "",
       }}
     >
       <Tabs.Screen

@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { getMyVehicles } from "../../../services/vehicles";
 import { VehicleCard } from "../../../components/VehicleCard";
 import { PaginatedFlatList } from "../../../components/PaginatedFlatList";
-import { Stack } from "expo-router";
 import { colors } from "../../../constants/colors";
 
 export default function Vehicles() {
@@ -18,11 +17,6 @@ export default function Vehicles() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: "Vehículos",
-        }}
-      />
       <PaginatedFlatList
         style={{ width: "100%", flex: 1 }}
         fetchData={fetchVehicles}
