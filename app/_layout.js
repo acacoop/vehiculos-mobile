@@ -48,6 +48,7 @@ function RootNavigator() {
         headerTintColor: colors.primary,
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
         headerBackTitle: "",
+        headerBackTitleVisible: false,
       }}
     >
       <Stack.Screen name="login" options={{ headerShown: false }} />
