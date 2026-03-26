@@ -210,8 +210,12 @@ export default function Reservations() {
     return (
       <View style={styles.container}>
         <Stack.Screen
-          options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
-          headerBackTitleVisible={false}
+          options={{
+            headerTitle: "Reservas",
+            headerTitleAlign: "center",
+            headerBackTitleVisible: false,
+            headerBackButtonDisplayMode: "minimal",
+          }}
         />
         <View style={styles.loader}>
           <ActivityIndicator size="large" color={colors.primary} />
@@ -224,8 +228,12 @@ export default function Reservations() {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ headerTitle: "Reservas", headerTitleAlign: "center" }}
-        headerBackTitleVisible={false}
+        options={{
+          headerTitle: "Reservas",
+          headerTitleAlign: "center",
+          headerBackTitleVisible: false,
+          headerBackButtonDisplayMode: "minimal",
+        }}
       />
       <View style={styles.containerHeader}>
         <CarVisualizer

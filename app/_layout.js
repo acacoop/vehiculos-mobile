@@ -49,11 +49,15 @@ function RootNavigator() {
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
         headerBackTitle: "",
         headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: "minimal",
       }}
     >
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="redirect" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(tabs)"
+        options={{ headerShown: false, title: "" }}
+      />
     </Stack>
   );
 }

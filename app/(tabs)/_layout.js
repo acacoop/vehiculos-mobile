@@ -24,6 +24,8 @@ export default function TabLayout() {
         headerTintColor: colors.primary,
         headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
         headerBackTitle: "",
+        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: "minimal",
       }}
     >
       <Tabs.Screen

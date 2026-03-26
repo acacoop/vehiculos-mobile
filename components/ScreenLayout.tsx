@@ -7,6 +7,8 @@ interface ScreenLayoutProps {
   title: string;
   loading?: boolean;
   error?: string | null;
+  headerBackTitleVisible?: boolean;
+  headerBackButtonDisplayMode?: "default" | "generic" | "minimal";
   children: React.ReactNode;
 }
 
@@ -14,6 +16,8 @@ export const ScreenLayout: React.FC<ScreenLayoutProps> = ({
   title,
   loading = false,
   error = null,
+  headerBackTitleVisible = false,
+  headerBackButtonDisplayMode = "minimal",
   children,
 }) => {
   const renderContent = () => {
@@ -43,6 +47,8 @@ export const ScreenLayout: React.FC<ScreenLayoutProps> = ({
           headerTitle: title,
           headerTitleAlign: "center",
           headerBackTitle: "",
+          headerBackTitleVisible,
+          headerBackButtonDisplayMode,
         }}
       />
       {renderContent()}

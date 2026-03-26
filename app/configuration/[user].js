@@ -78,8 +78,8 @@ export default function UserConfig() {
           headerTitle: "Configuración usuario",
           headerTitleAlign: "center",
           headerBackTitleVisible: false,
+          headerBackButtonDisplayMode: "minimal",
         }}
-        headerBackTitleVisible={false}
       />
 
       <View style={styles.containerconfig}>
