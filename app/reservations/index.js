@@ -9,11 +9,15 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Schedule } from "../../components/Schedule";
-import { getMyVehicles } from "../../services/vehicles";
+import {
+  getMyVehicles,
+  getResponsibleVehicleIdsByUser,
+} from "../../services/vehicles";
 import { DatePicker } from "../../components/DatePicker";
 import { CarVisualizer } from "../../components/CarVisualizer";
 import { getReservationsByVehicle } from "../../services/reservations";
 import { colors } from "../../constants/colors";
+import { getCurrentUser } from "../../services/me";
 
 const getMonthYearKey = (date) => {
   const d = new Date(date);
@@ -44,6 +48,8 @@ export default function Reservations() {
   const [reservationsError, setReservationsError] = useState(null);
   const [initialVehicleId, setInitialVehicleId] = useState(null);
   const [initialSelectionApplied, setInitialSelectionApplied] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [responsibleVehicleIds, setResponsibleVehicleIds] = useState([]);
 
   const coerceParam = (value) => {
     if (Array.isArray(value)) return value[0];
@@ -102,12 +108,23 @@ export default function Reservations() {
 
   useEffect(() => {
     setVehiclesLoading(true);
-    getMyVehicles()
-      .then((data) => {
-        setVehicles(data);
+    Promise.all([getMyVehicles(), getCurrentUser()])
+      .then(async ([vehiclesData, currentUser]) => {
+        setVehicles(vehiclesData);
+        const userId = currentUser?.id ?? null;
+        setCurrentUserId(userId);
+
+        if (!userId) {
+          setResponsibleVehicleIds([]);
+          return;
+        }
+
+        const responsibleIds = await getResponsibleVehicleIdsByUser(userId);
+        setResponsibleVehicleIds(responsibleIds);
       })
       .catch((error) => {
         console.error("Error al cargar los vehículos", error);
+        setResponsibleVehicleIds([]);
       })
       .finally(() => {
         setVehiclesLoading(false);
@@ -156,6 +173,7 @@ export default function Reservations() {
         to: res.endDate,
         licensePlate: res.licensePlate,
         vehicleId: res.vehicleId,
+        creatorUserId: res.user?.id,
         vehicleLabel: `${res.vehicleBrand} ${res.vehicleModel}`.trim(),
         requesterName: `${res.user.firstName ?? ""} ${res.user.lastName ?? ""}`
           .trim()
@@ -282,6 +300,11 @@ export default function Reservations() {
               licensePlate={item.licensePlate}
               vehicleLabel={item.vehicleLabel}
               requesterName={item.requesterName}
+              canEdit={
+                !!currentUserId &&
+                (item.creatorUserId === currentUserId ||
+                  responsibleVehicleIds.includes(item.vehicleId))
+              }
               onUpdate={handleReservationUpdate}
             />
           )}

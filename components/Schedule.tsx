@@ -20,6 +20,7 @@ interface ScheduleProps {
   licensePlate: string;
   vehicleLabel?: string;
   requesterName?: string | null;
+  canEdit?: boolean;
   onUpdate?: (updatedReservation: { id: string; from: Date; to: Date }) => void;
 }
 
@@ -29,6 +30,7 @@ export function Schedule({
   to,
   vehicleLabel,
   requesterName,
+  canEdit = false,
   onUpdate,
 }: ScheduleProps) {
   const [fallbackRequester, setFallbackRequester] = useState<string | null>(
@@ -139,11 +141,13 @@ export function Schedule({
         }}
       >
         <Text style={styles.title}>Detalles de la reserva</Text>
-        <Pressable onPress={handleOpenEditModal}>
-          <View style={styles.containerImage}>
-            <Icon name="pencil" size={25} color={colors.secondary} />
-          </View>
-        </Pressable>
+        {canEdit ? (
+          <Pressable onPress={handleOpenEditModal}>
+            <View style={styles.containerImage}>
+              <Icon name="pencil" size={25} color={colors.secondary} />
+            </View>
+          </Pressable>
+        ) : null}
       </View>
 
       {vehicleLabel ? (
