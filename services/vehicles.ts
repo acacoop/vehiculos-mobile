@@ -87,6 +87,23 @@ type VehicleResponsiblesResponse = {
   data: VehicleResponsible[];
 };
 
+export async function getResponsibleVehicleIdsByUser(
+  userId: string,
+): Promise<string[]> {
+  if (!userId) return [];
+
+  const response = await apiClient.get<VehicleResponsiblesResponse>(
+    `/vehicle-responsibles/user/${userId}/current`,
+  );
+
+  const responsibles = Array.isArray(response?.data) ? response.data : [];
+  const ids = responsibles
+    .map((responsible) => responsible.vehicle?.id)
+    .filter((id): id is string => Boolean(id));
+
+  return Array.from(new Set(ids));
+}
+
 function mapVehicle(api: VehicleApiModel): Vehicle {
   const brandName = api.model?.brand?.name ?? "";
   const modelName = api.model?.name ?? "";
