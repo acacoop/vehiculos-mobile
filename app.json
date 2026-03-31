@@ -68,6 +68,13 @@
           "visibility": "visible",
           "backgroundColor": "#000000"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
       ]
     ],
     "extra": {
