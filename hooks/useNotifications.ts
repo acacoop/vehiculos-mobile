@@ -4,10 +4,7 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
-import {
-  registerPushToken,
-  unregisterPushToken,
-} from "../services/pushTokens";
+import { registerPushToken, unregisterPushToken } from "../services/pushTokens";
 
 // Configure how notifications are presented when the app is in the foreground
 Notifications.setNotificationHandler({
@@ -30,8 +27,7 @@ async function getExpoPushToken(): Promise<string | null> {
     return null;
   }
 
-  const { status: existingStatus } =
-    await Notifications.getPermissionsAsync();
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
 
   if (existingStatus !== "granted") {
