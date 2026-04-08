@@ -54,16 +54,19 @@ async function getExpoPushToken(): Promise<string | null> {
   return tokenData.data;
 }
 
-// Map notification types to app routes
+// Map notification types to app routes with params
 function getRouteForNotification(
   data: Record<string, unknown>,
-): string | null {
+): { pathname: string; params?: Record<string, string> } | null {
   const type = data?.type as string | undefined;
   switch (type) {
     case "reservation_created":
     case "reservation_updated":
-    case "reservation_cancelled":
-      return "/reservations";
+    case "reservation_cancelled": {
+      const params: Record<string, string> = {};
+      if (data?.vehicleId) params.vehicleId = String(data.vehicleId);
+      return { pathname: "/reservations", params };
+    }
     default:
       return null;
   }
@@ -112,6 +115,19 @@ export function useNotifications(isAuthenticated: boolean) {
     if (!isAuthenticated) return;
 
     register();
+
+    // Handle cold-start: user tapped a notification while the app was killed
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (!response) return;
+      const data = response.notification.request.content.data;
+      if (__DEV__) {
+        console.log("[notifications] Cold-start tap:", data);
+      }
+      const route = getRouteForNotification(data);
+      if (route) {
+        router.push(route);
+      }
+    });
 
     // Listen for notifications received while app is in foreground
     notificationListener.current =
