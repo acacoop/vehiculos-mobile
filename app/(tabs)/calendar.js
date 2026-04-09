@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { View, StyleSheet, Alert, Text } from "react-native";
 import { Button } from "../../components/Buttons";
 import { Calendario } from "../../components/Calendario";
 import { CarVisualizer } from "../../components/CarVisualizer";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import {
+  Stack,
+  useFocusEffect,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import { getMyVehicles } from "../../services/vehicles";
 import { ReserveModal } from "../../components/ReserveModal";
 import {
@@ -18,15 +17,18 @@ import {
 } from "../../services/reservations";
 import { getCurrentUser } from "../../services/me";
 import { colors } from "../../constants/colors";
+import {
+  PaginatedFlatList,
+  usePaginatedList,
+} from "../../components/PaginatedFlatList";
 
 const Calendar = () => {
   const params = useLocalSearchParams();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const router = useRouter();
+  const { refreshKey, refresh } = usePaginatedList();
   const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState([]);
-  const [reservationsLoading, setReservationsLoading] = useState(false);
   const [reservationsError, setReservationsError] = useState(null);
   const [showReserveModal, setShowReserveModal] = useState(false);
   const [fromDate, setFromDate] = useState(new Date());
@@ -47,25 +49,47 @@ const Calendar = () => {
     });
   };
 
-  useEffect(() => {
-    getMyVehicles()
-      .then((data) => {
-        setVehicles(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+  const fetchCalendarData = useCallback(async () => {
+    const vehiclesData = await getMyVehicles();
+    setVehicles(vehiclesData);
 
-  useEffect(() => {
-    getCurrentUser()
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .catch((error) => {
-        console.error("No se pudo obtener el usuario actual", error);
-        setCurrentUser(null);
-      });
-  }, []);
+    const user = await getCurrentUser().catch((error) => {
+      console.error("No se pudo obtener el usuario actual", error);
+      return null;
+    });
+    setCurrentUser(user);
+
+    if (selectedVehicle?.id) {
+      try {
+        const reservationsData = await getReservationsByVehicle(
+          selectedVehicle.id,
+        );
+        setReservations(reservationsData);
+        setReservationsError(null);
+      } catch (error) {
+        console.error("Error al obtener las reservas", error);
+        setReservations([]);
+        setReservationsError(
+          error?.message || "No se pudieron cargar las reservas",
+        );
+      }
+    } else {
+      setReservations([]);
+      setReservationsError(null);
+    }
+
+    return {
+      items: [],
+      total: 0,
+      hasMore: false,
+    };
+  }, [selectedVehicle?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   const coerceParam = (value) => {
     if (Array.isArray(value)) return value[0];
@@ -106,38 +130,6 @@ const Calendar = () => {
     params.licensePlate,
     initialSelectionApplied,
   ]);
-
-  useEffect(() => {
-    if (!selectedVehicle?.id) {
-      setReservations([]);
-      return;
-    }
-
-    let isMounted = true;
-    setReservationsLoading(true);
-    setReservationsError(null);
-
-    getReservationsByVehicle(selectedVehicle.id)
-      .then((data) => {
-        if (!isMounted) return;
-        setReservations(data);
-      })
-      .catch((error) => {
-        console.error("Error al obtener las reservas", error);
-        if (!isMounted) return;
-        setReservations([]);
-        setReservationsError(
-          error?.message || "No se pudieron cargar las reservas",
-        );
-      })
-      .finally(() => {
-        if (isMounted) setReservationsLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [selectedVehicle?.id]);
 
   const handleModalConfirm = async () => {
     if (!selectedVehicle?.id) {
@@ -190,72 +182,76 @@ const Calendar = () => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <>
       <Stack.Screen
         options={{
           headerTitle: "Calendario",
         }}
       />
 
-      <CarVisualizer
-        vehicles={vehicles}
-        initialVehicleId={initialVehicleId}
-        onVehicleChange={(vehicle) => {
-          setSelectedVehicle(vehicle);
-        }}
+      <PaginatedFlatList
+        style={{ width: "100%", flex: 1 }}
+        fetchData={fetchCalendarData}
+        renderItem={() => null}
+        refreshDeps={[
+          refreshKey,
+          selectedVehicle?.id,
+          params.vehicleId,
+          params.licensePlate,
+        ]}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <>
+            <CarVisualizer
+              vehicles={vehicles}
+              initialVehicleId={initialVehicleId}
+              onVehicleChange={(vehicle) => {
+                setSelectedVehicle(vehicle);
+              }}
+            />
+
+            {selectedVehicle && (
+              <Calendario
+                key={selectedVehicle.id}
+                reservations={calendarReservations}
+                selectedVehicle={selectedVehicle}
+                onDayPress={(date) => {
+                  const day = new Date(date);
+                  day.setHours(0, 0, 0, 0);
+                  const start = day.toISOString();
+                  const endDate = new Date(day);
+                  endDate.setHours(23, 59, 59, 999);
+                  const end = endDate.toISOString();
+                  navigateToReservations({ start, end });
+                }}
+              />
+            )}
+
+            {reservationsError && (
+              <Text style={{ color: colors.errorDark, marginTop: 8 }}>
+                {reservationsError}
+              </Text>
+            )}
+
+            <View style={styles.buttonGroup}>
+              <Button
+                text="Ver reservas"
+                variant="tertiary"
+                onPress={() => {
+                  navigateToReservations();
+                }}
+              />
+
+              <Button
+                text="Reservar vehículo"
+                variant="primary"
+                onPress={() => setShowReserveModal(true)}
+              />
+            </View>
+          </>
+        }
       />
-
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={{ marginTop: 40 }}
-        />
-      ) : (
-        selectedVehicle && (
-          <Calendario
-            key={selectedVehicle.id}
-            reservations={calendarReservations}
-            selectedVehicle={selectedVehicle}
-            onDayPress={(date) => {
-              const day = new Date(date);
-              day.setHours(0, 0, 0, 0);
-              const start = day.toISOString();
-              const endDate = new Date(day);
-              endDate.setHours(23, 59, 59, 999);
-              const end = endDate.toISOString();
-              navigateToReservations({ start, end });
-            }}
-          />
-        )
-      )}
-      {reservationsLoading && (
-        <ActivityIndicator
-          size="small"
-          color={colors.primary}
-          style={{ marginTop: 10 }}
-        />
-      )}
-      {reservationsError && (
-        <Text style={{ color: colors.errorDark, marginTop: 8 }}>
-          {reservationsError}
-        </Text>
-      )}
-      <View style={styles.buttonGroup}>
-        <Button
-          text="Ver reservas"
-          variant="tertiary"
-          onPress={() => {
-            navigateToReservations();
-          }}
-        />
-
-        <Button
-          text="Reservar vehículo"
-          variant="primary"
-          onPress={() => setShowReserveModal(true)}
-        />
-      </View>
 
       <ReserveModal
         visible={showReserveModal}
@@ -268,7 +264,7 @@ const Calendar = () => {
         confirmLoading={isSubmittingReservation}
         confirmDisabled={!selectedVehicle}
       />
-    </ScrollView>
+    </>
   );
 };
 

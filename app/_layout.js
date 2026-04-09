@@ -6,12 +6,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/Toast/toastConfig";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { useNotifications } from "../hooks/useNotifications";
 import { colors } from "../constants/colors";
 
 function RootNavigator() {
   const { isAuthenticated, isLoading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+
+  // Register for push notifications when authenticated
+  useNotifications(isAuthenticated);
 
   useEffect(() => {
     if (isLoading) return;
