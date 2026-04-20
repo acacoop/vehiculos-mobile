@@ -14,6 +14,7 @@ import { DatePicker } from "../../../../components/DatePicker";
 import { BottomActionButton } from "../../../../components/BottomActionButton";
 import { createMaintenanceRecord } from "../../../../services/maintenanceRecords";
 import { getCurrentUser } from "../../../../services/me";
+import { useToast } from "../../../../hooks/useToast";
 
 const coerceParam = (param, fallback = "") => {
   if (Array.isArray(param)) return param[0] ?? fallback;
@@ -33,6 +34,7 @@ export default function AddMaintenance() {
   );
   const kilometersFrequency = coerceParam(params.kilometersFrequency, "");
 
+  const toast = useToast();
   const [userId, setUserId] = useState(null);
   const [date, setDate] = useState(() => new Date());
   const [kilometers, setKilometers] = useState("");
@@ -123,13 +125,19 @@ export default function AddMaintenance() {
     try {
       setIsSubmitting(true);
       await createMaintenanceRecord(payload);
+      toast.success({
+        title: "Mantenimiento registrado",
+        message: "El registro se guardó correctamente.",
+      });
       resetForm();
       router.back();
     } catch (error) {
       console.error("Error al crear el mantenimiento", error);
       Alert.alert(
-        "Error",
-        "No se pudo guardar el mantenimiento. Intenta nuevamente.",
+        "Error al registrar",
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar el mantenimiento. Intenta nuevamente.",
       );
     } finally {
       setIsSubmitting(false);
