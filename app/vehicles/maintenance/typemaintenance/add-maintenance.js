@@ -125,14 +125,19 @@ export default function AddMaintenance() {
     try {
       setIsSubmitting(true);
       await createMaintenanceRecord(payload);
-      toast.success({ title: "Mantenimiento registrado", message: "El registro se guardó correctamente." });
+      toast.success({
+        title: "Mantenimiento registrado",
+        message: "El registro se guardó correctamente.",
+      });
       resetForm();
       router.back();
     } catch (error) {
       console.error("Error al crear el mantenimiento", error);
       Alert.alert(
         "Error al registrar",
-        error instanceof Error ? error.message : "No se pudo guardar el mantenimiento. Intenta nuevamente.",
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar el mantenimiento. Intenta nuevamente.",
       );
     } finally {
       setIsSubmitting(false);
