@@ -5,6 +5,7 @@ import {
   Stack,
   useNavigation,
   useRouter,
+  useFocusEffect,
 } from "expo-router";
 import { getMaintenanceRecordsPaginated } from "../../../../services/maintenanceRecords";
 import { Table } from "../../../../components/Table";
@@ -58,9 +59,15 @@ export default function VehicleMaintenanceEntry() {
   const navigation = useNavigation();
   const router = useRouter();
   const toast = useToast();
-  const { refreshKey } = usePaginatedList();
+  const { refreshKey, refresh } = usePaginatedList();
 
   const maintenanceId = maintenance?.maintenanceId;
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   const fetchMaintenanceRecords = useCallback(
     async (page, limit) => {

@@ -101,8 +101,8 @@ export async function request<T>(
 
   if (!response.ok) {
     const message =
-      isJson && payload?.message
-        ? payload.message
+      isJson && (payload?.detail || payload?.message)
+        ? payload.detail || payload.message
         : typeof payload === "string"
           ? payload
           : "Error desconocido al llamar a la API";

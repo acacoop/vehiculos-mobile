@@ -7,15 +7,17 @@ import { useRouter } from "expo-router";
 import { registerPushToken, unregisterPushToken } from "../services/pushTokens";
 
 // Configure how notifications are presented when the app is in the foreground
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+if (Platform.OS !== "web") {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 function getProjectId(): string | undefined {
   return Constants.expoConfig?.extra?.eas?.projectId;
@@ -77,6 +79,7 @@ export function useNotifications(isAuthenticated: boolean) {
   const router = useRouter();
 
   const register = useCallback(async () => {
+    if (Platform.OS === "web") return;
     try {
       const token = await getExpoPushToken();
       if (!token) return;
@@ -109,6 +112,7 @@ export function useNotifications(isAuthenticated: boolean) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
+    if (Platform.OS === "web") return;
 
     register();
 
