@@ -98,5 +98,6 @@ export interface PatchQuarterlyControlItemPayload {
 }
 
 export interface PatchQuarterlyControlPayload {
+  kilometers: number;
   items: PatchQuarterlyControlItemPayload[];
 }
