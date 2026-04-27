@@ -241,7 +241,7 @@ export default function QuarterlyControl() {
 
       // Then, submit the control
       const itemsPayload = buildControlPayload();
-      await updateQuarterlyControlItems(controlId, { items: itemsPayload });
+      await updateQuarterlyControlItems(controlId, { kilometers: parsedKilometers, items: itemsPayload });
 
       toast.success({
         title: "Control guardado",
