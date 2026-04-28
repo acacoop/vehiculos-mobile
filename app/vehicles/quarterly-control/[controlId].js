@@ -7,7 +7,6 @@ import {
   getQuarterlyControlById,
   updateQuarterlyControlItems,
 } from "../../../services/quarterlyControls";
-import { createKilometersLog } from "../../../services/vehicleKilometersLogs";
 import { getCurrentUser } from "../../../services/me";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { QuarterlyControlForm } from "../../../components/quarterlyControl";
@@ -231,15 +230,7 @@ export default function QuarterlyControl() {
     setShowKilometersModal(false);
 
     try {
-      // First, register the kilometers log
-      await createKilometersLog({
-        vehicleId,
-        userId: currentUser.id,
-        date: new Date(),
-        kilometers: parsedKilometers,
-      });
-
-      // Then, submit the control
+      // Submit the control - the backend creates the kilometers log internally
       const itemsPayload = buildControlPayload();
       await updateQuarterlyControlItems(controlId, {
         kilometers: parsedKilometers,
