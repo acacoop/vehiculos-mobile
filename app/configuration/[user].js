@@ -99,24 +99,6 @@ export default function UserConfig() {
           icon={<Icon name="mail-outline" size={24} />}
           showArrow={false}
         />
-
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionHeaderText}>Documentación</Text>
-        </View>
-
-        <CardConfig
-          title="DNI"
-          description={`Vencimiento: ${formatDate(dniExpiration)}`}
-          icon={<Icon name="idcard" size={24} />}
-          onPress={undefined} // Let DatePicker handle press
-        />
-
-        <CardConfig
-          title="Carnet de conducir"
-          description={`Vencimiento: ${formatDate(carnetExpiration)}`}
-          icon={<Icon name="car" size={24} />}
-          onPress={undefined} // Let DatePicker handle press
-        />
       </View>
     </View>
   );

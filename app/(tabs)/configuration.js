@@ -20,16 +20,16 @@ export default function Configuration() {
   };
 
   const openMiArgentina = async () => {
-    const androidPackage = "ar.gob.miargentina";
-    const iosAppId = "1435736780";
+    const androidPackage = "ar.gob.argentinagobar";
+    const iosAppId = "1107620792";
 
     // Esquemas para abrir la tienda nativa directamente
     const androidUrl = `market://details?id=${androidPackage}`;
-    const iosUrl = `itms-apps://itunes.apple.com/app/id${iosAppId}?action=write-review`;
+    const iosUrl = `itms-apps://itunes.apple.com/app/id${iosAppId}`;
 
     // URLs Web (Fallback por si falla la tienda nativa)
     const androidWebUrl = `https://play.google.com/store/apps/details?id=${androidPackage}`;
-    const iosWebUrl = `https://apps.apple.com/ar/app/mi-argentina/id${iosAppId}`;
+    const iosWebUrl = `https://apps.apple.com/us/app/argentina-gob-ar/id${iosAppId}?l=es`;
 
     try {
       // Determinar la URL según el SO
