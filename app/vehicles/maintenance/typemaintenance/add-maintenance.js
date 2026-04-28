@@ -161,7 +161,7 @@ export default function AddMaintenance() {
         />
 
         <View style={styles.formRow}>
-          <Text style={styles.sectionTitle}>Completa los datos</Text>
+          <Text style={styles.sectionTitle}>Fecha del mantenimiento</Text>
           <DatePicker
             label="Fecha"
             value={date}
@@ -169,7 +169,7 @@ export default function AddMaintenance() {
             containerStyle={styles.datePicker}
           />
 
-          <Text style={styles.sectionTitle}>Kilometros actuales</Text>
+          <Text style={styles.sectionTitle}>Kilómetros actuales</Text>
           <TextInput
             placeholder="Kilómetros actuales"
             value={kilometers}
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     gap: 20,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     borderColor: colors.borderLight,
     borderWidth: 1,
     shadowColor: colors.shadowLight,
